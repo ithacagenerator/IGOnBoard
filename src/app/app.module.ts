@@ -12,12 +12,14 @@ import {
 
 import { WelcomeComponent } from './welcome/welcome.component';
 import { NavLinksComponent } from './nav-links/nav-links.component';
+import { MembershipPoliciesComponent } from './membership-policies/membership-policies.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     WelcomeComponent,
-    NavLinksComponent
+    NavLinksComponent,
+    MembershipPoliciesComponent
   ],
   imports: [
     BrowserModule,
