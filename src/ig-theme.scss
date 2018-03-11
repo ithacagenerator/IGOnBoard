@@ -22,3 +22,6 @@ $ig-app-theme: mat-light-theme($ig-app-primary, $ig-app-accent, $ig-app-warn);
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include angular-material-theme($ig-app-theme);
+.ig-theme {
+  @include angular-material-theme($ig-app-theme);
+}

@@ -9,6 +9,7 @@ import {
   MatButtonModule,
   MatCheckboxModule
 } from '@angular/material';
+import { OverlayContainer } from '@angular/cdk/overlay';
 
 import { WelcomeComponent } from './welcome/welcome.component';
 import { NavLinksComponent } from './nav-links/nav-links.component';
@@ -31,4 +32,8 @@ import { MembershipPoliciesComponent } from './membership-policies/membership-po
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+  constructor(overlayContainer: OverlayContainer) {
+    overlayContainer.getContainerElement().classList.add('ig-theme');
+  }
+}
