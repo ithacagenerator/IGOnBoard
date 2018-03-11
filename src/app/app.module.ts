@@ -29,10 +29,10 @@ import { MembershipPoliciesComponent } from './membership-policies/membership-po
     MatButtonModule,
     MatCheckboxModule
   ],
-  providers: [],
+  providers: [OverlayContainer],
   bootstrap: [AppComponent]
 })
-export class AppModule { 
+export class AppModule {
   constructor(overlayContainer: OverlayContainer) {
     overlayContainer.getContainerElement().classList.add('ig-theme');
   }
