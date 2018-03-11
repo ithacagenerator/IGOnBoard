@@ -11,11 +11,13 @@ import {
 } from '@angular/material';
 
 import { WelcomeComponent } from './welcome/welcome.component';
+import { NavLinksComponent } from './nav-links/nav-links.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    NavLinksComponent
   ],
   imports: [
     BrowserModule,
