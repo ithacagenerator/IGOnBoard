@@ -1,3 +1,22 @@
 <header class="entry-header">
   <h1 class="entry-title">Join Us!</h1>	
 </header>
+
+<div class="entry-content">
+  <form class="form">
+    <mat-form-field class="full-width">
+      <input matInput placeholder="First Name">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <input matInput placeholder="Last Name">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <input matInput placeholder="Email" 
+        [formControl]="emailFormControl"
+        [errorStateMatcher]="matcher">
+    </mat-form-field>    
+    <mat-form-field class="full-width">
+      <input matInput placeholder="Phone" type="tel">
+    </mat-form-field>        
+  </form>
+</div>
