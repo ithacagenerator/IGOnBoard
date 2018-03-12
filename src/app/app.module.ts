@@ -15,6 +15,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { NavLinksComponent } from './nav-links/nav-links.component';
 import { MembershipPoliciesComponent } from './membership-policies/membership-policies.component';
 import { WaverComponent } from './waver/waver.component';
+import { PaymentComponent } from './payment/payment.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { WaverComponent } from './waver/waver.component';
     WelcomeComponent,
     NavLinksComponent,
     MembershipPoliciesComponent,
-    WaverComponent
+    WaverComponent,
+    PaymentComponent
   ],
   imports: [
     BrowserModule,
