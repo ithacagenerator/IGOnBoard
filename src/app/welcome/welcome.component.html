@@ -13,13 +13,13 @@
       <input matInput placeholder="First Name" 
         required
         [formControl]="firstnameFormControl">
-      <mat-error *ngIf="emailFormControl.invalid">{{getRequiredErrorMessage('firstname')}}</mat-error>        
+      <mat-error *ngIf="firstnameFormControl.invalid">{{getRequiredErrorMessage('firstname')}}</mat-error>        
     </mat-form-field>
     <mat-form-field class="full-width">
       <input matInput placeholder="Last Name" 
         required
         [formControl]="lastnameFormControl">
-      <mat-error *ngIf="emailFormControl.invalid">{{getRequiredErrorMessage('lastname')}}</mat-error>                
+      <mat-error *ngIf="lastnameFormControl.invalid">{{getRequiredErrorMessage('lastname')}}</mat-error>                
     </mat-form-field>
     <mat-form-field class="full-width"
       hintLabel="Note: We'll send you an email with a link to click to prove it's you">

@@ -41,7 +41,11 @@ export class WelcomeComponent implements OnInit {
   }
 
   handleNext() {
-    console.dir(this.biodataForm);
+    const fields = {};
+    Object.keys(this.biodataForm.controls).forEach(k => {
+      fields[k] = this.biodataForm.controls[k].value;
+    });
+    this._memberdata.updateFields(fields);
   }
 
 }
