@@ -13,16 +13,16 @@
       <input matInput placeholder="First Name" 
         required
         [formControl]="firstnameFormControl">
-      <mat-error *ngIf="emailFormControl.invalid">{{getRequiredErrorMessage()}}</mat-error>        
+      <mat-error *ngIf="emailFormControl.invalid">{{getRequiredErrorMessage('firstname')}}</mat-error>        
     </mat-form-field>
     <mat-form-field class="full-width">
       <input matInput placeholder="Last Name" 
         required
         [formControl]="lastnameFormControl">
-      <mat-error *ngIf="emailFormControl.invalid">{{getRequiredErrorMessage()}}</mat-error>                
+      <mat-error *ngIf="emailFormControl.invalid">{{getRequiredErrorMessage('lastname')}}</mat-error>                
     </mat-form-field>
     <mat-form-field class="full-width"
-      hintLabel="Note: we'll send you an email with a link to click to prove it's you">
+      hintLabel="Note: We'll send you an email with a link to click to prove it's you">
       <input matInput placeholder="Email" 
         required
         [formControl]="emailFormControl">
@@ -32,15 +32,16 @@
       <input matInput placeholder="Phone" type="tel" 
         required
         [formControl]="phoneFormControl">
-      <mat-error *ngIf="emailFormControl.invalid">{{getRequiredErrorMessage()}}</mat-error>
+      <mat-error *ngIf="emailFormControl.invalid">{{getRequiredErrorMessage('phone')}}</mat-error>
     </mat-form-field>        
     <mat-form-field class="full-width">
-      <textarea matInput placeholder="Mailing Street Address, City, State, Zipcode" type="text"
+      <textarea matInput placeholder="Mailing Street Address, City, State, Zipcode" type="text"        
         required
         [formControl]="addressFormControl"
         matAutosizeMinRows="2"
         matAutosizeMaxRows="3"></textarea>
-      <mat-error *ngIf="addressFormControl.invalid">{{getRequiredErrorMessage()}}</mat-error>
+      <mat-error *ngIf="addressFormControl.invalid">{{getRequiredErrorMessage('address')}}</mat-error>
+      <mat-hint align="start">Note: We are required by law to send Annual General Meeting notice by postcard</mat-hint>
     </mat-form-field>
   </form>
 </div>
