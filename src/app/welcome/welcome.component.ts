@@ -15,7 +15,10 @@ export class WelcomeComponent implements OnInit {
   ]);
   firstnameFormControl = new FormControl('', [Validators.required]);
   lastnameFormControl = new FormControl('', [Validators.required]);
-  phoneFormControl = new FormControl('', [Validators.required]);
+  phoneFormControl = new FormControl('', [
+    Validators.required,
+    Validators.pattern(/(\(?[0-9]{3}\)?-?\s?[0-9]{3}-?[0-9]{4})/)
+  ]);
   addressFormControl = new FormControl('', [Validators.required]);
 
   biodataForm: FormGroup = new FormGroup({
@@ -30,7 +33,10 @@ export class WelcomeComponent implements OnInit {
     return this.emailFormControl.hasError('required') ? 'You must enter a value' :
       this.emailFormControl.hasError('email') ? 'Not a valid email' : '';
   }
-
+  getPhoneErrorMessage() {
+    return this.phoneFormControl.hasError('required') ? 'You must enter a value' :
+      this.phoneFormControl.hasError('pattern') ? 'Format must be (xxx) xxx-xxxx' : '';
+  }
   getRequiredErrorMessage(field) {
     return this.biodataForm.get(field).hasError('required') ? 'You must enter a value' : '';
   }
@@ -43,7 +49,7 @@ export class WelcomeComponent implements OnInit {
   handleNext() {
     const fields = {};
     Object.keys(this.biodataForm.controls).forEach(k => {
-      fields[k] = this.biodataForm.controls[k].value;
+      fields[k] = `${this.biodataForm.controls[k].value}`.trim();
     });
     this._memberdata.updateFields(fields);
   }

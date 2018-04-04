@@ -30,9 +30,10 @@
     </mat-form-field>    
     <mat-form-field class="full-width">
       <input matInput placeholder="Phone" type="tel" 
+        value="(xxx) xxx-xxxx"
         required
         [formControl]="phoneFormControl">
-      <mat-error *ngIf="emailFormControl.invalid">{{getRequiredErrorMessage('phone')}}</mat-error>
+      <mat-error *ngIf="phoneFormControl.invalid">{{getPhoneErrorMessage()}}</mat-error>
     </mat-form-field>        
     <mat-form-field class="full-width">
       <textarea matInput placeholder="Mailing Street Address, City, State, Zipcode" type="text"        
