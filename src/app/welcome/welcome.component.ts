@@ -1,31 +1,36 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 
-import {ErrorStateMatcher} from '@angular/material/core';
-
-/** Error when invalid control is dirty, touched, or submitted. */
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
-  }
-}
+import { ErrorStateMatcher } from '@angular/material/core';
 
 @Component({
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
-  styleUrls: ['./welcome.component.css']
+  styleUrls: ['./welcome.component.scss']
 })
 export class WelcomeComponent implements OnInit {
   emailFormControl = new FormControl('', [
     Validators.required,
     Validators.email,
   ]);
+  firstnameFormControl = new FormControl('', [Validators.required]);
+  lastnameFormControl = new FormControl('', [Validators.required]);
+  phoneFormControl = new FormControl('', [Validators.required]);
+  addressFormControl = new FormControl('', [Validators.required]);
 
-  matcher = new MyErrorStateMatcher();
+  getEmailErrorMessage() {
+    return this.emailFormControl.hasError('required') ? 'You must enter a value' :
+      this.emailFormControl.hasError('email') ? 'Not a valid email' : '';
+  }
+
+  getRequiredErrorMessage(){
+    return this.emailFormControl.hasError('required') ? 'You must enter a value' : '';
+  }
 
   constructor() { }
 
   ngOnInit() {
   }
+
+
 }
