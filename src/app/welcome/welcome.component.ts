@@ -40,5 +40,8 @@ export class WelcomeComponent implements OnInit {
   ngOnInit() {
   }
 
+  handleNext() {
+    console.dir(this.biodataForm);
+  }
 
 }

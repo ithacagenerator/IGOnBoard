@@ -4,11 +4,11 @@
 
 <div class="motivation">
   First we need to collect a bit of biographical information. 
-  Please fill out the fields below and click next at the bottom.
+  Please fill out the fields below and click 'Next Step' at the bottom.
 </div>
 
 <div class="entry-content">
-  <form class="form">
+  <form class="form" [formGroup]="biodataForm">
     <mat-form-field class="full-width">
       <input matInput placeholder="First Name" 
         required
@@ -43,5 +43,10 @@
       <mat-error *ngIf="addressFormControl.invalid">{{getRequiredErrorMessage('address')}}</mat-error>
       <mat-hint align="start">Note: We are required by law to send Annual General Meeting notice by postcard</mat-hint>
     </mat-form-field>
+
+    <button mat-raised-button color="primary" 
+      class="submit-button"
+      [disabled]="biodataForm.status !== 'VALID'"
+      (click)="handleNext()">Next Step</button>
   </form>
 </div>
