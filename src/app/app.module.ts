@@ -20,6 +20,8 @@ import { MembershipPoliciesComponent } from './membership-policies/membership-po
 import { WaverComponent } from './waver/waver.component';
 import { PaymentComponent } from './payment/payment.component';
 
+import { MemberDataService } from './services/member-data.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,7 +42,10 @@ import { PaymentComponent } from './payment/payment.component';
     MatFormFieldModule,
     MatInputModule
   ],
-  providers: [OverlayContainer],
+  providers: [
+    OverlayContainer,
+    MemberDataService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

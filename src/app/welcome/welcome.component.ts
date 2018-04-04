@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 
 import { ErrorStateMatcher } from '@angular/material/core';
-
+import { MemberDataService } from '../services/member-data.service';
 @Component({
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
@@ -23,11 +23,11 @@ export class WelcomeComponent implements OnInit {
       this.emailFormControl.hasError('email') ? 'Not a valid email' : '';
   }
 
-  getRequiredErrorMessage(){
+  getRequiredErrorMessage() {
     return this.emailFormControl.hasError('required') ? 'You must enter a value' : '';
   }
 
-  constructor() { }
+  constructor(private _memberdata: MemberDataService) { }
 
   ngOnInit() {
   }

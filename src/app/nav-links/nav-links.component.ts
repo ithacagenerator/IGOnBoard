@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { MemberDataService } from '../services/member-data.service';
 @Component({
   selector: 'app-nav-links',
   templateUrl: './nav-links.component.html',
@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavLinksComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _memberdata: MemberDataService) { }
 
   ngOnInit() {
   }
