@@ -4,11 +4,15 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
 var index = require('./routes/index');
-var users = require('./routes/users');
-
+var v1 = require('./routes/v1');
 var app = express();
+
+app.use('/', index);
+app.use('/v1', v1);
+app.get('*', function(req, res, next) { 
+  res.sendFile(path.join(__dirname, '../AngularApp/dist/index.html')); 
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,8 +26,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
+app.use('/v1', v1);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
