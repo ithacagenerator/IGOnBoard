@@ -8,12 +8,6 @@ var index = require('./routes/index');
 var v1 = require('./routes/v1');
 var app = express();
 
-app.use('/', index);
-app.use('/v1', v1);
-app.get('*', function(req, res, next) { 
-  res.sendFile(path.join(__dirname, '../AngularApp/dist/index.html')); 
-});
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -24,9 +18,13 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../AngularApp/dist')));
 
+app.use('/', index);
 app.use('/v1', v1);
+app.get('*', function(req, res, next) { 
+  res.sendFile(path.join(__dirname, '../AngularApp/dist/index.html')); 
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
