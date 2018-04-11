@@ -174,15 +174,15 @@ body, button, input, select, textarea {
 }
 @font-face {
   font-family: 'Outage';
-  src: url('assets/fonts/Outage Cut.eot');
+  src: url('/assets/fonts/Outage Cut.eot');
  /* IE9 Compat Modes */
-  src: url('assets/fonts/Outage Cut.eot?#iefix') format('embedded-opentype'), 
+  src: url('/assets/fonts/Outage Cut.eot?#iefix') format('embedded-opentype'), 
  /* IE6-IE8 */
-  url('assets/fonts/Outage Cut.woff') format('woff'), 
+  url('/assets/fonts/Outage Cut.woff') format('woff'), 
  /* Modern Browsers */
-  url('assets/fonts/Outage Cut.ttf') format('truetype'), 
+  url('/assets/fonts/Outage Cut.ttf') format('truetype'), 
  /* Safari, Android, iOS */
-  url('assets/fonts/Outage Cut.svg#6ee4e385367c3ede1cefb1785f44ac21') format('svg');
+  url('/assets/fonts/Outage Cut.svg#6ee4e385367c3ede1cefb1785f44ac21') format('svg');
  /* Legacy iOS */
   font-style: normal;
   font-weight: 400;
