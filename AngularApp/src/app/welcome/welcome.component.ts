@@ -19,14 +19,14 @@ export class WelcomeComponent implements OnInit {
     Validators.required,
     Validators.pattern(/(\(?[0-9]{3}\)?-?\s?[0-9]{3}-?[0-9]{4})/)
   ]);
-  addressFormControl = new FormControl('', [Validators.required]);
+  // addressFormControl = new FormControl('', [Validators.required]);
 
   biodataForm: FormGroup = new FormGroup({
     email: this.emailFormControl,
     firstname: this.firstnameFormControl,
     lastname: this.lastnameFormControl,
-    phone: this.phoneFormControl,
-    address: this.addressFormControl
+    phone: this.phoneFormControl
+    // address: this.addressFormControl
   });
 
   getEmailErrorMessage() {
