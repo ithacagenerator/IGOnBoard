@@ -38,7 +38,7 @@ router.post('/test-email', (req, res, next) => {
         return db.insertDocument('authbox', 'Members', member);
       } else if(members.length === 1) {
         if(!members[0].validated) {
-          return db.updateDocument('authbox', 'Members', member.email, member)
+          return db.updateDocument('authbox', 'Members', {email: member.email}, member);
         } else {
           throw new Error(`Member is already validated`);
         }
