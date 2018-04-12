@@ -13,11 +13,12 @@ module.exports = (function () {
     // Get the documents collection
     return new Promise((resolve, reject) => {
       const url = `mongodb://localhost:27017/${dbName}`;
-      MongoClient.connect(url, function (err, db) {
+      MongoClient.connect(url, function (err, client) {
         if (err) {
           reject(err);
         } else {
           try {
+            const db = client.db(dbName);
             const collection = db.collection(colxn);
             // Find some documents
             let cursor = collection.find(condition, projection);
@@ -52,10 +53,11 @@ module.exports = (function () {
     // update ONE document in the collection
     return new Promise((resolve, reject) => {
       const url = `mongodb://localhost:27017/${dbName}`;
-      MongoClient.connect(url, function (err, db) {
+      MongoClient.connect(url, function (err, client) {
         if (err) {
           reject(err);
         } else {          
+          const db = client.db(dbName);
           const collection = db.collection(colxn);          
           collection.insertMany(documents, opts, function (err, result) {
             if (err) {
@@ -75,10 +77,11 @@ module.exports = (function () {
     // update ONE document in the collection
     return new Promise((resolve, reject) => {
       const url = `mongodb://localhost:27017/${dbName}`;
-      MongoClient.connect(url, function (err, db) {
+      MongoClient.connect(url, function (err, client) {
         if (err) {
           reject(err);
         } else {          
+          const db = client.db(dbName);
           const collection = db.collection(colxn);          
           collection.insertOne(document, opts, function (err, result) {
             if (err) {
@@ -107,10 +110,11 @@ module.exports = (function () {
     // update ONE document in the collection
     return new Promise((resolve, reject) => {
       const url = `mongodb://localhost:27017/${dbName}`;
-      MongoClient.connect(url, function (err, db) {
+      MongoClient.connect(url, function (err, client) {
         if (err) {
           reject(err);
         } else {
+          const db = client.db(dbName);
           const collection = db.collection(colxn);
           if (opts.updateMany) {
             collection.updateMany(condition, updateOperation, opts, function (err, result) {
@@ -151,10 +155,11 @@ module.exports = (function () {
     return new Promise((resolve, reject) => {
       if (!errorMessage) {
         const url = `mongodb://localhost:27017/${dbName}`;
-        MongoClient.connect(url, function (err, db) {
+        MongoClient.connect(url, function (err, client) {
           if (err) {
             reject(err);
           } else {
+            const db = client.db(dbName);
             const collection = db.collection(colxn);
             collection.deleteOne(condition, opts, function (err, result) {
               if (err) {
