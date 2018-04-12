@@ -176,7 +176,7 @@ module.exports = (function () {
     findDocuments,
     insertDocument,
     insertDocuments,
-    updateDocuments,
+    updateDocument,
     deleteDocument
   };
 })();
