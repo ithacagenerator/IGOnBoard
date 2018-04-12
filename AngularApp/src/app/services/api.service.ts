@@ -7,13 +7,17 @@ import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class ApiService {
   baseUrl = 'https://ithacagenerator.org/onboard';
+  sentValidationEmail = false;
 
   constructor(
     private _http: HttpClient,
     private _member: MemberDataService) { }
 
   requestEmailConfirmation() {
-    return this._http.post(`${this.baseUrl}/test-email`, this._member.getMember()).toPromise();
+    if (!this.sentValidationEmail) {
+      this.sentValidationEmail = true;
+      return this._http.post(`${this.baseUrl}/test-email`, this._member.getMember()).toPromise();
+    }
   }
 
 }
