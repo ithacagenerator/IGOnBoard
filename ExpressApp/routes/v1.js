@@ -27,7 +27,7 @@ function sendEmail(to, subject, html) {
   });  
 }
 
-router.get('/test-email', (req, res, next) => {
+router.post('/test-email', (req, res, next) => {
   const member = req.body;
   if(member && member.email) { 
     // see if there's a record for this email address already
