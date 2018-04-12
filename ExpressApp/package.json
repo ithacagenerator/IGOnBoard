@@ -10,6 +10,8 @@
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.15.5",
+    "gmail-send": "^1.2.14",
+    "homedir": "^0.6.0",
     "jade": "~1.11.0",
     "moment": "^2.22.0",
     "morgan": "~1.9.0",

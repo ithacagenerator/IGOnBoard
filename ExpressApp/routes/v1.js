@@ -5,6 +5,27 @@ const db = require('../util/db');
 
 const uuid = require('uuid');
 const moment = require('moment');
+const homedir = require('homedir')();
+const gmail_credentials = require(`${homedir}/gmail-credentials.json`);
+const send = require('gmail-send');
+
+function sendEmail(to, subject, html) {
+  return new Promise((resolve, reject) => {
+    send({
+      user: gmail_credentials.user,
+      pass: gmail_credentials.pass,
+      to,
+      subject,
+      html
+    }, (err, res) => {
+      if(err) {
+        reject(err);
+      } else {
+        resolve(res);
+      }
+    });
+  });  
+}
 
 router.get('/test-email', (req, res, next) => {
   const member = req.body;
@@ -30,7 +51,14 @@ router.get('/test-email', (req, res, next) => {
       // result should either have an insertedId or modifiedCount
       if(result.insertedId || result.modifiedCount) {
         // send an email to the user with a link to click on
-        
+        return sendEmail(member.email, 'Ithaca Generator Email Validation',
+          `<div style="background-color: yellow;">You must click this link to continue registering:<br/>
+          <a href="https://ithacagenerator.org/onboard/validate-email/${member.validationCode}">
+          https://ithacagenerator.org/onboard/validate-email/${member.validationCode}
+          </a><br/><br/>
+          Sincerely,<br/>
+          <img src="https://ithacagenerator.org/wp-content/themes/ithacagen/headerlogohome.png"/>
+          </div>`);
       } else {
         throw new Error('Database operation failed');
       }
@@ -53,8 +81,8 @@ router.get('/validate-email/:validationCode', (req, res, next) => {
     db.updateDocument('authbox', 'Members', 
       { validationCode },
       {
-        $set: {validated: moment().format()},
-        $unset: {validation: ''}
+        $set: { validated: moment().format() },
+        $unset: { validationCode: '' }
       },
       { updateType: 'complex' }
     )
