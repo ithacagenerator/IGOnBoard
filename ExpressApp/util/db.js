@@ -37,11 +37,11 @@ module.exports = (function () {
               } else {
                 resolve(docs);
               }
-              db.close();
+              client.close();
             });
           } catch (error) {
             reject(error);
-            db.close();
+            client.close();
           }
         }
       });
@@ -65,7 +65,7 @@ module.exports = (function () {
             } else {
               resolve(result);
             }
-            db.close();
+            client.close();
           });        
         }
       });
@@ -89,7 +89,7 @@ module.exports = (function () {
             } else {
               resolve(result);
             }
-            db.close();
+            client.close();
           });        
         }
       });
@@ -123,7 +123,7 @@ module.exports = (function () {
               } else {
                 resolve(result);
               }
-              db.close();
+              client.close();
             });
           } else {
             collection.updateOne(condition, updateOperation, opts, function (err, result) {
@@ -132,7 +132,7 @@ module.exports = (function () {
               } else {
                 resolve(result);
               }
-              db.close();
+              client.close();
             });
           }
         }
@@ -167,7 +167,7 @@ module.exports = (function () {
               } else {
                 resolve(result);
               }
-              db.close();
+              client.close();
             });
           }
         });
