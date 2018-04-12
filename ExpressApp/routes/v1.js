@@ -7,21 +7,32 @@ const uuid = require('uuid');
 const moment = require('moment');
 const homedir = require('homedir')();
 const gmail_credentials = require(`${homedir}/gmail-credentials.json`);
-const send = require('gmail-send');
+const nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: gmail_credentials.user,
+    pass: gmail_credentials.pass
+  }
+});
 
 function sendEmail(to, subject, html) {
   return new Promise((resolve, reject) => {
-    send({
-      user: gmail_credentials.user,
-      pass: gmail_credentials.pass,
+    const mailOptions = {
+      from: gmail_credentials.user,
       to,
       subject,
       html
-    }, (err, res) => {
+    };
+
+    transporter.sendMail(mailOptions, function (err, info) {
       if(err) {
+        console.log(err);
         reject(err);
       } else {
-        resolve(res);
+        console.log(info);
+        resolve(info);
       }
     });
   });  
