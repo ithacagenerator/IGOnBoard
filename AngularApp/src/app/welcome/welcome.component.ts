@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MemberDataService } from '../services/member-data.service';
+import { ApiService } from '../services/api.service';
 @Component({
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
@@ -41,7 +42,9 @@ export class WelcomeComponent implements OnInit {
     return this.biodataForm.get(field).hasError('required') ? 'You must enter a value' : '';
   }
 
-  constructor(private _memberdata: MemberDataService) { }
+  constructor(
+    private _memberdata: MemberDataService,
+    private _api: ApiService) { }
 
   ngOnInit() {
   }
@@ -52,6 +55,7 @@ export class WelcomeComponent implements OnInit {
       fields[k] = `${this.biodataForm.controls[k].value}`.trim();
     });
     this._memberdata.updateFields(fields);
+    this._api.requestEmailConfirmation();
   }
 
 }
