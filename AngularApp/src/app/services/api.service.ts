@@ -6,7 +6,7 @@ import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class ApiService {
-  baseUrl = 'https://ithacagenerator.org/onboard';
+  baseUrl = 'https://ithacagenerator.org/onboard/v1';
   sentValidationEmail = false;
 
   constructor(
