@@ -64,8 +64,8 @@ router.post('/test-email', (req, res, next) => {
         // send an email to the user with a link to click on
         return sendEmail(member.email, 'Ithaca Generator Email Validation',
           `<div style="background-color: yellow;">You must click this link to continue registering:<br/>
-          <a href="https://ithacagenerator.org/onboard/validate-email/${member.validationCode}">
-          https://ithacagenerator.org/onboard/validate-email/${member.validationCode}
+          <a href="https://ithacagenerator.org/onboard/v1/validate-email/${member.validationCode}">
+          https://ithacagenerator.org/onboard/v1/validate-email/${member.validationCode}
           </a><br/><br/>
           Sincerely,<br/>
           <img src="https://ithacagenerator.org/wp-content/themes/ithacagen/headerlogohome.png"/>
