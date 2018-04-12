@@ -95,7 +95,7 @@ module.exports = (function () {
 
   const updateDocument = function (dbName, colxn, condition, update, options = {}) {
 
-    const opts = Object.assign({}, {}, options);
+    const opts = Object.assign({}, {upsert: false}, options);
     let updateOperation = { $set: update }; // simple default use case
     if (opts.updateType === "complex") { // this represents intentionality
       delete opts.updateType;

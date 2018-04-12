@@ -7,6 +7,10 @@ export class MemberDataService {
 
   constructor() { }
 
+  getMember() {
+    return this.memberObj;
+  }
+
   updateFields(obj) {
     this.memberObj = Object.assign({}, this.memberObj, obj);
   }
