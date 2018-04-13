@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
@@ -7,13 +7,13 @@ import { ErrorSnackBarComponent } from '../error-snack-bar/error-snack-bar.compo
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MemberDataService } from '../services/member-data.service';
 import { ApiService } from '../services/api.service';
-
+import { LoaderService } from '../services/loader.service';
 @Component({
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.scss']
 })
-export class WelcomeComponent implements AfterViewInit {
+export class WelcomeComponent {
   emailFormControl = new FormControl('', [
     Validators.required,
     Validators.email,
@@ -47,29 +47,29 @@ export class WelcomeComponent implements AfterViewInit {
   }
 
   constructor(
+    private loaderService: LoaderService,
     public _memberdata: MemberDataService,
     private _api: ApiService,
     private _router: Router,
     private _snackBar: MatSnackBar) { }
 
-  ngAfterViewInit() {
-
-  }
-
   handleNext() {
     const fields = {};
+    this.loaderService.display(true);
     Object.keys(this.biodataForm.controls).forEach(k => {
       fields[k] = `${this.biodataForm.controls[k].value}`.trim();
     });
     this._memberdata.updateFields(fields);
     this._api.requestEmailConfirmation()
     .then(res => {
+      this.loaderService.display(false);
       this._memberdata.setBasicInformationComplete(true);
       this._router.navigate(['/confirm-email']);
     })
     .catch(res => {
+      this.loaderService.display(false);
       this._snackBar.openFromComponent(ErrorSnackBarComponent, {
-        data: res.error.error,
+        data: res && res.error && res.error.error ? res.error.error : `Unexpected Error Status Code ${res.status}`,
         duration: 2000
       });
     });

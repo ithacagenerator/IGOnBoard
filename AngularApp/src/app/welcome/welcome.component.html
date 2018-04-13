@@ -50,8 +50,9 @@
 
     <button mat-raised-button color="primary" 
       class="submit-button"
-      [disabled]="biodataForm.status !== 'VALID'"
+      [disabled]="biodataForm.invalid"
       (click)="handleNext()">Next Step</button>
+    <!-- was...  [disabled]="biodataForm.status !== 'VALID'" -->
   </form>
 
 </div>

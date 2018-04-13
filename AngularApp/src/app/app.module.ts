@@ -13,7 +13,8 @@ import {
   MatFormFieldModule,
   MatInputModule,
   MatSnackBarModule,
-  MatDialogModule
+  MatDialogModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 import { OverlayContainer } from '@angular/cdk/overlay';
 
@@ -27,7 +28,7 @@ import { EmailConfirmationComponent } from './email-confirmation/email-confirmat
 import { MemberDataService } from './services/member-data.service';
 import { ApiService } from './services/api.service';
 import { ErrorSnackBarComponent } from './error-snack-bar/error-snack-bar.component';
-
+import { LoaderService } from './services/loader.service';
 
 @NgModule({
   declarations: [
@@ -52,12 +53,14 @@ import { ErrorSnackBarComponent } from './error-snack-bar/error-snack-bar.compon
     MatFormFieldModule,
     MatInputModule,
     MatSnackBarModule,
-    MatDialogModule
+    MatDialogModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     OverlayContainer,
     MemberDataService,
-    ApiService
+    ApiService,
+    LoaderService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
