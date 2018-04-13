@@ -53,8 +53,7 @@ export class WelcomeComponent implements AfterViewInit {
     private _snackBar: MatSnackBar) { }
 
   ngAfterViewInit() {
-    this.biodataForm.markAsTouched();
-    this.biodataForm.markAsDirty();
+
   }
 
   handleNext() {
