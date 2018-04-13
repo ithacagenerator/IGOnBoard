@@ -11,7 +11,9 @@ import {
   MatButtonModule,
   MatCheckboxModule,
   MatFormFieldModule,
-  MatInputModule
+  MatInputModule,
+  MatSnackBarModule,
+  MatDialogModule
 } from '@angular/material';
 import { OverlayContainer } from '@angular/cdk/overlay';
 
@@ -24,6 +26,7 @@ import { EmailConfirmationComponent } from './email-confirmation/email-confirmat
 
 import { MemberDataService } from './services/member-data.service';
 import { ApiService } from './services/api.service';
+import { ErrorSnackBarComponent } from './error-snack-bar/error-snack-bar.component';
 
 
 @NgModule({
@@ -34,7 +37,8 @@ import { ApiService } from './services/api.service';
     MembershipPoliciesComponent,
     WaverComponent,
     PaymentComponent,
-    EmailConfirmationComponent
+    EmailConfirmationComponent,
+    ErrorSnackBarComponent
   ],
   imports: [
     BrowserModule,
@@ -46,14 +50,19 @@ import { ApiService } from './services/api.service';
     MatButtonModule,
     MatCheckboxModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatSnackBarModule,
+    MatDialogModule
   ],
   providers: [
     OverlayContainer,
     MemberDataService,
     ApiService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    ErrorSnackBarComponent
+  ]
 })
 export class AppModule {
   constructor(overlayContainer: OverlayContainer) {

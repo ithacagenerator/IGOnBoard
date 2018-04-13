@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
+import { ErrorSnackBarComponent } from '../error-snack-bar/error-snack-bar.component';
 
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MemberDataService } from '../services/member-data.service';
 import { ApiService } from '../services/api.service';
+
 @Component({
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
@@ -44,7 +48,9 @@ export class WelcomeComponent implements OnInit {
 
   constructor(
     private _memberdata: MemberDataService,
-    private _api: ApiService) { }
+    private _api: ApiService,
+    private _router: Router,
+    private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
   }
@@ -55,7 +61,16 @@ export class WelcomeComponent implements OnInit {
       fields[k] = `${this.biodataForm.controls[k].value}`.trim();
     });
     this._memberdata.updateFields(fields);
-    this._api.requestEmailConfirmation();
+    this._api.requestEmailConfirmation()
+    .then(res => {
+      this._router.navigate(['/confirm-email']);
+    })
+    .catch(res => {
+      this._snackBar.openFromComponent(ErrorSnackBarComponent, {
+        data: res.error.error,
+        duration: 2000
+      });
+    });
   }
 
 }

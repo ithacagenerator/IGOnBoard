@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { MemberDataService } from './member-data.service';
 
 import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/timeout';
+import 'rxjs/add/operator/do';
 
 @Injectable()
 export class ApiService {
@@ -13,11 +15,19 @@ export class ApiService {
     private _http: HttpClient,
     private _member: MemberDataService) { }
 
-  requestEmailConfirmation() {
+  requestEmailConfirmation(): Promise<any> {
     if (!this.sentValidationEmail) {
-      this.sentValidationEmail = true;
-      return this._http.post(`${this.baseUrl}/test-email`, this._member.getMember()).toPromise();
+      return this._http
+      .post(`${this.baseUrl}/test-email`,
+        this._member.getMember()
+      )
+      .timeout(5000)
+      .do(res => {
+        this.sentValidationEmail = true;
+      })
+      .toPromise();
     }
+    return Promise.resolve();
   }
 
 }
