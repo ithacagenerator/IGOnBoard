@@ -27,13 +27,13 @@
       hintLabel="Note: We'll send you an email with a link to click to prove it's you">
       <input matInput placeholder="Email" 
         required
-        [(value)]="_memberdata.email"
+        [(ngModel)]="_memberdata.email"
         [formControl]="emailFormControl">
       <mat-error *ngIf="emailFormControl.invalid">{{getEmailErrorMessage()}}</mat-error>        
     </mat-form-field>    
     <mat-form-field class="full-width">
       <input matInput placeholder="Phone" type="tel" 
-        [(value)]="_memberdata.phone"
+        [(ngModel)]="_memberdata.phone"
         required
         [formControl]="phoneFormControl">
       <mat-error *ngIf="phoneFormControl.invalid">{{getPhoneErrorMessage()}}</mat-error>
@@ -52,7 +52,6 @@
       class="submit-button"
       [disabled]="biodataForm.invalid"
       (click)="handleNext()">Next Step</button>
-    <!-- was...  [disabled]="biodataForm.status !== 'VALID'" -->
   </form>
 
 </div>
