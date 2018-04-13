@@ -10,7 +10,7 @@ import 'rxjs/add/operator/do';
 export class ApiService {
   baseUrl = 'https://ithacagenerator.org/onboard/v1';
   sentValidationEmail = false;
-
+  public basePath = '/onboard';
   constructor(
     private _http: HttpClient,
     private _member: MemberDataService) { }
