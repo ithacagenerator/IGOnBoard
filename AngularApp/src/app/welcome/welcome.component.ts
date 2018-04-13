@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
@@ -13,7 +13,7 @@ import { ApiService } from '../services/api.service';
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.scss']
 })
-export class WelcomeComponent implements OnInit {
+export class WelcomeComponent implements AfterViewInit {
   emailFormControl = new FormControl('', [
     Validators.required,
     Validators.email,
@@ -47,12 +47,14 @@ export class WelcomeComponent implements OnInit {
   }
 
   constructor(
-    private _memberdata: MemberDataService,
+    public _memberdata: MemberDataService,
     private _api: ApiService,
     private _router: Router,
     private _snackBar: MatSnackBar) { }
 
-  ngOnInit() {
+  ngAfterViewInit() {
+    this.biodataForm.markAsTouched();
+    this.biodataForm.markAsDirty();
   }
 
   handleNext() {
@@ -63,6 +65,7 @@ export class WelcomeComponent implements OnInit {
     this._memberdata.updateFields(fields);
     this._api.requestEmailConfirmation()
     .then(res => {
+      this._memberdata.setBasicInformationComplete(true);
       this._router.navigate(['/confirm-email']);
     })
     .catch(res => {

@@ -24,3 +24,17 @@ li {
 .active {
   color: #ff0;
 }
+
+.basic {
+  .checkmark {
+    width: 45px;
+    position: absolute;
+    top: -6px;
+    left: 60px;
+    z-index: 1;
+  }
+
+  .link {
+    z-index: 2;    
+  }
+}

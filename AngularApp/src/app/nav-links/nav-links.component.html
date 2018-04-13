@@ -1,8 +1,9 @@
 <ul class="menu">
-  <li>
-    <a [routerLink]="['/welcome']" [routerLinkActive]="'active'">
+  <li class="basic">
+    <a class="link" [routerLink]="['/welcome']" [routerLinkActive]="'active'">
       Basic Info
     </a>
+    <img class="checkmark" src="/assets/img/checkmark.png" *ngIf="_memberdata.basicInformationComplete()">
   </li>
   <li>
     <a  [routerLink]="['/membership-policies']" [routerLinkActive]="'active'">

@@ -3,11 +3,11 @@ import { MemberDataService } from '../services/member-data.service';
 @Component({
   selector: 'app-nav-links',
   templateUrl: './nav-links.component.html',
-  styleUrls: ['./nav-links.component.css']
+  styleUrls: ['./nav-links.component.scss']
 })
 export class NavLinksComponent implements OnInit {
 
-  constructor(private _memberdata: MemberDataService) { }
+  constructor(public _memberdata: MemberDataService) { }
 
   ngOnInit() {
   }

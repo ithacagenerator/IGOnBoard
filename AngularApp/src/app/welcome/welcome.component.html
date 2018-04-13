@@ -8,16 +8,18 @@
 </div>
 
 <div class="entry-content">
-  <form class="form" [formGroup]="biodataForm">
+  <form class="form" name="biodataForm" [formGroup]="biodataForm">
     <mat-form-field class="full-width">
       <input matInput placeholder="First Name" 
         required
+        [(ngModel)]="_memberdata.firstname"
         [formControl]="firstnameFormControl">
       <mat-error *ngIf="firstnameFormControl.invalid">{{getRequiredErrorMessage('firstname')}}</mat-error>        
     </mat-form-field>
     <mat-form-field class="full-width">
       <input matInput placeholder="Last Name" 
         required
+        [(ngModel)]="_memberdata.lastname"
         [formControl]="lastnameFormControl">
       <mat-error *ngIf="lastnameFormControl.invalid">{{getRequiredErrorMessage('lastname')}}</mat-error>                
     </mat-form-field>
@@ -25,12 +27,13 @@
       hintLabel="Note: We'll send you an email with a link to click to prove it's you">
       <input matInput placeholder="Email" 
         required
+        [(value)]="_memberdata.email"
         [formControl]="emailFormControl">
       <mat-error *ngIf="emailFormControl.invalid">{{getEmailErrorMessage()}}</mat-error>        
     </mat-form-field>    
     <mat-form-field class="full-width">
       <input matInput placeholder="Phone" type="tel" 
-        value="(xxx) xxx-xxxx"
+        [(value)]="_memberdata.phone"
         required
         [formControl]="phoneFormControl">
       <mat-error *ngIf="phoneFormControl.invalid">{{getPhoneErrorMessage()}}</mat-error>
@@ -50,4 +53,5 @@
       [disabled]="biodataForm.status !== 'VALID'"
       (click)="handleNext()">Next Step</button>
   </form>
+
 </div>
