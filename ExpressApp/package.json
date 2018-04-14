@@ -10,6 +10,7 @@
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.4",
     "debug": "~2.6.9",
+    "disposable-email-domains": "^1.0.30",
     "express": "~4.15.5",
     "gmail-send": "^1.2.14",
     "homedir": "^0.6.0",

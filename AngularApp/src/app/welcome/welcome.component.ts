@@ -8,16 +8,16 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { MemberDataService } from '../services/member-data.service';
 import { ApiService } from '../services/api.service';
 import { LoaderService } from '../services/loader.service';
+
+import * as wildcard from './disposable-email-wildcard';
+
 @Component({
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.scss']
 })
 export class WelcomeComponent {
-  emailFormControl = new FormControl('', [
-    Validators.required,
-    Validators.email,
-  ]);
+  emailFormControl;
   firstnameFormControl = new FormControl('', [Validators.required]);
   lastnameFormControl = new FormControl('', [Validators.required]);
   phoneFormControl = new FormControl('', [
@@ -26,17 +26,12 @@ export class WelcomeComponent {
   ]);
   // addressFormControl = new FormControl('', [Validators.required]);
 
-  biodataForm: FormGroup = new FormGroup({
-    email: this.emailFormControl,
-    firstname: this.firstnameFormControl,
-    lastname: this.lastnameFormControl,
-    phone: this.phoneFormControl
-    // address: this.addressFormControl
-  });
+  biodataForm: FormGroup;
 
   getEmailErrorMessage() {
     return this.emailFormControl.hasError('required') ? 'You must enter a value' :
-      this.emailFormControl.hasError('email') ? 'Not a valid email' : '';
+      this.emailFormControl.hasError('email') || this.emailFormControl.hasError('pattern') ?
+        'Not a valid email' : '';
   }
   getPhoneErrorMessage() {
     return this.phoneFormControl.hasError('required') ? 'You must enter a value' :
@@ -51,7 +46,24 @@ export class WelcomeComponent {
     public _memberdata: MemberDataService,
     private _api: ApiService,
     private _router: Router,
-    private _snackBar: MatSnackBar) { }
+    private _snackBar: MatSnackBar) {
+      const patternList = wildcard.emails.map(v => v.replace('.', '\\.'));
+      this.emailFormControl = new FormControl('', [
+        Validators.required,
+        Validators.email,
+        Validators.pattern(
+          new RegExp(`^(?!((.*${patternList.join(')|(.*')})))`))
+        // pattern is the anti-set of known disposable email domains
+      ]);
+
+      this.biodataForm = new FormGroup({
+        email: this.emailFormControl,
+        firstname: this.firstnameFormControl,
+        lastname: this.lastnameFormControl,
+        phone: this.phoneFormControl
+        // address: this.addressFormControl
+      });
+    }
 
   handleNext() {
     const fields = {};

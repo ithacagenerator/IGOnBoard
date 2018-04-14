@@ -9,6 +9,12 @@ const homedir = require('homedir')();
 const gmail_credentials = require(`${homedir}/gmail-credentials.json`);
 const nodemailer = require('nodemailer');
 
+const fs = require('fs');
+const emailVerificationEmailTemplate = fs.readFileSync('./email-validation-template.html', 'utf8');
+const wildcards = require('disposable-email-domains/wildcard.json');
+const wildcardsRegex = wildcards.map(v => v.replace('.', '\\.'));
+const legitEmailRegex = new RegExp(`^(?!((.*${wildcardsRegex.join(')|(.*')})))`); // tests true for non-blacklisted emails
+
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -41,47 +47,47 @@ function sendEmail(to, subject, html) {
 router.post('/test-email', (req, res, next) => {
   const member = req.body;
   if(member && member.email) { 
-    // see if there's a record for this email address already
-    db.findDocuments('authbox', 'Members', {email: member.email})
-    .then(members => {      
-      member.validationCode = uuid.v4();
-      if(members.length === 0){
-        return db.insertDocument('authbox', 'Members', member);
-      } else if(members.length === 1) {
-        if(!members[0].validated) {
-          return db.updateDocument('authbox', 'Members', {email: member.email}, member);
+    if(legitEmailRegex.test(member.email)){
+      // see if there's a record for this email address already
+      db.findDocuments('authbox', 'Members', {email: member.email})
+      .then(members => {      
+        member.validationCode = uuid.v4();
+        if(members.length === 0){
+          return db.insertDocument('authbox', 'Members', member);
+        } else if(members.length === 1) {
+          if(!members[0].validated) {
+            return db.updateDocument('authbox', 'Members', {email: member.email}, member);
+          } else {
+            throw new Error(`Member is already validated`);
+          }
         } else {
-          throw new Error(`Member is already validated`);
+          throw new Error(`Found ${members.length} records with email address`);
         }
-      } else {
-        throw new Error(`Found ${members.length} records with email address`);
-      }
-    })
-    .then(result => {
-      // either a member was inserted or a member was updated with a validation code
-      // result should either have an insertedId or modifiedCount
-      if(result.insertedId || result.modifiedCount) {
-        // send an email to the user with a link to click on
-        return sendEmail(member.email, 'Ithaca Generator Email Validation',
-          `<div style="background-color: yellow;">You must click this link to continue registering:<br/>
-          <a href="https://ithacagenerator.org/onboard/v1/validate-email/${member.validationCode}">
-          https://ithacagenerator.org/onboard/v1/validate-email/${member.validationCode}
-          </a><br/><br/>
-          Sincerely,<br/>
-          <img src="https://ithacagenerator.org/wp-content/themes/ithacagen/headerlogohome.png"/>
-          </div>`);
-      } else {
-        throw new Error('Database operation failed');
-      }
-    })
-    .then(result => {
-      res.json({status: 'ok'});
-    })
-    .catch(error => {
-      res.status(422).json({ error: error.message });
-    });
+      })
+      .then(result => {
+        // either a member was inserted or a member was updated with a validation code
+        // result should either have an insertedId or modifiedCount
+        if(result.insertedId || result.modifiedCount) {
+          // send an email to the user with a link to click on
+          return sendEmail(member.email, 
+            'Ithaca Generator Email Validation', 
+            emailVerificationEmailTemplate.replace('{{validationCode}}',
+            member.validationCode));
+        } else {
+          throw new Error('Database operation failed');
+        }
+      })
+      .then(result => {
+        res.json({status: 'ok'});
+      })
+      .catch(error => {
+        res.status(422).json({ error: error.message });
+      });
+    } else {
+      res.status(422).json({error: 'Email address is not valid'});  
+    }
   } else {
-    res.status(422).json({error: 'email field is required'});
+    res.status(422).json({error: 'Email field is required'});
   }
 });
 
