@@ -73,7 +73,7 @@ router.post('/test-email', (req, res, next) => {
           // send an email to the user with a link to click on
           return sendEmail(member.email, 
             'Ithaca Generator Email Validation', 
-            emailVerificationEmailTemplate.replace('{{validationCode}}',
+            emailVerificationEmailTemplate.replace(/{{validationCode}}/g,
             member.validationCode));
         } else {
           throw new Error('Database operation failed');
