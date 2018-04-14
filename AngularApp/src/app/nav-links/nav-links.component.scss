@@ -2,9 +2,18 @@
   .checkmark {
     width: 45px;
     position: absolute;
-    top: -6px;
+    top: 20px;
     right: 24px;
     z-index: 1;
+  }  
+  @media only screen and (max-width : 1023px) {
+    .checkmark {
+      width: 30px;
+      position: absolute;
+      top: -5px;
+      right: -35px;
+      z-index: 1;
+    }    
   }
 
   .link {
