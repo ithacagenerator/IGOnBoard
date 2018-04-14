@@ -380,21 +380,11 @@ a:hover, a:active {
 .main-navigation ul ul a {
   width: 200px;
 }
-.main-navigation ul ul li {
-}
-.main-navigation li:hover > a, .main-navigation li.focus > a {
-}
-.main-navigation ul ul :hover > a, .main-navigation ul ul .focus > a {
-}
-.main-navigation ul ul a:hover, .main-navigation ul ul a.focus {
-}
 .main-navigation ul li:hover > ul, .main-navigation ul li.focus > ul {
   left: auto;
 }
 .main-navigation ul ul li:hover > ul, .main-navigation ul ul li.focus > ul {
   left: 100%;
-}
-.main-navigation .current_page_item > a, .main-navigation .current-menu-item > a, .main-navigation .current_page_ancestor > a {
 }
 /* Small menu. */
 .menu-toggle, .main-navigation.toggled ul {
@@ -445,12 +435,10 @@ a:hover, a:active {
 /*-------------------------------------------------------------- # Alignments --------------------------------------------------------------*/
 .alignleft {
   display: inline;
-  float: left;
   margin-right: 1.5em;
 }
 .alignright {
   display: inline;
-  float: right;
   margin-left: 1.5em;
 }
 .aligncenter {
@@ -891,8 +879,6 @@ ul#archives p {
   letter-spacing: 2px;
   padding: 0 0 10px;
 }
-#masthead {
-}
 #masthead .site-branding {
   position: relative;
   left: 50px;
@@ -1254,275 +1240,397 @@ table .eventful ul li, table .eventful-today ul li {
 }
 
 @media only screen and (max-width : 1023px) {
-  .home a#burger {
-      display: none;
+
+ 
+  #homehead li {
+  padding-left: 5px;
+  }
+  
+  #homehead video {
+  display: none;
+  }
+  
+ #homehead #home-navigation  {
+  position: relative;
+  }
+  
+  #homehead {
+  background-size: auto 150%;
+  background-color: #222;
+  line-height: 1.1; 
+ padding-bottom: 40px;
+  }
+  
+   #homehead li {
+  line-height: 1.1; 
+   }
+  
+  
+  #homehead ul {
+  margin-top: 120px;
+  max-width: 100%;
+  }
+  
+  #homehead #home-navigation h6 {
+  display: block;
+  }
+      
+      .home a#burger {
+       display: none;   
+      }
+      
+      a#burger {
+          display: inline-block;
+         width: 30px;
+          height: 30px;
+          line-height: .2;
+          font-size: 55px;
+          color: #ffee00;
+          word-wrap: break-word;
+          font-weight: normal;
+          cursor: pointer;
+          padding: 30px;
+      }
+      
+      .main-navigation li {
+       float: none;
+          display: block;
+          text-align: right;
+      }
+      
+      #site-navigation .menu {
+       display: none;   
+      }
+      
+ .home     #site-navigation .menu {
+  display: block;   
  }
-  a#burger {
-      display: inline-block;
-      width: 30px;
-      height: 30px;
-      line-height: .2;
-      font-size: 55px;
-      color: #ffee00;
-      word-wrap: break-word;
-      font-weight: normal;
-      cursor: pointer;
-      padding: 30px;
- }
-  .main-navigation li {
-      float: none;
-      display: block;
-      text-align: right;
- }
-  #site-navigation .menu {
-      display: none;
- }
-  .home #site-navigation .menu {
-      display: block;
- }
-  #site-navigation.active .menu {
-      display: block;
-      padding: 20px 0;
- }
-  #site-navigation.active ul ul, .em-search-geo.em-search-field, .em-search-scope.em-search-field, .em-search-options {
-      display: none !important;
- }
-  div.css-search.has-advanced div.em-search-main {
-      border: 0px;
- }
-  .page #masthead #site-navigation, .single #masthead #site-navigation, .search #masthead #site-navigation, .archive #masthead #site-navigation, .error404 #masthead #site-navigation {
-      position: static;
-      clear: none;
-      text-align: right;
-      width: 100%;
-      padding: 10px 40px 20px;
- }
-  .page #masthead #site-navigation li a, .single #masthead #site-navigation li a, .search #masthead #site-navigation li a, .archive #masthead #site-navigation li a, .error404 #masthead #site-navigation li a {
-      font-size: 18px;
- }
-  #masthead .site-branding {
-      left: 0px;
-      position: absolute;
- }
-  #calls, #calls h4, #calls h5 {
-      width: 100%;
-      max-width: 100% !important;
- }
-  #calls h4 a, #calls h5 a{
-      padding: 10px;
- }
-  #calls {
-      margin-bottom: 30px;
- }
-  .home #masthead {
-      padding-bottom: 40px;
- }
-  #join p {
-      max-width: 100%;
-      width: 100%;
-      font-size: 16px;
-      padding: 0;
- }
-  #join {
-      padding-bottom: 20px;
- }
-  #homenews {
-      height: auto;
- }
-  #homenews, .home #map, .home #events li, #meta, #meta div, #footerinfo, #secondary .widget {
-      width: 100%;
-      float: none;
-      margin: 0 auto;
- }
-  #meta, #meta div {
-      margin: 0 auto;
- }
-  #meta {
-      padding:40px 40px 0 40px;
- }
-  .home #events li {
+      
+      #site-navigation.active .menu {
+          display: block;
+          padding: 20px 0;
+      }
+      
+      #site-navigation.active ul ul, .em-search-geo.em-search-field, .em-search-scope.em-search-field, .em-search-options {
+       display: none !important;   
+      }
+      
+      div.css-search.has-advanced div.em-search-main {
+ border: 0px;
+      }
+      
+      .page #masthead #site-navigation, .single #masthead #site-navigation, .search #masthead #site-navigation, .archive #masthead #site-navigation,  .error404 #masthead #site-navigation {
+       position: static;
+          clear: none;
+          text-align: right;
+          width: 100%;
+          padding: 10px 40px 20px;
+      }
+      
+      .page #masthead #site-navigation li a, .single #masthead #site-navigation li a, .search #masthead #site-navigation li a, .archive #masthead #site-navigation li a, .error404 #masthead #site-navigation li a {
+ font-size: 18px;
+      }
+   
+      #masthead .site-branding {
+         
+          left: 0px;
+          position: absolute;
+      }
+      
+      #homehead .site-branding {
+          left: 50px;
+      }
+      
+      
+      #homehead li, #homehead h6 {font-size: 25px; line-height: 1; margin-bottom: 10px; text-align: left; text-shadow: 0px 0px 20px rgba(0,0,0,0.33);}
+      
+      #calls, #calls h4, #calls h5 {
+          width: 100%;
+          max-width: 100% !important;
+      }
+      
+      #calls h4 a, #calls h5 a{
+          padding: 10px;
+      }
+      
+      #calls {
+       margin-bottom: 30px;   
+      }
+      
+      .home #masthead {
+     padding-bottom: 40px;
+      }
+      
+      #join p {
+       max-width: 100%;
+          width: 100%;
+          font-size: 16px;
+          padding: 0;
+      }
+      
+      #join {
+ padding-bottom: 20px;
+      }
+      
+      #homenews {
+       height: auto;   
+      }
+      
+      #homenews, .home #map, .home #events li, #meta, #meta div, #footerinfo, #secondary .widget {
+          width: 100%;
+          float: none;
+          margin: 0 auto;
+      }
+      
+      #meta, #meta div  {
+       margin: 0 auto;
+      }
+      
+      #meta {
+          padding:40px 40px 0 40px;
+      }
+      
+      .home #events li {
       min-height: 40px;
-      margin-bottom: 30px;
- }
-  #homenews h1 {
-      max-width: 90%;
-      font-size: 27px;
- }
-  .home #events h4 {
-      margin-bottom: 15px;
-      max-width: 80%;
- }
-  .home #events li .eventtime, #homenews p {
-      position: static;
- }
-  .home #map {
-      height: 400px;
- }
-  #homenews p {
-      padding-right: 40px;
-      padding-left: 0;
- }
-  #homenews h6, .home #events h6 {
-     display: none;
- }
-  .home #events {
-      padding-top: 40px;
- }
-  #footerinfo .search-field {
-      width: 80%;
-      margin: 0 auto 10px;
-      display: block;
- }
-  #social {
-      padding: 0 25px;
-      text-align: center;
- }
-  #social li a {
-      margin-bottom: 15px;
-      margin-right: 20px;
-      display: inline-block;
-      float: none;
- }
-  #social li a {
-      background-size: 300px auto;
+          margin-bottom: 30px;
+      }
+      
+      
+      #homenews h1 {
+          max-width: 90%;
+          font-size: 27px;
+      }
+      
+      .home #events h4 {
+          margin-bottom: 15px;
+          max-width: 80%;
+      }
+      
+      .home #events li .eventtime, #homenews p {
+     position: static;
+      }
+      
+      .home #map  {
+          height: 400px;
+      }
+      
+      #homenews p {
+          padding-right: 40px;
+          padding-left: 0;
+          
+      }
+      
+      #homenews h6, .home #events h6 {display: none;}
+      
+      .home #events {
+          padding-top: 40px;
+      }
+      
+      #footerinfo .search-field {
+       width: 80%;
+          margin: 0 auto 10px;
+          display: block;
+      }
+      
+      #social {
+       padding: 0 25px;
+          text-align: center;
+      }
+      
+      #social li a {
+       margin-bottom: 15px;
+          margin-right: 20px;
+          display: inline-block;
+          float: none;
+      }
+      
+      #social li a {
+       background-size: 300px auto;   
       padding-top: 55px;
-      margin-right: 0px;
- }
-  #social li.facebook a {
-      background-position: 10px 10px;
- }
-  #social li.twitter a {
-      background-position: -65px 10px;
- }
-  #social li.email a {
-      background-position: -145px 10px;
- }
-  #social li.googlegroup a {
-      background-position: -230px 10px;
- }
-  #footerinfo p {
-      padding: 0 40px;
- }
-  #footerinfo {
+          margin-right: 0px;
+      }
+      
+      #social li.facebook a {
+          background-position: 10px 10px;
+      }
+      
+      #social li.twitter a {
+       background-position: -65px 10px;   
+      }
+      #social li.email a {
+       background-position: -145px 10px;   
+      }
+      
+      #social li.googlegroup a {
+       background-position: -230px 10px;   
+      }
+      #footerinfo p {
+ padding: 0 40px;
+      }
+      
+      #footerinfo {
       padding-bottom: 70px;
- }
-  a#footergen {
-      margin: 0 auto;
- }
-  h1.entry-title {
-      font-size: 26px;
-      padding: 30px 30px 20px;
- }
-  .entry-content h1, .site-content h2, .site-content h3, .site-content h4, .site-content h5, .site-content h6, .site-content p, .site-content ul, .site-content ol, .site-content code, .site-content .comments-area, .site-content .entry-meta, .site-content form, .site-content .em-pagination, .em-search-wrapper {
-      padding: 0 40px;
-      max-width: 100%;
- }
-  div.css-search.has-search-geo.has-search-term input.em-search-text, div.css-search.has-search-geo.has-search-term input.em-search-geo {
+      }
+      
+      a#footergen {
+       margin: 0 auto;   
+      }
+      
+      h1.entry-title {
+          font-size: 26px;
+          padding: 30px 30px 20px;
+      }
+      
+     .entry-content h1,  .site-content h2, .site-content h3, .site-content h4, .site-content h5, .site-content h6, .site-content p, .site-content ul, .site-content ol, .site-content code, .site-content .comments-area, .site-content .entry-meta, .site-content form,  .site-content .em-pagination, .em-search-wrapper {
+ padding: 0 40px;
+         max-width: 100%;
+      }
+      
+      div.css-search.has-search-geo.has-search-term input.em-search-text, div.css-search.has-search-geo.has-search-term input.em-search-geo {
       width: 100%;
- }
-  .site-content .em-events-search-form, div.css-search.has-advanced div.em-search-main, div.css-search div.em-search-main div, .home #events h4 {
-      margin: 0;
-      padding: 0;
- }
-  .home #events h4 {
-      margin-bottom: 10px;
- }
-  div.css-search div.em-search-main .em-search-submit {
-      top: 2px;
-      right: 2px;
- }
-  .archive a h2.archive-title, .page #children h2 {
-      padding: 0;
-      margin: 0 40px 10px;
- }
-  .site-content form p, .site-content #secondary h2, .site-content #meta p, .site-content #meta h2, #commentform, #respond h3, .site-content .em-events-search-form, .em-events-search form, .page #children h2 {
-      padding: 0;
- }
-  .page .site-content #eventlist h4, .post .site-content #eventlist h4 {
-      padding: 0 0 10px;
-      line-height: 1.1;
-      display: block;
- }
-  .page .site-content #eventlist , .post .site-content #eventlist {
-      padding: 0 40px;
- }
-  #commentform p {
-      margin-bottom: 10px;
- }
-  #secondary {
-      padding: 30px 40px;
- }
-  #secondary .widget {
-      margin-bottom: 20px;
- }
-  #secondary .widget.widget_search {
-      text-align: center;
- }
-  #commentform input {
-      max-width: 80%;
- }
-  table.fullcalendar {
-      max-width: 100%;
- }
-  table.fullcalendar tbody td {
-      padding: 1px;
- }
-  table .eventful ul, table .eventful-today ul {
-      margin: 0 auto;
-      padding: 0;
-      font-size: 12px;
- }
-  .content-area table a {
-      font-weight: normal;
- }
-  div.em-booking-login, .em-booking-form-details {
-      border: 0px;
-      float: none;
-      margin: 0 auto;
-      display: block;
- }
-  .em-booking-form-details input.input, .em-booking-form-details textarea {
-      width: 80%;
- }
-  #footerinfo p {
-      text-align: center;
-      line-height: 1.6;
- }
-  #calls h4, #calls h5 {
-      padding: 0;
- }
-  .gallery-item {
-      display: block;
-      max-width: 100% !important;
- }
-  ul#archives li, ul#archives li:nth-child(odd) {
-      display: block;
-      width: 100%;
-      margin: 0 auto 15px;
-      padding: 0 40px;
- }
-  ul#archives li p {
-      padding: 0;
- }
-  .widget p {
-      padding: 0;
- }
-  .single-event .eventdates {
-      padding: 0 40px 7px;
- }
-  #secondary .widget {
-      padding: 0px;
- }
-  .page #masthead #site-navigation li a, .single #masthead #site-navigation li a, .search #masthead #site-navigation li a, .archive #masthead #site-navigation li a, .error404 #masthead #site-navigation li a {
-      margin: 0;
- }
-  .main-navigation ul ul, .main-navigation ul ul li, .main-navigation ul ul li a , #site-navigation.active ul ul {
-      float: none;
-      display: block !important;
-      position: static;
-      padding: 0;
-      width: auto !important;
-      margin: 0;
-      font-size: 16px !important;
- }
+      }
+      
+      .site-content .em-events-search-form, div.css-search.has-advanced div.em-search-main, div.css-search div.em-search-main div, .home #events h4 {
+ margin: 0;
+          padding: 0;
+      }
+      
+      .home #events h4 {
+       margin-bottom: 10px;   
+      }
+      
+      div.css-search div.em-search-main .em-search-submit {
+       top: 2px;
+          right: 2px;
+      }
+      
+      .archive a h2.archive-title, .page #children h2  {
+         padding: 0;
+          margin: 0 40px 10px;
+      }
+      .site-content form p, .site-content #secondary h2, .site-content #meta p, .site-content #meta h2, #commentform, #respond h3, .site-content .em-events-search-form, .em-events-search form, .page #children h2 {
+       padding: 0;   
+      }
+      
+      .page .site-content #eventlist h4, .post .site-content #eventlist h4 {
+ padding: 0 0 10px;
+          line-height: 1.1;
+          display: block;
+ } 
+      
+           .page .site-content #eventlist , .post .site-content #eventlist {
+            padding: 0 40px;   
+           }
+ 
+      #commentform p {
+     margin-bottom: 10px;   
+      }
+      
+      #secondary {
+       padding: 30px 40px;   
+      }
+      
+      #secondary .widget {
+       margin-bottom: 20px;   
+      }
+      
+      #secondary .widget.widget_search {
+       text-align: center;   
+      }
+      
+      
+      #commentform input {
+       max-width: 80%;   
+      }
+      
+      table.fullcalendar {
+          max-width: 100%;   
+      }
+      
+      table.fullcalendar tbody td {  
+     padding: 1px;
+      }
+      
+      table .eventful ul, table .eventful-today ul {
+ margin: 0 auto;
+          padding: 0;
+          font-size: 12px;
+      }
+      
+      .content-area table a {
+ font-weight: normal;
+      }
+      
+      div.em-booking-login, .em-booking-form-details {
+       border: 0px;
+          float: none;
+          margin: 0 auto;
+          display: block;
+      }
+      
+      .em-booking-form-details input.input, .em-booking-form-details textarea {
+       width: 80%;   
+      }
+      
+      #footerinfo p {
+       text-align: center;
+          line-height: 1.6;
+      }
+      
+      #calls h4, #calls h5 {
+ padding: 0;
+      }
+      
+      .gallery-item {
+          display: block;
+          max-width: 100% !important;
+          
+      }
+      
+      ul#archives li, ul#archives li:nth-child(odd) {
+       display: block;
+          width: 100%;
+          margin: 0 auto 15px;
+          padding: 0 40px;
+      }
+      
+      ul#archives li p {
+     padding: 0;
+      }
+     .widget p {
+      padding: 0;   
+     }
+      
+      #homehead .site-branding, #homehead .site-branding h1.site-title,  #homehead .site-branding h1.site-title a {
+       width: 80px;
+          height: 80px;
+      }
+      
+      #homehead .site-branding h1.site-title a {
+       background-size: 70px 70px;   
+      }
+    
+      
+      .single-event .eventdates {
+       padding: 0 40px 7px;   
+      }
+      
+      #secondary .widget {
+       padding: 0px;   
+      }
+      
+      .page #masthead #site-navigation li a, .single #masthead #site-navigation li a, .search #masthead #site-navigation li a, .archive #masthead #site-navigation li a, .error404 #masthead #site-navigation li a {
+ margin: 0;
+      }
+      
+       
+  .main-navigation ul ul,  .main-navigation ul ul li,  .main-navigation ul ul li a , #site-navigation.active ul ul  {
+  float: none;
+  display: block !important;
+  position: static;
+  padding: 0;
+  width: auto !important;
+  margin: 0;
+  font-size: 16px !important;
+  }
 }

@@ -1,23 +1,35 @@
-<ul class="menu">
-  <li class="basic">
-    <a class="link" [routerLink]="['/welcome']" [routerLinkActive]="'active'">
-      Basic Info
-    </a>
-    <img class="checkmark" src="assets/img/checkmark.png" *ngIf="_memberdata.basicInformationComplete()">
-  </li>
-  <li>
-    <a  [routerLink]="['/membership-policies']" [routerLinkActive]="'active'">
-      Policies
-    </a>
-  </li>
-  <li>
-    <a [routerLink]="['/waver']" [routerLinkActive]="'active'">
-      Waver
-    </a>
-  </li>
-  <li>
-    <a [routerLink]="['/payment']" [routerLinkActive]="'active'">
-      Payment
-    </a>
-  </li>
-</ul>
+<header id="masthead" class="site-header" role="banner">
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="https://ithacagenerator.org/" rel="home">Ithaca Generator</a>
+    </h1>
+  </div>
+  <nav id="site-navigation" class="main-navigation" role="navigation" [class.active]="showHamburger">
+    <a id="burger" (click)="toggleHamburger()">---</a>
+    <div class="menu-primary-navigation-container">
+      <ul class="menu">
+        <li class="basic menu-item">
+          <a class="link" [routerLink]="['/welcome']" [routerLinkActive]="'active'">
+            Basic Info
+          </a>
+          <img class="checkmark" src="assets/img/checkmark.png" *ngIf="_memberdata.basicInformationComplete()">
+        </li>
+        <li class="menu-item">
+          <a [routerLink]="['/membership-policies']" [routerLinkActive]="'active'">
+            Policies
+          </a>
+        </li>
+        <li class="menu-item">
+          <a [routerLink]="['/waver']" [routerLinkActive]="'active'">
+            Waver
+          </a>
+        </li>
+        <li class="menu-item">
+          <a [routerLink]="['/payment']" [routerLinkActive]="'active'">
+            Payment
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>

@@ -1,36 +1,9 @@
-.menu {
-  list-style: none;
-  margin: 0;
-  padding-left: 0;  
-}
-
-a {
-  color: #fff;
-  margin: 0 0 0 30px;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  padding: 0 0 10px;
-  display: block;
-  text-decoration: none;
-  text-rendering: geometricPrecision;
-}
-
-li {
-  float: left;
-  position: relative;  
-}
-
-.active {
-  color: #ff0;
-}
-
 .basic {
   .checkmark {
     width: 45px;
     position: absolute;
     top: -6px;
-    left: 60px;
+    right: 24px;
     z-index: 1;
   }
 
