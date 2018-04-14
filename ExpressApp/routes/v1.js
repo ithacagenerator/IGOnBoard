@@ -10,7 +10,9 @@ const gmail_credentials = require(`${homedir}/gmail-credentials.json`);
 const nodemailer = require('nodemailer');
 
 const fs = require('fs');
-const emailVerificationEmailTemplate = fs.readFileSync('./email-validation-template.html', 'utf8');
+const path = require('path');
+const emailTemplatePath = path.join(__dirname, '..', 'routes', 'email-validation-template.html');
+const emailVerificationEmailTemplate = fs.readFileSync(emailTemplatePath, 'utf8');
 const wildcards = require('disposable-email-domains/wildcard.json');
 const wildcardsRegex = wildcards.map(v => v.replace('.', '\\.'));
 const legitEmailRegex = new RegExp(`^(?!((.*${wildcardsRegex.join(')|(.*')})))`); // tests true for non-blacklisted emails
