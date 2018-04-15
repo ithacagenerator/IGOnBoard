@@ -1,3 +1,10 @@
+.link {
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 2;    
+}
+
 .basic {
   .checkmark {
     width: 45px;
@@ -14,12 +21,5 @@
       right: -35px;
       z-index: 1;
     }    
-  }
-
-  .link {
-    position: relative;
-    top: 0;
-    left: 0;
-    z-index: 2;    
   }
 }
