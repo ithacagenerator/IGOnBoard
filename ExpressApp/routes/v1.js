@@ -120,4 +120,21 @@ router.get('/validate-email/:validationCode', (req, res, next) => {
   }
 });
 
+router.get('/email-validated/:email', (req, res, next) => {
+  const email = req.params.email;
+  db.findDocuments('authbox', 'Members', {email})
+  .then(members => {
+    if(members.length === 1) {
+      res.json(!!members[0].validated);
+    } else if(members.length === 0){
+      throw new Error(`No records with email address`);
+    } else {
+      throw new Error(`Found ${members.length} records with email address`);
+    }
+  })
+  .catch(error => {
+    res.status(422).json({error});
+  });
+});
+
 module.exports = router;

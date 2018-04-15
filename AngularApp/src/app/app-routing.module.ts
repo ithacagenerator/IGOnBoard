@@ -7,6 +7,7 @@ import { MembershipPoliciesComponent } from './membership-policies/membership-po
 import { WaverComponent } from './waver/waver.component';
 import { PaymentComponent } from './payment/payment.component';
 import { EmailConfirmationComponent } from './email-confirmation/email-confirmation.component';
+import { AdditionalInfoComponent } from './additional-info/additional-info.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
@@ -14,7 +15,8 @@ const routes: Routes = [
   { path: 'membership-policies', component: MembershipPoliciesComponent },
   { path: 'waver', component: WaverComponent },
   { path: 'payment', component: PaymentComponent },
-  { path: 'confirm-email', component: EmailConfirmationComponent }
+  { path: 'confirm-email', component: EmailConfirmationComponent },
+  { path: 'additional-info', component: AdditionalInfoComponent }
 ];
 
 @NgModule({

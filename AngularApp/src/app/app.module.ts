@@ -29,6 +29,7 @@ import { MemberDataService } from './services/member-data.service';
 import { ApiService } from './services/api.service';
 import { ErrorSnackBarComponent } from './error-snack-bar/error-snack-bar.component';
 import { LoaderService } from './services/loader.service';
+import { AdditionalInfoComponent } from './additional-info/additional-info.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { LoaderService } from './services/loader.service';
     WaverComponent,
     PaymentComponent,
     EmailConfirmationComponent,
-    ErrorSnackBarComponent
+    ErrorSnackBarComponent,
+    AdditionalInfoComponent
   ],
   imports: [
     BrowserModule,

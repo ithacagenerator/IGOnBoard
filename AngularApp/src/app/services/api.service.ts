@@ -30,4 +30,14 @@ export class ApiService {
     return Promise.resolve();
   }
 
+  checkValidatedEmail() {
+    if (this.sentValidationEmail) {
+      return this._http
+      .get(`${this.baseUrl}/email-validated/${this._member.email}`)
+      .timeout(5000)
+      .toPromise();
+    }
+    return Promise.reject(new Error('Validation email not yet sent'));
+  }
+
 }
