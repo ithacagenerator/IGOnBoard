@@ -2,7 +2,11 @@
   position: relative;
   top: 0;
   left: 0;
-  z-index: 2;    
+  z-index: 2;
+}
+
+a.link.active {
+  color: yellow!important;
 }
 
 .basic {

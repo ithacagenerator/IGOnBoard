@@ -21,7 +21,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { NavLinksComponent } from './nav-links/nav-links.component';
 import { MembershipPoliciesComponent } from './membership-policies/membership-policies.component';
-import { WaverComponent } from './waver/waver.component';
+import { WaiverComponent } from './waiver/waiver.component';
 import { PaymentComponent } from './payment/payment.component';
 import { EmailConfirmationComponent } from './email-confirmation/email-confirmation.component';
 
@@ -37,7 +37,7 @@ import { AdditionalInfoComponent } from './additional-info/additional-info.compo
     WelcomeComponent,
     NavLinksComponent,
     MembershipPoliciesComponent,
-    WaverComponent,
+    WaiverComponent,
     PaymentComponent,
     EmailConfirmationComponent,
     ErrorSnackBarComponent,

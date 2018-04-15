@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-membership-policies',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MembershipPoliciesComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private _router: Router
+  ) { }
 
   ngOnInit() {
   }
 
+  handleNext() {
+    this._router.navigate(['/waiver']);
+  }
 }

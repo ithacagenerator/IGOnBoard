@@ -1,5 +1,6 @@
 import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { LoaderService } from './services/loader.service';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -8,16 +9,25 @@ import { LoaderService } from './services/loader.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
   showLoader: boolean;
-  sub;
-  constructor(private loaderService: LoaderService) { }
+  subs = [];
+  constructor(
+    private loaderService: LoaderService,
+    private _router: Router) { }
   ngOnInit() {
-    this.sub = this.loaderService.status.subscribe((val: boolean) => {
+    this.subs.push(this.loaderService.status.subscribe((val: boolean) => {
       this.showLoader = val;
-    });
+    }));
+
+    this.subs.push(this._router.events.subscribe((evt) => {
+      if (!(evt instanceof NavigationEnd)) {
+        return;
+      }
+      window.scrollTo(0, 0);
+    }));
   }
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.subs.forEach(sub => {
+      sub.unsubscribe();
+    });
   }
 }

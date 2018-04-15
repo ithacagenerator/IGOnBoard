@@ -1,3 +1,18 @@
-<p>
-  additional-info works!
+<header class="entry-header">
+  <h1 class="entry-title">Additional Info</h1>
+</header>
+
+<p class="motivation">
+  Just a couple more questions in case you have special circumstances. 
+  We'd also like to take this opportunity to learn a bit more about your interests.
+  Please fill out the fields below and click 'Next Step' at the bottom.
 </p>
+
+<div class="entry-content">
+  <p>
+    <button mat-raised-button color="primary" 
+      class="submit-button"
+      [disabled]="false"
+      (click)="handleNext()">Next Step</button>
+  </p>
+</div>
