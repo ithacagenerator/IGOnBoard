@@ -56,7 +56,8 @@ import { AdditionalInfoComponent } from './additional-info/additional-info.compo
     MatInputModule,
     MatSnackBarModule,
     MatDialogModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatCheckboxModule
   ],
   providers: [
     OverlayContainer,

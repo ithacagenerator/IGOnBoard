@@ -62,9 +62,15 @@
 
 <div class="entry-content">
   <p>
+    <mat-checkbox       
+      class="checkbox-class"   
+      [(ngModel)]="checked"          
+      [align]="'start'">
+      I have read and accept the terms of the above Waiver of Liability.
+    </mat-checkbox>      
     <button mat-raised-button color="primary" 
       class="submit-button"
-      [disabled]="false"
+      [disabled]="!checked"
       (click)="handleNext()">Next Step</button>
   </p>
 </div>

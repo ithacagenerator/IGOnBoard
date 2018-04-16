@@ -1,15 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MemberDataService } from '../services/member-data.service';
+import { LoaderService } from '../services/loader.service';
+import { ApiService } from '../services/api.service';
+import { MatSnackBar } from '@angular/material';
+import { ErrorSnackBarComponent } from '../error-snack-bar/error-snack-bar.component';
 
 @Component({
   selector: 'app-membership-policies',
   templateUrl: './membership-policies.component.html',
-  styleUrls: ['./membership-policies.component.css']
+  styleUrls: ['./membership-policies.component.scss']
 })
 export class MembershipPoliciesComponent implements OnInit {
 
+  set checked(value) {
+    this._memberData.membershipPoliciesAgreedTo = !!value;
+  }
+  get checked() {
+    return this._memberData.membershipPoliciesAgreedTo;
+  }
+
   constructor(
-    private _router: Router
+    private _api: ApiService,
+    private _loaderService: LoaderService,
+    private _router: Router,
+    private _memberData: MemberDataService,
+    private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit() {

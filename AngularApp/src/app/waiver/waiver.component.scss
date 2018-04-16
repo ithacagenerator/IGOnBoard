@@ -1,0 +1,25 @@
+.center {
+  text-align: center;
+}
+
+.submit-button {
+  margin-top: 1em;
+  width: 100%;
+}
+
+$checkedColor: #673ab7;
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  background-color: $checkedColor !important;
+}
+
+::ng-deep .mat-ripple-element {
+  background: $checkedColor !important;
+}
+
+.checkbox-class {
+  margin: 0 10px;  
+}
+
+::ng-deep .mat-checkbox-layout { 
+  white-space: normal !important; 
+}

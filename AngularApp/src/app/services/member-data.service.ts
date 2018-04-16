@@ -36,6 +36,20 @@ export class MemberDataService {
     return this.memberObj.email || '';
   }
 
+  set waiverAccepted(value) {
+    this.memberObj.waiverAccepted = !!value;
+  }
+  get waiverAccepted() {
+    return !!this.memberObj.waiverAccepted;
+  }
+
+  set membershipPoliciesAgreedTo(value) {
+    this.memberObj.membershipPoliciesAgreedTo = !!value;
+  }
+  get membershipPoliciesAgreedTo() {
+    return !!this.memberObj.membershipPoliciesAgreedTo;
+  }
+
   getMember() {
     return this.memberObj;
   }
