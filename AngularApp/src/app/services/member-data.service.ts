@@ -5,6 +5,9 @@ export class MemberDataService {
 
   private memberObj: any = { };
   private basicInfoComplete = false;
+  private _membershipPoliciesComplete = false;
+  private _liabilityWaverComplete = false;
+  private _additionalInfoComplete = false;
 
   constructor() { }
 
@@ -59,10 +62,34 @@ export class MemberDataService {
   }
 
   setBasicInformationComplete(status) {
-    this.basicInfoComplete = status;
+    this.basicInfoComplete = !!status;
   }
 
   basicInformationComplete() {
     return this.basicInfoComplete;
+  }
+
+  seMembershipPoliciesComplete(status) {
+    this._membershipPoliciesComplete = !!status;
+  }
+
+  membershipPoliciesComplete() {
+    return this._membershipPoliciesComplete;
+  }
+
+  setLiabilityWaiverComplete(status) {
+    this._liabilityWaverComplete = !!status;
+  }
+
+  liabilityWaverComplete() {
+    return this._liabilityWaverComplete;
+  }
+
+  setAdditionalInfoComplete(status) {
+    this._additionalInfoComplete = !!status;
+  }
+
+  additionalInfoComplete() {
+    return this._additionalInfoComplete;
   }
 }
