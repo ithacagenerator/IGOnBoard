@@ -14,25 +14,25 @@
           </a>
           <img class="checkmark" src="assets/img/checkmark.png" *ngIf="_memberdata.basicInformationComplete()">
         </li>
-        <li class="menu-item">
+        <li class="policies menu-item">
           <a class="link" [routerLink]="['/membership-policies']" [routerLinkActive]="'active'" [class.disabled]="membershipPoliciesDisabled() ? true : null">
             Policies
           </a>
           <img class="checkmark" src="assets/img/checkmark.png" *ngIf="_memberdata.membershipPoliciesComplete()">
         </li>
-        <li class="menu-item">
+        <li class="waiver menu-item">
           <a class="link" [routerLink]="['/waiver']" [routerLinkActive]="'active'" [class.disabled]="liabilityWaiverDisabled() ? true : null">
             Waiver
           </a>
           <img class="checkmark" src="assets/img/checkmark.png" *ngIf="_memberdata.liabilityWaverComplete()">
         </li>
-        <li class="menu-item">
+        <li class="additional menu-item">
             <a class="link" [routerLink]="['/additional-info']" [routerLinkActive]="'active'" [class.disabled]="additionalInfoDisabled() ? true : null">
               Additional Info
             </a>
             <img class="checkmark" src="assets/img/checkmark.png" *ngIf="_memberdata.additionalInfoComplete()">
           </li>        
-        <li class="menu-item">
+        <li class="payment menu-item">
           <a class="link" [routerLink]="['/payment']" [routerLinkActive]="'active'" [class.disabled]="paymentDisabled() ? true : null">
             Payment
           </a>
