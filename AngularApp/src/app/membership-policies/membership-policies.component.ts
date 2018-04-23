@@ -36,7 +36,7 @@ export class MembershipPoliciesComponent implements OnInit {
     this._api.updateMemberRecord(['waiverAccepted'])
     .then(res => {
       this._loaderService.display(false);
-      this._memberData.seMembershipPoliciesComplete(true);
+      this._memberData.setMembershipPoliciesComplete(true);
       this._router.navigate(['/waiver']);
     })
     .catch(res => {

@@ -53,7 +53,7 @@ export class MemberDataService {
     return !!this.memberObj.membershipPoliciesAgreedTo;
   }
 
-  getMember(omissions = null) {
+  getMember(omissions = []) {
     const m = Object.assign({}, {}, this.memberObj);
     omissions.forEach(k => {
       delete m[k];
@@ -73,7 +73,7 @@ export class MemberDataService {
     return this.basicInfoComplete;
   }
 
-  seMembershipPoliciesComplete(status) {
+  setMembershipPoliciesComplete(status) {
     this._membershipPoliciesComplete = !!status;
   }
 
