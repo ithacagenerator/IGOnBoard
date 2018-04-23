@@ -66,11 +66,12 @@ export class WelcomeComponent {
     }
 
   handleNext() {
-    const fields = {};
+    const fields: any = {};
     this.loaderService.display(true);
     Object.keys(this.biodataForm.controls).forEach(k => {
       fields[k] = `${this.biodataForm.controls[k].value}`.trim();
     });
+    fields.basic_info_complete = true;
     this._memberdata.updateFields(fields);
     this._api.requestEmailConfirmation()
     .then(res => {
@@ -85,6 +86,16 @@ export class WelcomeComponent {
         duration: 2000
       });
     });
+  }
+
+  checkForRegistrationInProgress() {
+    if (this.emailFormControl.valid) {
+      this._api.loadMemberRecord()
+      .then(member => {
+        console.log(member);
+      })
+      .catch(err => {}); // swallow errors here
+    }
   }
 
 }

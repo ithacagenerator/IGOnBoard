@@ -14,6 +14,7 @@ export class AdditionalInfoComponent {
     private _memberData: MemberDataService) { }
 
   handleNext() {
+    this._memberData.updateFields({additional_info_complete: true});
     this._memberData.setAdditionalInfoComplete(true);
     this._router.navigate(['/payment']);
   }

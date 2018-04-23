@@ -28,6 +28,7 @@
       <input matInput placeholder="Email" 
         required
         [(ngModel)]="_memberdata.email"
+        (keyup)="checkForRegistrationInProgress()"
         [formControl]="emailFormControl">
       <mat-error *ngIf="emailFormControl.invalid">{{getEmailErrorMessage()}}</mat-error>        
     </mat-form-field>    

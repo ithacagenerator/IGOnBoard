@@ -169,7 +169,7 @@ router.put('/member-registration', (req, res, next) => {
     res.json({status: 'ok'});
   })
   .catch(error => {
-    res.json({error: error.message});
+    res.status(422).json({error: error.message});
   });
 });
 
@@ -197,7 +197,7 @@ router.get('/member-registration/:email', (req, res, next) => {
     res.json(member);
   })
   .catch(error => {
-    res.json({error: error.message});
+    res.status(422).json({error: error.message});
   });
 });
 

@@ -33,6 +33,7 @@ export class WaiverComponent implements OnInit {
 
   handleNext() {
     this._loaderService.display(true);
+    this._memberData.updateFields({waiver_complete: true});
     this._api.updateMemberRecord(['membershipPoliciesAgreedTo'])
     .then(res => {
       this._loaderService.display(false);
