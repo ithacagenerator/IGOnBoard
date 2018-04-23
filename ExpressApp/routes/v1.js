@@ -137,4 +137,61 @@ router.get('/email-validated/:email', (req, res, next) => {
   });
 });
 
+// updates the member record by email address
+// the result comes back 422 if the member already has an active
+// completed registration
+router.put('/member-registration', (req, res, next) => {
+  // attempt to update a document 
+  const member = req.body;
+
+  db.updateDocument('authbox', 'Members', { 
+    $and: [
+      {email: member.email},
+      {$or: [
+        {registrationComplete: {$ne: true}},
+        {deleted: true}
+      ]}
+    ]
+  }, member)
+  .then(result => {
+    if(!result.matchedCount) {
+      throw new Error('No eligible records were matched');
+    }
+  })
+  .then(() => {
+    res.json({status: 'ok'});
+  })
+  .catch(error => {
+    res.json({error: error.message});
+  });
+});
+
+// fetches the member associated with the email from the database
+// the result comes back 422 if the member already has an active
+// completed registration
+router.get('/member-registration/:email', (req, res, next) => {
+  db.findDocuments('authbox', 'Members', {
+    $and: [
+      {email: req.params.email},
+      {$or: [
+        {registrationComplete: {$ne: true}},
+        {deleted: true}
+      ]}
+    ]
+  })
+  .then(members => {
+    if(Array.isArray(members) && members.length === 1) {
+      return members[0];
+    } else {
+      throw new Error(`Found ${members.length} records with email address`);
+    }
+  })
+  .then(member => {
+    res.json(member);
+  })
+  .catch(error => {
+    res.json({error: error.message});
+  });
+});
+
 module.exports = router;

@@ -30,6 +30,28 @@ export class ApiService {
     return Promise.resolve();
   }
 
+  // updates the member record by email address
+  // the result comes back 422 if the member already has an active
+  // completed registration
+  updateMemberRecord() {
+    return this._http
+    .put(`${this.baseUrl}/member-registration`,
+      this._member.getMember()
+    )
+    .timeout(5000)
+    .toPromise();
+  }
+
+  // fetches the member associated with the email from the database
+  // the result comes back 422 if the member already has an active
+  // completed registration
+  loadMemberRecord() {
+    return this._http
+    .get(`${this.baseUrl}/member-registration/${this._member.getMember().email}`)
+    .timeout(5000)
+    .toPromise();
+  }
+
   checkValidatedEmail() {
     if (this.sentValidationEmail) {
       return this._http
