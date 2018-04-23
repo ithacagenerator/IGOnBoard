@@ -32,6 +32,19 @@ export class MembershipPoliciesComponent implements OnInit {
   }
 
   handleNext() {
-    this._router.navigate(['/waiver']);
+    this._loaderService.display(true);
+    this._api.updateMemberRecord(['waiverAccepted'])
+    .then(res => {
+      this._loaderService.display(false);
+      this._memberData.seMembershipPoliciesComplete(true);
+      this._router.navigate(['/waiver']);
+    })
+    .catch(res => {
+      this._loaderService.display(false);
+      this._snackBar.openFromComponent(ErrorSnackBarComponent, {
+        data: res && res.error && res.error.error ? res.error.error : `Unexpected Error Status Code ${res.status}`,
+        duration: 2000
+      });
+    });
   }
 }

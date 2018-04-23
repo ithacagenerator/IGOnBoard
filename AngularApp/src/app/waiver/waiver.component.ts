@@ -32,12 +32,11 @@ export class WaiverComponent implements OnInit {
   }
 
   handleNext() {
-    const fields = {};
     this._loaderService.display(true);
-    this._memberData.updateFields(fields);
-    this._api.updateMemberRecord()
+    this._api.updateMemberRecord(['membershipPoliciesAgreedTo'])
     .then(res => {
       this._loaderService.display(false);
+      this._memberData.setLiabilityWaiverComplete(true);
       this._router.navigate(['/additional-info']);
     })
     .catch(res => {

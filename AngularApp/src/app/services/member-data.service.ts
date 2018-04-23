@@ -53,8 +53,12 @@ export class MemberDataService {
     return !!this.memberObj.membershipPoliciesAgreedTo;
   }
 
-  getMember() {
-    return this.memberObj;
+  getMember(omissions = null) {
+    const m = Object.assign({}, {}, this.memberObj);
+    omissions.forEach(k => {
+      delete m[k];
+    });
+    return m;
   }
 
   updateFields(obj) {

@@ -33,10 +33,10 @@ export class ApiService {
   // updates the member record by email address
   // the result comes back 422 if the member already has an active
   // completed registration
-  updateMemberRecord() {
+  updateMemberRecord(omissions = ['membershipPoliciesAgreedTo', 'waiverAccepted']) {
     return this._http
     .put(`${this.baseUrl}/member-registration`,
-      this._member.getMember()
+      this._member.getMember(omissions)
     )
     .timeout(5000)
     .toPromise();

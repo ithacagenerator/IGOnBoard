@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { MemberDataService } from '../services/member-data.service';
 
 @Component({
   selector: 'app-additional-info',
@@ -9,9 +10,11 @@ import { Router } from '@angular/router';
 export class AdditionalInfoComponent {
 
   constructor(
-    private _router: Router) { }
+    private _router: Router,
+    private _memberData: MemberDataService) { }
 
   handleNext() {
+    this._memberData.setAdditionalInfoComplete(true);
     this._router.navigate(['/payment']);
   }
 }

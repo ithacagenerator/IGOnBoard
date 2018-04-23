@@ -144,6 +144,13 @@ router.put('/member-registration', (req, res, next) => {
   // attempt to update a document 
   const member = req.body;
 
+  if(member.membershipPoliciesAgreedTo) {
+    member.membershipPoliciesAgreedTo = moment().format();
+  }
+  if(member.waiverAccepted) {
+    member.waiverAccepted = moment().format();
+  }
+
   db.updateDocument('authbox', 'Members', { 
     $and: [
       {email: member.email},
