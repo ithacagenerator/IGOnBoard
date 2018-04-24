@@ -82,7 +82,7 @@ export class MemberDataService {
   }
 
   membershipPoliciesComplete() {
-    return this._membershipPoliciesComplete;
+    return this._membershipPoliciesComplete && !!this.memberObj.membershipPoliciesAgreedTo;
   }
 
   setLiabilityWaiverComplete(status) {
@@ -90,7 +90,7 @@ export class MemberDataService {
   }
 
   liabilityWaverComplete() {
-    return this._liabilityWaverComplete;
+    return this._liabilityWaverComplete && !!this.memberObj.waiverAccepted;
   }
 
   setAdditionalInfoComplete(status) {

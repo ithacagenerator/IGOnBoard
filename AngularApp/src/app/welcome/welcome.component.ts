@@ -73,7 +73,10 @@ export class WelcomeComponent {
     });
     fields.basic_info_complete = true;
     this._memberdata.updateFields(fields);
-    this._api.requestEmailConfirmation()
+    this._api.updateMemberRecord()
+    .then(() => {
+      return this._api.requestEmailConfirmation();
+    })
     .then(res => {
       this.loaderService.display(false);
       this._memberdata.setBasicInformationComplete(true);
@@ -83,14 +86,14 @@ export class WelcomeComponent {
       this.loaderService.display(false);
       const hasServerErrorMessage = (res && res.error && res.error.error);
       if (hasServerErrorMessage && (res.error.error === 'Member is already validated')) {
-        if (this._memberdata.additionalInfoComplete()) {
-          this._router.navigate(['/payment']);
-        } else if (this._memberdata.liabilityWaverComplete()) {
-          this._router.navigate(['/additional-info']);
-        } else if (this._memberdata.membershipPoliciesComplete()) {
-          this._router.navigate(['/waiver']);
-        } else {
+        if (!this._memberdata.membershipPoliciesComplete()) {
           this._router.navigate(['/membership-policies']);
+        } else if (!this._memberdata.liabilityWaverComplete()) {
+          this._router.navigate(['/waiver']);
+        } else if (!this._memberdata.additionalInfoComplete()) {
+          this._router.navigate(['/additional-info']);
+        } else {
+          this._router.navigate(['/payment']);
         }
       } else {
         this._snackBar.openFromComponent(ErrorSnackBarComponent, {
