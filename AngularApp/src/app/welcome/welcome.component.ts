@@ -81,18 +81,31 @@ export class WelcomeComponent {
     })
     .catch(res => {
       this.loaderService.display(false);
-      this._snackBar.openFromComponent(ErrorSnackBarComponent, {
-        data: res && res.error && res.error.error ? res.error.error : `Unexpected Error Status Code ${res.status}`,
-        duration: 2000
-      });
+      const hasServerErrorMessage = (res && res.error && res.error.error);
+      if (hasServerErrorMessage && (res.error.error === 'Member is already validated')) {
+        if (this._memberdata.additionalInfoComplete()) {
+          this._router.navigate(['/payment']);
+        } else if (this._memberdata.liabilityWaverComplete()) {
+          this._router.navigate(['/additional-info']);
+        } else if (this._memberdata.membershipPoliciesComplete()) {
+          this._router.navigate(['/waiver']);
+        } else {
+          this._router.navigate(['/membership-policies']);
+        }
+      } else {
+        this._snackBar.openFromComponent(ErrorSnackBarComponent, {
+          data: hasServerErrorMessage ? res.error.error : `Unexpected Error Status Code ${res.status}`,
+          duration: 2000
+        });
+      }
     });
   }
 
-  checkForRegistrationInProgress() {
+  checkForRegistrationInProgress($event) {
     if (this.emailFormControl.valid) {
       this._api.loadMemberRecord()
       .then(member => {
-        console.log(member);
+        this._memberdata.updateFields(member);
       })
       .catch(err => {}); // swallow errors here
     }

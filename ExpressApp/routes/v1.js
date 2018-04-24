@@ -185,6 +185,19 @@ router.get('/member-registration/:email', (req, res, next) => {
         {deleted: true}
       ]}
     ]
+  }, {
+    firstname: 1,
+    lastname: 1,
+    phone: 1,
+    validated: 1,
+    email: 1,
+    waiverAccepted: 1,
+    membershipPoliciesAgreedTo: 1,
+    basic_info_complete: 1,
+    membership_policies_complete: 1,
+    waiver_complete: 1,
+    additional_info_complete: 1,
+    interests: 1
   })
   .then(members => {
     if(Array.isArray(members) && members.length === 1) {

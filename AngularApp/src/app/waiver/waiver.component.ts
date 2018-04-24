@@ -41,6 +41,7 @@ export class WaiverComponent implements OnInit {
       this._router.navigate(['/additional-info']);
     })
     .catch(res => {
+      this._memberData.updateFields({waiver_complete: false});
       this._loaderService.display(false);
       this._snackBar.openFromComponent(ErrorSnackBarComponent, {
         data: res && res.error && res.error.error ? res.error.error : `Unexpected Error Status Code ${res.status}`,

@@ -16,6 +16,9 @@ export class AdditionalInfoComponent {
   handleNext() {
     this._memberData.updateFields({additional_info_complete: true});
     this._memberData.setAdditionalInfoComplete(true);
+
+    // api stuff and fallback
+
     this._router.navigate(['/payment']);
   }
 }

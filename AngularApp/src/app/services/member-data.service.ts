@@ -63,6 +63,10 @@ export class MemberDataService {
 
   updateFields(obj) {
     this.memberObj = Object.assign({}, this.memberObj, obj);
+    this.setBasicInformationComplete(this.memberObj.basic_info_complete);
+    this.setLiabilityWaiverComplete(this.memberObj.waiver_complete);
+    this.setMembershipPoliciesComplete(this.memberObj.membership_policies_complete);
+    this.setAdditionalInfoComplete(this.memberObj.additional_info_complete);
   }
 
   setBasicInformationComplete(status) {
