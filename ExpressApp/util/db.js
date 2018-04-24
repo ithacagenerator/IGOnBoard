@@ -5,10 +5,8 @@ module.exports = (function () {
 
   const findDocuments = function (dbName, colxn, condition, options = {}) {
     let projection = options.projection || {};
-    const sort = options.sort;
-    const limit = options.limit;
-
     projection = Object.assign({}, projection, { _id: 0 }); // never return _id
+    options.projection = projection;
 
     // Get the documents collection
     return new Promise((resolve, reject) => {
@@ -21,15 +19,7 @@ module.exports = (function () {
             const db = client.db(dbName);
             const collection = db.collection(colxn);
             // Find some documents
-            let cursor = collection.find(condition, projection);
-
-            if (sort) {
-              cursor = cursor.sort(sort);
-            }
-
-            if (limit) {
-              cursor = cursor.limit(limit);
-            }
+            let cursor = collection.find(condition, options);
 
             cursor.toArray(function (err, docs) {
               if (err) {
