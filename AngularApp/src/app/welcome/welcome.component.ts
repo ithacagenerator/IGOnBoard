@@ -73,7 +73,15 @@ export class WelcomeComponent {
     });
     fields.basic_info_complete = true;
     this._memberdata.updateFields(fields);
-    this._api.updateMemberRecord()
+    return new Promise((resolve, reject) => {
+      return this._api.updateMemberRecord()
+      .then(() => {
+        resolve();
+      })
+      .catch(err => {
+        resolve();
+      });
+    })
     .then(() => {
       return this._api.requestEmailConfirmation();
     })
