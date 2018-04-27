@@ -3,53 +3,23 @@
 </header>
 
 <p class="motivation">
-  First we need to collect a bit of biographical information. 
+  We are thrilled at your interest in joining! Lets start with an email address.
   Please fill out the fields below and click 'Next Step' at the bottom.
-  Been here before? Start by typing in your email.
+  Been here before? Cool, you'll be able to resume where you left off.
 </p>
 
 <div class="entry-content">
   <form class="form" name="biodataForm" [formGroup]="biodataForm">
-    <mat-form-field class="full-width">
-      <input matInput placeholder="First Name" 
-        required
-        [(ngModel)]="_memberdata.firstname"
-        [formControl]="firstnameFormControl">
-      <mat-error *ngIf="firstnameFormControl.invalid">{{getRequiredErrorMessage('firstname')}}</mat-error>        
-    </mat-form-field>
-    <mat-form-field class="full-width">
-      <input matInput placeholder="Last Name" 
-        required
-        [(ngModel)]="_memberdata.lastname"
-        [formControl]="lastnameFormControl">
-      <mat-error *ngIf="lastnameFormControl.invalid">{{getRequiredErrorMessage('lastname')}}</mat-error>                
-    </mat-form-field>
     <mat-form-field class="full-width"
       hintLabel="Note: This will serve as your identity">
       <input matInput placeholder="Email" 
         required
         [(ngModel)]="_memberdata.email"
         (keyup)="checkForRegistrationInProgress($event)"
+        (change)="checkForRegistrationInProgress($event)"
         [formControl]="emailFormControl">
       <mat-error *ngIf="emailFormControl.invalid">{{getEmailErrorMessage()}}</mat-error>        
-    </mat-form-field>    
-    <mat-form-field class="full-width">
-      <input matInput placeholder="Phone" type="tel" 
-        [(ngModel)]="_memberdata.phone"
-        required
-        [formControl]="phoneFormControl">
-      <mat-error *ngIf="phoneFormControl.invalid">{{getPhoneErrorMessage()}}</mat-error>
-    </mat-form-field>        
-    <!-- <mat-form-field class="full-width">
-      <textarea matInput placeholder="Mailing Street Address, City, State, Zipcode" type="text"        
-        required
-        [formControl]="addressFormControl"
-        matAutosizeMinRows="2"
-        matAutosizeMaxRows="3"></textarea>
-      <mat-error *ngIf="addressFormControl.invalid">{{getRequiredErrorMessage('address')}}</mat-error>
-      <mat-hint align="start">Note: We are required by law to send Annual General Meeting notice by postcard</mat-hint>
-    </mat-form-field> -->
-
+    </mat-form-field>
     <button mat-raised-button color="primary" 
       class="submit-button"
       [disabled]="biodataForm.invalid"

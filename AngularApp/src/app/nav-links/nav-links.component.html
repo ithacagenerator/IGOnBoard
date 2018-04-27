@@ -9,7 +9,7 @@
     <div class="menu-primary-navigation-container">
       <ul class="menu">
         <li class="basic menu-item">
-          <a class="link" [routerLink]="['/welcome']" [routerLinkActive]="'active'">
+          <a class="link" [routerLink]="['/basic-info']" [routerLinkActive]="'active'" [class.disabled]="basicInfoDisabled() ? true : null">
             Basic Info
           </a>
           <img class="checkmark" src="assets/img/checkmark.png" *ngIf="_memberdata.basicInformationComplete()">

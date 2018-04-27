@@ -19,8 +19,13 @@ export class NavLinksComponent implements OnInit {
   ngOnInit() {
   }
 
+  basicInfoDisabled() {
+    return !this._memberdata.getMember().email;
+  }
+
   membershipPoliciesDisabled() {
-    return !this._memberdata.basicInformationComplete();
+    return !this._memberdata.membershipPoliciesComplete()
+      || this.basicInfoDisabled();
   }
 
   liabilityWaiverDisabled() {

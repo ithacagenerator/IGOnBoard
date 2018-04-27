@@ -30,6 +30,7 @@ import { ApiService } from './services/api.service';
 import { ErrorSnackBarComponent } from './error-snack-bar/error-snack-bar.component';
 import { LoaderService } from './services/loader.service';
 import { AdditionalInfoComponent } from './additional-info/additional-info.component';
+import { BasicInfoComponent } from './basic-info/basic-info.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { AdditionalInfoComponent } from './additional-info/additional-info.compo
     PaymentComponent,
     EmailConfirmationComponent,
     ErrorSnackBarComponent,
-    AdditionalInfoComponent
+    AdditionalInfoComponent,
+    BasicInfoComponent
   ],
   imports: [
     BrowserModule,

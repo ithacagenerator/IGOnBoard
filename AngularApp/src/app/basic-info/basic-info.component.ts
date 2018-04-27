@@ -9,21 +9,28 @@ import { MemberDataService } from '../services/member-data.service';
 import { ApiService } from '../services/api.service';
 import { LoaderService } from '../services/loader.service';
 
-import * as wildcard from './disposable-email-wildcard';
-
 @Component({
-  selector: 'app-welcome',
-  templateUrl: './welcome.component.html',
-  styleUrls: ['./welcome.component.scss']
+  selector: 'app-basic-info',
+  templateUrl: './basic-info.component.html',
+  styleUrls: ['./basic-info.component.scss']
 })
-export class WelcomeComponent {
-  emailFormControl;
+export class BasicInfoComponent {
+  firstnameFormControl = new FormControl('', [Validators.required]);
+  lastnameFormControl = new FormControl('', [Validators.required]);
+  phoneFormControl = new FormControl('', [
+    Validators.required,
+    Validators.pattern(/(\(?[0-9]{3}\)?-?\s?[0-9]{3}-?[0-9]{4})/)
+  ]);
+  // addressFormControl = new FormControl('', [Validators.required]);
+
   biodataForm: FormGroup;
 
-  getEmailErrorMessage() {
-    return this.emailFormControl.hasError('required') ? 'You must enter a value' :
-      this.emailFormControl.hasError('email') || this.emailFormControl.hasError('pattern') ?
-        'Not a valid email' : '';
+  getPhoneErrorMessage() {
+    return this.phoneFormControl.hasError('required') ? 'You must enter a value' :
+      this.phoneFormControl.hasError('pattern') ? 'Format must be (xxx) xxx-xxxx' : '';
+  }
+  getRequiredErrorMessage(field) {
+    return this.biodataForm.get(field).hasError('required') ? 'You must enter a value' : '';
   }
 
   constructor(
@@ -32,17 +39,11 @@ export class WelcomeComponent {
     private _api: ApiService,
     private _router: Router,
     private _snackBar: MatSnackBar) {
-      const patternList = wildcard.emails.map(v => v.replace('.', '\\.'));
-      this.emailFormControl = new FormControl('', [
-        Validators.required,
-        Validators.email,
-        Validators.pattern(
-          new RegExp(`^(?!((.*${patternList.join(')|(.*')})))`))
-        // pattern is the anti-set of known disposable email domains
-      ]);
-
       this.biodataForm = new FormGroup({
-        email: this.emailFormControl
+        firstname: this.firstnameFormControl,
+        lastname: this.lastnameFormControl,
+        phone: this.phoneFormControl
+        // address: this.addressFormControl
       });
     }
 
@@ -52,18 +53,14 @@ export class WelcomeComponent {
     Object.keys(this.biodataForm.controls).forEach(k => {
       fields[k] = `${this.biodataForm.controls[k].value}`.trim();
     });
-
+    fields.basic_info_complete = true;
     this._memberdata.updateFields(fields);
-
-    return this._api.requestEmailConfirmation()
-    .then(res => {
+    return this._api.updateMemberRecord()
+    .then((res: any) => {
       this.loaderService.display(false);
-      this._router.navigate(['/confirm-email']);
-    })
-    .catch(res => {
-      this.loaderService.display(false);
+      this._memberdata.setBasicInformationComplete(true);
       const hasServerErrorMessage = (res && res.error && res.error.error);
-      if (hasServerErrorMessage && (res.error.error === 'Member is already validated')) {
+      if (!hasServerErrorMessage) {
         if (!this._memberdata.membershipPoliciesComplete()) {
           this._router.navigate(['/membership-policies']);
         } else if (!this._memberdata.liabilityWaverComplete()) {
@@ -77,19 +74,15 @@ export class WelcomeComponent {
         this._snackBar.openFromComponent(ErrorSnackBarComponent, {
           data: hasServerErrorMessage ? res.error.error : `Unexpected Error Status Code ${res.status}`,
           duration: 2000
-        });
+        });        
       }
+    })
+    .catch(error => {
+      this.loaderService.display(false);
+      this._snackBar.openFromComponent(ErrorSnackBarComponent, {
+        data: error && error.message ? error.message : `Unexpected Error Occurred`,
+        duration: 2000
+      });
     });
   }
-
-  checkForRegistrationInProgress($event) {
-    if (this.emailFormControl.valid) {
-      this._api.loadMemberRecord()
-      .then(member => {
-        this._memberdata.updateFields(member);
-      })
-      .catch(err => {}); // swallow errors here
-    }
-  }
-
 }
