@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { ErrorSnackBarComponent } from '../error-snack-bar/error-snack-bar.component';
@@ -31,6 +31,7 @@ export class WelcomeComponent {
     public _memberdata: MemberDataService,
     private _api: ApiService,
     private _router: Router,
+    private _routeParams: ActivatedRoute,
     private _snackBar: MatSnackBar) {
       const patternList = wildcard.emails.map(v => v.replace('.', '\\.'));
       this.emailFormControl = new FormControl('', [
@@ -43,6 +44,15 @@ export class WelcomeComponent {
 
       this.biodataForm = new FormGroup({
         email: this.emailFormControl
+      });
+
+      this._routeParams.params.subscribe( params => {
+        if (params['email']) {
+          this._memberdata.email = params['email'];
+          if (this.biodataForm.valid) {
+            this.handleNext();
+          }
+        }
       });
     }
 

@@ -74,7 +74,7 @@ router.post('/test-email', (req, res, next) => {
           return sendEmail(member.email, 
             'Ithaca Generator Email Validation', 
             emailVerificationEmailTemplate.replace(/{{validationCode}}/g,
-            member.validationCode));
+            `${member.validationCode}/${member.email}`));
         } else {
           throw new Error('Database operation failed');
         }
@@ -93,8 +93,9 @@ router.post('/test-email', (req, res, next) => {
   }
 });
 
-router.get('/validate-email/:validationCode', (req, res, next) => {
+router.get('/validate-email/:validationCode/:email?', (req, res, next) => {
   const validationCode = req.params.validationCode;
+  const email = req.params.email;
   if(validationCode) {
     // attempt to update a document as validated by querying for the validationCode
     db.updateDocument('authbox', 'Members', 
@@ -106,8 +107,8 @@ router.get('/validate-email/:validationCode', (req, res, next) => {
       { updateType: 'complex' }
     )
     .then(result => {
-      if(result.modifiedCount) {
-        res.send(`VALIDATION SUCCESSFUL! Close this Window and go back to the registration window, or just click <a href="https://ithacagenerator.org/onboard ">here</a> and re-enter your email to resume.`);
+      if(result.modifiedCount) {        
+        res.send(`VALIDATION SUCCESSFUL! Close this Window and go back to the registration window, or just click <a href="https://ithacagenerator.org/onboard/welcome/${email}">here</a> to resume.`);
       } else {
         throw new Error('No records were modified');
       }
