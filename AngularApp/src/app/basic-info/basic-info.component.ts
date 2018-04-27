@@ -74,7 +74,7 @@ export class BasicInfoComponent {
         this._snackBar.openFromComponent(ErrorSnackBarComponent, {
           data: hasServerErrorMessage ? res.error.error : `Unexpected Error Status Code ${res.status}`,
           duration: 2000
-        });        
+        });
       }
     })
     .catch(error => {

@@ -107,7 +107,7 @@ router.get('/validate-email/:validationCode', (req, res, next) => {
     )
     .then(result => {
       if(result.modifiedCount) {
-        res.send(`VALIDATION SUCCESSFUL`);
+        res.send(`VALIDATION SUCCESSFUL! Close this Window and go back to the registration window, or just click <a href="https://ithacagenerator.org/onboard ">here</a> and re-enter your email to resume.`);
       } else {
         throw new Error('No records were modified');
       }
