@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
@@ -16,7 +16,7 @@ import * as wildcard from './disposable-email-wildcard';
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.scss']
 })
-export class WelcomeComponent {
+export class WelcomeComponent implements AfterViewInit {
   emailFormControl;
   biodataForm: FormGroup;
 
@@ -32,6 +32,7 @@ export class WelcomeComponent {
     private _api: ApiService,
     private _router: Router,
     private _routeParams: ActivatedRoute,
+    private _cd: ChangeDetectorRef,
     private _snackBar: MatSnackBar) {
       const patternList = wildcard.emails.map(v => v.replace('.', '\\.'));
       this.emailFormControl = new FormControl('', [
@@ -46,14 +47,6 @@ export class WelcomeComponent {
         email: this.emailFormControl
       });
 
-      this._routeParams.params.subscribe( params => {
-        if (params['email']) {
-          this._memberdata.email = params['email'];
-          if (this.biodataForm.valid) {
-            this.handleNext();
-          }
-        }
-      });
     }
 
   handleNext() {
@@ -74,7 +67,9 @@ export class WelcomeComponent {
       this.loaderService.display(false);
       const hasServerErrorMessage = (res && res.error && res.error.error);
       if (hasServerErrorMessage && (res.error.error === 'Member is already validated')) {
-        if (!this._memberdata.membershipPoliciesComplete()) {
+        if (!this._memberdata.basicInformationComplete()) {
+          this._router.navigate(['/basic-info']);
+        } else if (!this._memberdata.membershipPoliciesComplete()) {
           this._router.navigate(['/membership-policies']);
         } else if (!this._memberdata.liabilityWaverComplete()) {
           this._router.navigate(['/waiver']);
@@ -93,13 +88,33 @@ export class WelcomeComponent {
   }
 
   checkForRegistrationInProgress($event) {
-    if (this.emailFormControl.valid) {
-      this._api.loadMemberRecord()
-      .then(member => {
-        this._memberdata.updateFields(member);
-      })
-      .catch(err => {}); // swallow errors here
-    }
+    return new Promise((r, j)  => {
+      if (this.emailFormControl.valid) {
+        this._api.loadMemberRecord()
+        .then(member => {
+          this._memberdata.updateFields(member);
+          r();
+        })
+        .catch(err => { r(); }); // swallow errors here
+      } else {
+        r();
+      }
+    });
   }
 
+  ngAfterViewInit() {
+    this._routeParams.params.subscribe( params => {
+      if (params['email']) {
+        this._memberdata.email = params['email'];
+        this._cd.detectChanges();
+
+        if (this.biodataForm.valid) {
+          this.checkForRegistrationInProgress(null)
+          .then(() => {
+            this.handleNext();
+          });
+        }
+      }
+    });
+  }
 }

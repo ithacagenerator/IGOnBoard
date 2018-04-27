@@ -13,8 +13,8 @@ import { BasicInfoComponent } from './basic-info/basic-info.component';
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
   { path: 'basic-info', component: BasicInfoComponent },
-  { path: 'welcome', component: WelcomeComponent },
   { path: 'welcome/:email', component: WelcomeComponent },
+  { path: 'welcome', component: WelcomeComponent },
   { path: 'membership-policies', component: MembershipPoliciesComponent },
   { path: 'waiver', component: WaiverComponent },
   { path: 'payment', component: PaymentComponent },
