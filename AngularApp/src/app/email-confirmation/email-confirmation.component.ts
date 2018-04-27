@@ -27,7 +27,7 @@ export class EmailConfirmationComponent {
       return !this.validated;
     })
     .then(() => {
-      this._router.navigate(['/membership-policies']);
+      this._router.navigate(['/basic-info']);
     })
     .catch((err) => {
       console.error(err.message);
