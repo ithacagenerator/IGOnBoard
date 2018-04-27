@@ -74,7 +74,7 @@ router.post('/test-email', (req, res, next) => {
           return sendEmail(member.email, 
             'Ithaca Generator Email Validation', 
             emailVerificationEmailTemplate.replace(/{{validationCode}}/g,
-            `${member.validationCode}/${member.email}`));
+            `${member.validationCode}/${encodeURIComponent(member.email)}`));
         } else {
           throw new Error('Database operation failed');
         }
@@ -108,7 +108,7 @@ router.get('/validate-email/:validationCode/:email?', (req, res, next) => {
     )
     .then(result => {
       if(result.modifiedCount) {        
-        res.send(`VALIDATION SUCCESSFUL! Close this Window and go back to the registration window, or just click <a href="https://ithacagenerator.org/onboard/welcome/${email}">here</a> to resume.`);
+        res.send(`VALIDATION SUCCESSFUL! Close this Window and go back to the registration window, or just click <a href="https://ithacagenerator.org/onboard/welcome/${encodeURIComponent(email)}">here</a> to resume.`);
       } else {
         throw new Error('No records were modified');
       }
