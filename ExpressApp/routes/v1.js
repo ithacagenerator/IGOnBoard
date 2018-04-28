@@ -75,6 +75,7 @@ router.post('/test-email', (req, res, next) => {
             return db.updateDocument('authbox', 'Members', {email}, {updateObj})
             .then(result => {
               member.email = email;
+              member.validationCode = validationCode;
               return result;
             })
           } else {
