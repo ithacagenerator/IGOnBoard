@@ -32,6 +32,10 @@ function buildRegistrationUpdate(member) {
       ret[`registration.${k}`] = member[k];
     });
   }
+  if( member.firstname && member.lastname ) {
+    ret.name = `${member.firstname} ${member.lastname}`;
+  }
+
   return ret;
 }
 
