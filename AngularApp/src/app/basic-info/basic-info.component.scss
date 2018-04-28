@@ -17,3 +17,23 @@
   margin-top: 1em;
   width: 100%;
 }
+
+$checkedColor: #673ab7;
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  background-color: $checkedColor !important;
+}
+
+::ng-deep .mat-ripple-element {
+  background: $checkedColor !important;
+}
+
+.checkbox-class { 
+}
+
+::ng-deep .mat-checkbox-layout { 
+  white-space: normal !important; 
+}
+
+::ng-deep .mat-form-field-infix {
+  width: 74px!important;
+}

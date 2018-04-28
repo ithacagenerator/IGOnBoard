@@ -67,6 +67,13 @@ export class MemberDataService {
     return this.memberObj.requestFinancialAid; // don't force a boolean response
   }
 
+  set student(value) {
+    this.memberObj.student = !!value;
+  }
+  get student() {
+    return !!this.memberObj.student;
+  }
+
   getMember(omissions = []) {
     const m = Object.assign({}, {}, this.memberObj);
     omissions.forEach(k => {

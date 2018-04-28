@@ -25,6 +25,7 @@ export class BasicInfoComponent implements OnDestroy {
   // addressFormControl = new FormControl('', [Validators.required]);
   over18FormControl = new FormControl('', [Validators.required]);
   requestFinancialAidFormControl = new FormControl('', [Validators.required]);
+  studentFormControl = new FormControl('', []);
   biodataForm: FormGroup;
   subscriptions = [];
 
@@ -48,7 +49,8 @@ export class BasicInfoComponent implements OnDestroy {
         lastname: this.lastnameFormControl,
         phone: this.phoneFormControl,
         over18: this.over18FormControl,
-        requestFinancialAid: this.requestFinancialAidFormControl
+        requestFinancialAid: this.requestFinancialAidFormControl,
+        student: this.studentFormControl
         // address: this.addressFormControl
       });
 

@@ -201,7 +201,8 @@ router.get('/member-registration/:email', (req, res, next) => {
       additional_info_complete: 1,
       interests: 1,
       requestFinancialAid: 1, 
-      over18: 1
+      over18: 1,
+      student: 1
     }
   })
   .then(members => {
