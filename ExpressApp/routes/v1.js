@@ -73,7 +73,7 @@ router.post('/test-email', (req, res, next) => {
           .then(result => {
             member.validationCode = validationCode;
             return result;
-          })
+          });
         } else if(members.length === 1) {
           if(!members[0].validated) {
             const email = member.email;
@@ -85,7 +85,7 @@ router.post('/test-email', (req, res, next) => {
               member.email = email;
               member.validationCode = validationCode;
               return result;
-            })
+            });
           } else {
             throw new Error(`Member is already validated`);
           }
