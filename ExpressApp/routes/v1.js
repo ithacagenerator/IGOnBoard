@@ -65,7 +65,7 @@ router.post('/test-email', (req, res, next) => {
       .then(members => {      
         const validationCode = uuid.v4();
         if(members.length === 0){
-          return db.insertDocument('authbox', 'Members', member);
+          return db.insertDocument('authbox', 'Members', Object.assign({}, member, {validationCode}));
         } else if(members.length === 1) {
           if(!members[0].validated) {
             const email = member.email;
