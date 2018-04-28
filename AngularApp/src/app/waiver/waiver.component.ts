@@ -5,6 +5,7 @@ import { LoaderService } from '../services/loader.service';
 import { ApiService } from '../services/api.service';
 import { MatSnackBar } from '@angular/material';
 import { ErrorSnackBarComponent } from '../error-snack-bar/error-snack-bar.component';
+import { UtilService } from '../services/util.service';
 
 @Component({
   selector: 'app-waiver',
@@ -26,6 +27,7 @@ export class WaiverComponent implements OnInit {
     private _router: Router,
     private _memberData: MemberDataService,
     private _snackBar: MatSnackBar,
+    private _util: UtilService
   ) { }
 
   ngOnInit() {
@@ -38,7 +40,7 @@ export class WaiverComponent implements OnInit {
     .then(res => {
       this._loaderService.display(false);
       this._memberData.setLiabilityWaiverComplete(true);
-      this._router.navigate(['/additional-info']);
+      this._util.navigateToLogicalNextStep(this._router);
     })
     .catch(res => {
       this._memberData.updateFields({waiver_complete: false});

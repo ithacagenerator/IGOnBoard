@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
@@ -15,7 +15,7 @@ import { UtilService } from '../services/util.service';
   templateUrl: './basic-info.component.html',
   styleUrls: ['./basic-info.component.scss']
 })
-export class BasicInfoComponent {
+export class BasicInfoComponent implements OnDestroy {
   firstnameFormControl = new FormControl('', [Validators.required]);
   lastnameFormControl = new FormControl('', [Validators.required]);
   phoneFormControl = new FormControl('', [
@@ -26,6 +26,7 @@ export class BasicInfoComponent {
   over18FormControl = new FormControl('', [Validators.required]);
   requestFinancialAidFormControl = new FormControl('', [Validators.required]);
   biodataForm: FormGroup;
+  subscriptions = [];
 
   getPhoneErrorMessage() {
     return this.phoneFormControl.hasError('required') ? 'You must enter a value' :
@@ -50,6 +51,17 @@ export class BasicInfoComponent {
         requestFinancialAid: this.requestFinancialAidFormControl
         // address: this.addressFormControl
       });
+
+      this.subscriptions.push(this.biodataForm.statusChanges.subscribe((change) => {
+        switch (change) {
+          case 'INVALID':
+            this._memberdata.setBasicInformationComplete(false);
+            break;
+          case 'VALID':
+          this._memberdata.setBasicInformationComplete(true);
+          break;
+        }
+      }));
     }
 
   handleNext() {
@@ -78,6 +90,12 @@ export class BasicInfoComponent {
         data: error && error.message ? error.message : `Unexpected Error Occurred`,
         duration: 2000
       });
+    });
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => {
+      sub.unsubscribe();
     });
   }
 }
