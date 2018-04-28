@@ -55,22 +55,22 @@
       <mat-select [(ngModel)]="_memberdata.over18"
         [formControl]="over18FormControl"
         required
-        placeholder="Select">
+        [placeholder]="_util.isBoolean(_memberdata.over18) ? '' : 'Select'">
         <mat-option>Select</mat-option>
         <mat-option [value]="true">I am</mat-option>
         <mat-option [value]="false">I am not</mat-option>
       </mat-select>
-    </mat-form-field> 18+ years old
+    </mat-form-field> 18+ years old<br/>
     <mat-form-field>
       <mat-select [(ngModel)]="_memberdata.requestFinancialAid"
         [formControl]="requestFinancialAidFormControl"
         required
-        placeholder="Select">
+        [placeholder]="_util.isBoolean(_memberdata.requestFinancialAid) ? '' : 'Select'">
         <mat-option>Select</mat-option>
         <mat-option [value]="true">I do</mat-option>
         <mat-option [value]="false">I do not</mat-option>
       </mat-select>
-    </mat-form-field> request scholarship
+    </mat-form-field> request scholarship<br/>
     <button mat-raised-button color="primary"
       class="submit-button"
       [disabled]="biodataForm.invalid"

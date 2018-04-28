@@ -32,4 +32,8 @@ export class UtilService {
       _router.navigate(['/payment']);
     }
   }
+
+  isBoolean(v) {
+    return v === true || v === false;
+  }
 }

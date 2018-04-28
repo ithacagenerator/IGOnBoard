@@ -43,7 +43,7 @@ export class BasicInfoComponent implements OnDestroy {
     private _api: ApiService,
     private _router: Router,
     private _snackBar: MatSnackBar,
-    private _util: UtilService) {
+    public _util: UtilService) {
       this.biodataForm = new FormGroup({
         firstname: this.firstnameFormControl,
         lastname: this.lastnameFormControl,
