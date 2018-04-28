@@ -31,6 +31,12 @@ $checkedColor: #673ab7;
   white-space: normal !important; 
 }
 
-::ng-deep .mat-form-field-infix {
+::ng-deep .mat-form-field-type-mat-select .mat-form-field-infix {
   width: 76px!important;
+  border-top: 0px;
+}
+
+.over18 {
+  padding-top: .7em;
+  padding-bottom: .5em;
 }

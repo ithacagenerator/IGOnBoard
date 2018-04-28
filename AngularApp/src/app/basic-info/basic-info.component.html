@@ -51,7 +51,7 @@
       [align]="'start'">
       I am a student
     </mat-checkbox><br/>
-    <mat-form-field>
+    <mat-form-field class="over18">
       <mat-select [(ngModel)]="_memberdata.over18"
         [formControl]="over18FormControl"
         required
@@ -61,7 +61,7 @@
         <mat-option [value]="false">I am not</mat-option>
       </mat-select>
     </mat-form-field> 18+ years old<br/>
-    <mat-form-field>
+    <mat-form-field class="scholarship">
       <mat-select [(ngModel)]="_memberdata.requestFinancialAid"
         [formControl]="requestFinancialAidFormControl"
         required
