@@ -72,7 +72,11 @@ router.post('/test-email', (req, res, next) => {
             delete member.email;        
             const updateObj = buildRegistrationUpdate(member);
             updateObj.validationCode = validationCode;
-            return db.updateDocument('authbox', 'Members', {email}, {updateObj});
+            return db.updateDocument('authbox', 'Members', {email}, {updateObj})
+            .then(result => {
+              member.email = email;
+              return result;
+            })
           } else {
             throw new Error(`Member is already validated`);
           }
