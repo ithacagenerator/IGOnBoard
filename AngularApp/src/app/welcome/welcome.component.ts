@@ -10,6 +10,7 @@ import { ApiService } from '../services/api.service';
 import { LoaderService } from '../services/loader.service';
 
 import * as wildcard from './disposable-email-wildcard';
+import { UtilService } from '../services/util.service';
 
 @Component({
   selector: 'app-welcome',
@@ -33,7 +34,8 @@ export class WelcomeComponent implements AfterViewInit {
     private _router: Router,
     private _routeParams: ActivatedRoute,
     private _cd: ChangeDetectorRef,
-    private _snackBar: MatSnackBar) {
+    private _snackBar: MatSnackBar,
+    private _util: UtilService) {
       const patternList = wildcard.emails.map(v => v.replace('.', '\\.'));
       this.emailFormControl = new FormControl('', [
         Validators.required,
@@ -50,12 +52,8 @@ export class WelcomeComponent implements AfterViewInit {
     }
 
   handleNext() {
-    const fields: any = {};
+    const fields: any = this._util.collapseFormGroup(this.biodataForm);
     this.loaderService.display(true);
-    Object.keys(this.biodataForm.controls).forEach(k => {
-      fields[k] = `${this.biodataForm.controls[k].value}`.trim();
-    });
-
     this._memberdata.updateFields(fields);
 
     return this._api.requestEmailConfirmation()
@@ -67,17 +65,7 @@ export class WelcomeComponent implements AfterViewInit {
       this.loaderService.display(false);
       const hasServerErrorMessage = (res && res.error && res.error.error);
       if (hasServerErrorMessage && (res.error.error === 'Member is already validated')) {
-        if (!this._memberdata.basicInformationComplete()) {
-          this._router.navigate(['/basic-info']);
-        } else if (!this._memberdata.membershipPoliciesComplete()) {
-          this._router.navigate(['/membership-policies']);
-        } else if (!this._memberdata.liabilityWaverComplete()) {
-          this._router.navigate(['/waiver']);
-        } else if (!this._memberdata.additionalInfoComplete()) {
-          this._router.navigate(['/additional-info']);
-        } else {
-          this._router.navigate(['/payment']);
-        }
+        this._util.navigateToLogicalNextStep(this._router);
       } else {
         this._snackBar.openFromComponent(ErrorSnackBarComponent, {
           data: hasServerErrorMessage ? res.error.error : `Unexpected Error Status Code ${res.status}`,

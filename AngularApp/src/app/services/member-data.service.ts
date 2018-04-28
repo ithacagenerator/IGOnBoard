@@ -53,6 +53,20 @@ export class MemberDataService {
     return !!this.memberObj.membershipPoliciesAgreedTo;
   }
 
+  set over18(value) {
+    this.memberObj.over18 = value;
+  }
+  get over18() {
+    return this.memberObj.over18; // don't force a boolean response
+  }
+
+  set requestFinancialAid(value) {
+    this.memberObj.requestFinancialAid = value;
+  }
+  get requestFinancialAid() {
+    return this.memberObj.requestFinancialAid; // don't force a boolean response
+  }
+
   getMember(omissions = []) {
     const m = Object.assign({}, {}, this.memberObj);
     omissions.forEach(k => {

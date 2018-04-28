@@ -199,7 +199,9 @@ router.get('/member-registration/:email', (req, res, next) => {
       membership_policies_complete: 1,
       waiver_complete: 1,
       additional_info_complete: 1,
-      interests: 1
+      interests: 1,
+      requestFinancialAid: 1, 
+      over18: 1
     }
   })
   .then(members => {

@@ -8,6 +8,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { MemberDataService } from '../services/member-data.service';
 import { ApiService } from '../services/api.service';
 import { LoaderService } from '../services/loader.service';
+import { UtilService } from '../services/util.service';
 
 @Component({
   selector: 'app-basic-info',
@@ -22,7 +23,8 @@ export class BasicInfoComponent {
     Validators.pattern(/(\(?[0-9]{3}\)?-?\s?[0-9]{3}-?[0-9]{4})/)
   ]);
   // addressFormControl = new FormControl('', [Validators.required]);
-
+  over18FormControl = new FormControl('', [Validators.required]);
+  requestFinancialAidFormControl = new FormControl('', [Validators.required]);
   biodataForm: FormGroup;
 
   getPhoneErrorMessage() {
@@ -38,21 +40,22 @@ export class BasicInfoComponent {
     public _memberdata: MemberDataService,
     private _api: ApiService,
     private _router: Router,
-    private _snackBar: MatSnackBar) {
+    private _snackBar: MatSnackBar,
+    private _util: UtilService) {
       this.biodataForm = new FormGroup({
         firstname: this.firstnameFormControl,
         lastname: this.lastnameFormControl,
-        phone: this.phoneFormControl
+        phone: this.phoneFormControl,
+        over18: this.over18FormControl,
+        requestFinancialAid: this.requestFinancialAidFormControl
         // address: this.addressFormControl
       });
     }
 
   handleNext() {
-    const fields: any = {};
+    const fields: any = this._util.collapseFormGroup(this.biodataForm);
     this.loaderService.display(true);
-    Object.keys(this.biodataForm.controls).forEach(k => {
-      fields[k] = `${this.biodataForm.controls[k].value}`.trim();
-    });
+
     fields.basic_info_complete = true;
     this._memberdata.updateFields(fields);
     return this._api.updateMemberRecord()
@@ -61,15 +64,7 @@ export class BasicInfoComponent {
       this._memberdata.setBasicInformationComplete(true);
       const hasServerErrorMessage = (res && res.error && res.error.error);
       if (!hasServerErrorMessage) {
-        if (!this._memberdata.membershipPoliciesComplete()) {
-          this._router.navigate(['/membership-policies']);
-        } else if (!this._memberdata.liabilityWaverComplete()) {
-          this._router.navigate(['/waiver']);
-        } else if (!this._memberdata.additionalInfoComplete()) {
-          this._router.navigate(['/additional-info']);
-        } else {
-          this._router.navigate(['/payment']);
-        }
+        this._util.navigateToLogicalNextStep(this._router);
       } else {
         this._snackBar.openFromComponent(ErrorSnackBarComponent, {
           data: hasServerErrorMessage ? res.error.error : `Unexpected Error Status Code ${res.status}`,

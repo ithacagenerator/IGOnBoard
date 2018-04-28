@@ -14,7 +14,8 @@ import {
   MatInputModule,
   MatSnackBarModule,
   MatDialogModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatSelectModule
 } from '@angular/material';
 import { OverlayContainer } from '@angular/cdk/overlay';
 
@@ -31,6 +32,7 @@ import { ErrorSnackBarComponent } from './error-snack-bar/error-snack-bar.compon
 import { LoaderService } from './services/loader.service';
 import { AdditionalInfoComponent } from './additional-info/additional-info.component';
 import { BasicInfoComponent } from './basic-info/basic-info.component';
+import { UtilService } from './services/util.service';
 
 @NgModule({
   declarations: [
@@ -59,13 +61,14 @@ import { BasicInfoComponent } from './basic-info/basic-info.component';
     MatSnackBarModule,
     MatDialogModule,
     MatProgressSpinnerModule,
-    MatCheckboxModule
+    MatSelectModule
   ],
   providers: [
     OverlayContainer,
     MemberDataService,
     ApiService,
-    LoaderService
+    LoaderService,
+    UtilService
   ],
   bootstrap: [AppComponent],
   entryComponents: [

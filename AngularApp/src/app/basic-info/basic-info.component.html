@@ -44,11 +44,33 @@
       <mat-error *ngIf="addressFormControl.invalid">{{getRequiredErrorMessage('address')}}</mat-error>
       <mat-hint align="start">Note: We are required by law to send Annual General Meeting notice by postcard</mat-hint>
     </mat-form-field> -->
-
-    <button mat-raised-button color="primary" 
+    <mat-form-field>
+      <mat-select [(ngModel)]="_memberdata.over18"
+        [formControl]="over18FormControl"
+        required
+        placeholder="Select One">
+        <mat-option>Select One</mat-option>
+        <mat-option [value]="true">I am</mat-option>
+        <mat-option [value]="false">I am not</mat-option>
+      </mat-select>
+    </mat-form-field> 18 years old (or older)
+    <mat-form-field>
+      <mat-select [(ngModel)]="_memberdata.requestFinancialAid"
+        [formControl]="requestFinancialAidFormControl"
+        required
+        placeholder="Select One">
+        <mat-option>Select One</mat-option>
+        <mat-option [value]="true">I do</mat-option>
+        <mat-option [value]="false">I do not</mat-option>
+      </mat-select>
+    </mat-form-field> wish to apply for financial aid
+    <button mat-raised-button color="primary"
       class="submit-button"
       [disabled]="biodataForm.invalid"
       (click)="handleNext()">Next Step</button>
   </form>
 
 </div>
+<pre>
+  {{ this._memberdata.getMember() | json }}
+</pre>
