@@ -25,6 +25,16 @@ var transporter = nodemailer.createTransport({
   }
 });
 
+function buildRegistrationUpdate(member) {
+  const ret = {};
+  if(member && (typeof member === 'object')){
+    Object.keys(member).forEach(k => {
+      ret[`registration.${k}`] = member[k];
+    });
+  }
+  return ret;
+}
+
 function sendEmail(to, subject, html) {
   return new Promise((resolve, reject) => {
     const mailOptions = {
@@ -53,12 +63,16 @@ router.post('/test-email', (req, res, next) => {
       // see if there's a record for this email address already
       db.findDocuments('authbox', 'Members', {email: member.email})
       .then(members => {      
-        member.validationCode = uuid.v4();
+        const validationCode = uuid.v4();
         if(members.length === 0){
           return db.insertDocument('authbox', 'Members', member);
         } else if(members.length === 1) {
           if(!members[0].validated) {
-            return db.updateDocument('authbox', 'Members', {email: member.email}, member);
+            const email = member.email;
+            delete member.email;        
+            const updateObj = buildRegistrationUpdate(member);
+            updateObj.validationCode = validationCode;
+            return db.updateDocument('authbox', 'Members', {email}, {updateObj});
           } else {
             throw new Error(`Member is already validated`);
           }
@@ -151,16 +165,19 @@ router.put('/member-registration', (req, res, next) => {
   if(member.waiverAccepted) {
     member.waiverAccepted = moment().format();
   }
-
+  
+  const email = member.email;
+  delete member.email;
+  const updateObj = buildRegistrationUpdate(member);
   db.updateDocument('authbox', 'Members', { 
     $and: [
-      {email: member.email},
+      {email},
       {$or: [
         {registrationComplete: {$ne: true}},
         {deleted: true}
       ]}
     ]
-  }, member)
+  }, {updateObj})
   .then(result => {
     if(!result.matchedCount) {
       throw new Error('No eligible records were matched');
@@ -188,26 +205,12 @@ router.get('/member-registration/:email', (req, res, next) => {
     ]
   }, { 
     projection: {
-      firstname: 1,
-      lastname: 1,
-      phone: 1,
-      validated: 1,
-      email: 1,
-      waiverAccepted: 1,
-      membershipPoliciesAgreedTo: 1,
-      basic_info_complete: 1,
-      membership_policies_complete: 1,
-      waiver_complete: 1,
-      additional_info_complete: 1,
-      interests: 1,
-      requestFinancialAid: 1, 
-      over18: 1,
-      student: 1
+      registration: 1
     }
   })
   .then(members => {
     if(Array.isArray(members) && members.length === 1) {
-      return members[0];
+      return members[0].registration;
     } else {
       throw new Error(`Found ${members.length} records with email address`);
     }
