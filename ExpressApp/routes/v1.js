@@ -72,7 +72,7 @@ router.post('/test-email', (req, res, next) => {
             delete member.email;        
             const updateObj = buildRegistrationUpdate(member);
             updateObj.validationCode = validationCode;
-            return db.updateDocument('authbox', 'Members', {email}, {updateObj})
+            return db.updateDocument('authbox', 'Members', {email}, updateObj)
             .then(result => {
               member.email = email;
               member.validationCode = validationCode;
@@ -182,7 +182,7 @@ router.put('/member-registration', (req, res, next) => {
         {deleted: true}
       ]}
     ]
-  }, {updateObj})
+  }, updateObj)
   .then(result => {
     if(!result.matchedCount) {
       throw new Error('No eligible records were matched');
