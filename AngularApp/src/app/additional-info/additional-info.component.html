@@ -38,7 +38,7 @@
               ngxFilePicker
               (filePick)="_memberdata.studentid = $event">
               Upload Student ID
-            </button> <i>*required</i>
+            </button> <i [class.redText]="!_memberdata.studentid">*required</i>
             <img *ngIf="_memberdata.studentid" [attr.src]="_memberdata.studentid">
           </fieldset>
         </section>
