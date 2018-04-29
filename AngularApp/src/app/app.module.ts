@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { FileHelpersModule } from 'ngx-file-helpers';
 
 import {
   MatButtonModule,
@@ -65,7 +66,8 @@ import { UtilService } from './services/util.service';
     MatProgressSpinnerModule,
     MatSelectModule,
     MatDatepickerModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    FileHelpersModule
   ],
   providers: [
     OverlayContainer,

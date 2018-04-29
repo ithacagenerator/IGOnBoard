@@ -31,12 +31,12 @@ export class AdditionalInfoComponent {
 
   schoolFormControl = new FormControl('', [Validators.required]);
   graduationFormControl = new FormControl('', [Validators.required, validDateValidator()]);
-  biodataForm: FormGroup;
+  studentForm: FormGroup;
 
   constructor(
     private _router: Router,
     public _memberdata: MemberDataService) {
-    this.biodataForm = new FormGroup({
+    this.studentForm = new FormGroup({
       school: this.schoolFormControl,
       graduation: this.graduationFormControl
     });
@@ -46,8 +46,17 @@ export class AdditionalInfoComponent {
     return moment().format();
   }
 
-  getRequiredErrorMessage(field) {
-    return this.biodataForm.get(field).hasError('required') ? 'You must enter a value' : 'Invalid date';
+  getRequiredStudentErrorMessage(field) {
+    return this.studentForm.get(field).hasError('required') ? 'You must enter a value' : 'Invalid date';
+  }
+
+  handleNextDisabled() {
+    if (this._memberdata.student) {
+      if (this.studentForm.invalid || !this._memberdata.studentid) {
+        return true;
+      }
+    }
+    return false;
   }
 
   handleNext() {

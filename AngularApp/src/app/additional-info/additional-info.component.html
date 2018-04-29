@@ -9,8 +9,8 @@
 </p>
 
 <div class="entry-content">
-    <form class="form" name="biodataForm" [formGroup]="biodataForm">
-      <ng-container *ngIf="true || _memberdata.student">
+    <form class="form" name="studentForm" [formGroup]="studentForm">
+      <ng-container *ngIf="_memberdata.student">
         <section>          
           <fieldset> 
             <legend>Student Details</legend>
@@ -19,7 +19,7 @@
                 required
                 [(ngModel)]="_memberdata.school"
                 [formControl]="schoolFormControl">
-              <mat-error *ngIf="schoolFormControl.invalid">{{getRequiredErrorMessage('school')}}</mat-error>        
+              <mat-error *ngIf="schoolFormControl.invalid">{{getRequiredStudentErrorMessage('school')}}</mat-error>        
             </mat-form-field>
             <mat-form-field class="full-width">
               <input matInput [matDatepicker]="picker" placeholder="Graduation Date"
@@ -29,14 +29,21 @@
                 required>
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
-              <mat-error *ngIf="graduationFormControl.invalid">{{getRequiredErrorMessage('graduation')}}</mat-error>        
-            </mat-form-field>           
+              <mat-error *ngIf="graduationFormControl.invalid">{{getRequiredStudentErrorMessage('graduation')}}</mat-error>        
+            </mat-form-field>
+            <button
+              type="button"
+              ngxFilePicker
+              (filePick)="_memberdata.studentid = $event">
+              Upload Student ID Photo
+            </button>            
+            <img *ngIf="_memberdata.studentid" [attr.src]="_memberdata.studentid">
           </fieldset>
         </section>
       </ng-container>
       <button mat-raised-button color="primary" 
         class="submit-button"
-        [disabled]="false"
+        [disabled]="handleNextDisabled()"
         (click)="handleNext()">Next Step</button>
     </form>
 </div>

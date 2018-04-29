@@ -88,6 +88,14 @@ export class MemberDataService {
     return this.memberObj.graduation || '';
   }
 
+  set studentid(value) {
+    this.memberObj.studentid = value._content;
+    console.log(value);
+  }
+  get studentid() {
+    return this.memberObj.studentid;
+  }
+
   getMember(omissions = []) {
     const m = Object.assign({}, {}, this.memberObj);
     omissions.forEach(k => {
