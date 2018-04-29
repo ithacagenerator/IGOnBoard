@@ -32,11 +32,11 @@
               <mat-error *ngIf="graduationFormControl.invalid">{{getRequiredStudentErrorMessage('graduation')}}</mat-error>        
             </mat-form-field>
             <button
-              type="button"
+              mat-raised-button color="accent"
               ngxFilePicker
               (filePick)="_memberdata.studentid = $event">
-              Upload Student ID Photo
-            </button>            
+              Upload Student ID
+            </button> <i>*required</i>
             <img *ngIf="_memberdata.studentid" [attr.src]="_memberdata.studentid">
           </fieldset>
         </section>

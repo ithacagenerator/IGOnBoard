@@ -90,7 +90,6 @@ export class MemberDataService {
 
   set studentid(value) {
     this.memberObj.studentid = value._content;
-    console.log(value);
   }
   get studentid() {
     return this.memberObj.studentid;
