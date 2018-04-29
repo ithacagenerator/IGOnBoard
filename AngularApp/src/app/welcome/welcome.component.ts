@@ -9,6 +9,7 @@ import { MemberDataService } from '../services/member-data.service';
 import { ApiService } from '../services/api.service';
 import { LoaderService } from '../services/loader.service';
 
+import * as moment from 'moment';
 import * as wildcard from './disposable-email-wildcard';
 import { UtilService } from '../services/util.service';
 
@@ -79,7 +80,10 @@ export class WelcomeComponent implements AfterViewInit {
     return new Promise((r, j)  => {
       if (this.emailFormControl.valid) {
         this._api.loadMemberRecord()
-        .then(member => {
+        .then((member: any) => {
+          if (member.graduation) {
+            member.graduation = moment(member.graduation, 'M/D/YYYY');
+          }
           this._memberdata.updateFields(member);
           r();
         })

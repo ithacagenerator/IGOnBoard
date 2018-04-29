@@ -36,7 +36,7 @@ export class ApiService {
   updateMemberRecord(omissions = ['membershipPoliciesAgreedTo', 'waiverAccepted']) {
     const member = this._member.getMember(omissions);
     if (member.graduation) {
-      member.graduation = member.graduation.format();
+      member.graduation = member.graduation.format('M/D/YYYY');
     }
     return this._http
     .put(`${this.baseUrl}/member-registration`,

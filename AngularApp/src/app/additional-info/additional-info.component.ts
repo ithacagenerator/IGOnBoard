@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MemberDataService } from '../services/member-data.service';
 import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
@@ -16,13 +16,24 @@ export function validDateValidator(): ValidatorFn {
     if (input && (typeof input === 'object')) {
       input = `${input.month}/${input.date}/${input.year}`;
     }
-    const illegalDate = !moment.isMoment(control.value) ||
-      (moment.isMoment(control.value) &&
-        (!control.value.isValid() ||
-          !moment(input, 'M/D/YYYY').isValid() ||
-          (moment(input, 'M/D/YYYY').format('M/D/YYYY') !== input)
-        )
-      );
+
+    let illegalDate = false;
+    if (!moment.isMoment(control.value)) {
+      illegalDate = true; // it has to be a moment
+    } else {
+      if (!control.value.isValid()) {
+        illegalDate = true; // it has to be a _valid_ moment
+      } else {
+        // sometimes moment lies... but we can use the _i state to learn more
+        // we only care about the format 'M/D/YYYY'
+        let somethingParsed = false;
+        somethingParsed = somethingParsed || (moment(input, 'M/D/YYYY').format('M/D/YYYY') === input);
+        if (!somethingParsed) {
+          illegalDate = true;
+        }
+      }
+    }
+    console.log(illegalDate, control.value, input);
     return illegalDate ? {'illegalDate': {value: control.value}} : null;
   };
 }
@@ -32,11 +43,11 @@ export function validDateValidator(): ValidatorFn {
   templateUrl: './additional-info.component.html',
   styleUrls: ['./additional-info.component.scss']
 })
-export class AdditionalInfoComponent {
+export class AdditionalInfoComponent implements OnInit {
 
   schoolFormControl = new FormControl('', [Validators.required]);
   graduationFormControl = new FormControl('', [Validators.required, validDateValidator()]);
-  studentForm: FormGroup;
+  studentForm: FormGroup = new FormGroup({});
 
   constructor(
     private loaderService: LoaderService,
@@ -44,11 +55,16 @@ export class AdditionalInfoComponent {
     private _api: ApiService,
     private _router: Router,
     private _snackBar: MatSnackBar,
-    public _util: UtilService) {
-    this.studentForm = new FormGroup({
-      school: this.schoolFormControl,
-      graduation: this.graduationFormControl
-    });
+    public _util: UtilService,
+    private _cd: ChangeDetectorRef) {
+  }
+
+  ngOnInit() {
+    if (this._memberdata.student) {
+      this.studentForm.addControl('school', this.schoolFormControl);
+      this.studentForm.addControl('graduation', this.graduationFormControl);
+    }
+    this._cd.detectChanges();
   }
 
   now() {
@@ -97,4 +113,5 @@ export class AdditionalInfoComponent {
         duration: 2000
       });
     });
+  }
 }
