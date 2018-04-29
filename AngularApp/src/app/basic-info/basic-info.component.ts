@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
@@ -43,28 +43,36 @@ export class BasicInfoComponent implements OnDestroy {
     private _api: ApiService,
     private _router: Router,
     private _snackBar: MatSnackBar,
-    public _util: UtilService) {
-      this.biodataForm = new FormGroup({
-        firstname: this.firstnameFormControl,
-        lastname: this.lastnameFormControl,
-        phone: this.phoneFormControl,
-        over18: this.over18FormControl,
-        requestFinancialAid: this.requestFinancialAidFormControl,
-        student: this.studentFormControl
-        // address: this.addressFormControl
-      });
+    public _util: UtilService,
+    private _cd: ChangeDetectorRef) {
+    this.biodataForm = new FormGroup({
+      firstname: this.firstnameFormControl,
+      lastname: this.lastnameFormControl,
+      phone: this.phoneFormControl,
+      over18: this.over18FormControl,
+      requestFinancialAid: this.requestFinancialAidFormControl,
+      student: this.studentFormControl
+      // address: this.addressFormControl
+    });
 
-      this.subscriptions.push(this.biodataForm.statusChanges.subscribe((change) => {
-        switch (change) {
-          case 'INVALID':
-            this._memberdata.setBasicInformationComplete(false);
-            break;
-          case 'VALID':
-          this._memberdata.setBasicInformationComplete(true);
+    this.subscriptions.push(this.biodataForm.statusChanges.subscribe((change) => {
+      switch (change) {
+        case 'INVALID':
+          this._memberdata.setBasicInformationComplete(false);
           break;
-        }
-      }));
+        case 'VALID':
+        this._memberdata.setBasicInformationComplete(true);
+        break;
+      }
+    }));
+  }
+
+  clearDefaultPhone() {
+    if (this._memberdata.phone === '(xxx) xxx-xxxx') {
+      this._memberdata.phone = '';
+      this._cd.detectChanges();
     }
+  }
 
   handleNext() {
     const fields: any = this._util.collapseFormGroup(this.biodataForm);

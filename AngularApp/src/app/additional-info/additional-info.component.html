@@ -9,10 +9,34 @@
 </p>
 
 <div class="entry-content">
-  <p>
-    <button mat-raised-button color="primary" 
-      class="submit-button"
-      [disabled]="false"
-      (click)="handleNext()">Next Step</button>
-  </p>
+    <form class="form" name="biodataForm" [formGroup]="biodataForm">
+      <ng-container *ngIf="true || _memberdata.student">
+        <section>          
+          <fieldset> 
+            <legend>Student Details</legend>
+            <mat-form-field class="full-width">        
+              <input matInput placeholder="School Name" 
+                required
+                [(ngModel)]="_memberdata.school"
+                [formControl]="schoolFormControl">
+              <mat-error *ngIf="schoolFormControl.invalid">{{getRequiredErrorMessage('school')}}</mat-error>        
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <input matInput [matDatepicker]="picker" placeholder="Graduation Date"
+                [formControl]="graduationFormControl"
+                [(ngModel)]="_memberdata.graduation"
+                [min]="now()"
+                required>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="graduationFormControl.invalid">{{getRequiredErrorMessage('graduation')}}</mat-error>        
+            </mat-form-field>           
+          </fieldset>
+        </section>
+      </ng-container>
+      <button mat-raised-button color="primary" 
+        class="submit-button"
+        [disabled]="false"
+        (click)="handleNext()">Next Step</button>
+    </form>
 </div>

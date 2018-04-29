@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class MemberDataService {
 
-  private memberObj: any = { };
+  private memberObj: any = { phone: '(xxx) xxx-xxxx' };
   private basicInfoComplete = false;
   private _membershipPoliciesComplete = false;
   private _liabilityWaverComplete = false;
@@ -29,7 +29,7 @@ export class MemberDataService {
     this.memberObj.phone = value;
   }
   get phone() {
-    return this.memberObj.phone || '(xxx) xxx-xxxx';
+    return this.memberObj.phone;
   }
 
   set email(value) {
@@ -72,6 +72,20 @@ export class MemberDataService {
   }
   get student() {
     return !!this.memberObj.student;
+  }
+
+  set school(value) {
+    this.memberObj.school = value;
+  }
+  get school() {
+    return this.memberObj.school || '';
+  }
+
+  set graduation(value) {
+    this.memberObj.graduation = value;
+  }
+  get graduation() {
+    return this.memberObj.graduation || '';
   }
 
   getMember(omissions = []) {

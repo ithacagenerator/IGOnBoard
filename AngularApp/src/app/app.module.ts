@@ -15,8 +15,10 @@ import {
   MatSnackBarModule,
   MatDialogModule,
   MatProgressSpinnerModule,
-  MatSelectModule
+  MatSelectModule,
+  MatDatepickerModule
 } from '@angular/material';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { OverlayContainer } from '@angular/cdk/overlay';
 
 import { WelcomeComponent } from './welcome/welcome.component';
@@ -61,7 +63,9 @@ import { UtilService } from './services/util.service';
     MatSnackBarModule,
     MatDialogModule,
     MatProgressSpinnerModule,
-    MatSelectModule
+    MatSelectModule,
+    MatDatepickerModule,
+    MatMomentDateModule
   ],
   providers: [
     OverlayContainer,

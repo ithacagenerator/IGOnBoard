@@ -31,6 +31,7 @@
     <mat-form-field class="full-width">
       <input matInput placeholder="Phone" type="tel" 
         [(ngModel)]="_memberdata.phone"
+        (focus)="clearDefaultPhone()"
         required
         [formControl]="phoneFormControl">
       <mat-error *ngIf="phoneFormControl.invalid">{{getPhoneErrorMessage()}}</mat-error>
