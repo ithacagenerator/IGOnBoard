@@ -33,7 +33,7 @@ export function validDateValidator(): ValidatorFn {
         }
       }
     }
-    console.log(illegalDate, control.value, input);
+    // console.log(illegalDate, control.value, input);
     return illegalDate ? {'illegalDate': {value: control.value}} : null;
   };
 }
@@ -68,7 +68,7 @@ export class AdditionalInfoComponent implements OnInit {
   }
 
   now() {
-    return moment().format('M/D/YYYY');
+    return moment(moment().format('M/D/YYYY'), 'M/D/YYYY');
   }
 
   getRequiredStudentErrorMessage(field) {
