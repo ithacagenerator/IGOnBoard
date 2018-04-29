@@ -34,9 +34,13 @@ export class ApiService {
   // the result comes back 422 if the member already has an active
   // completed registration
   updateMemberRecord(omissions = ['membershipPoliciesAgreedTo', 'waiverAccepted']) {
+    const member = this._member.getMember(omissions);
+    if (member.graduation) {
+      member.graduation = member.graduation.format();
+    }
     return this._http
     .put(`${this.baseUrl}/member-registration`,
-      this._member.getMember(omissions)
+      member
     )
     .timeout(5000)
     .toPromise();

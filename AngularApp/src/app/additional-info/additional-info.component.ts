@@ -4,6 +4,11 @@ import { MemberDataService } from '../services/member-data.service';
 import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 
 import * as moment from 'moment';
+import { UtilService } from '../services/util.service';
+import { MatSnackBar } from '@angular/material';
+import { ApiService } from '../services/api.service';
+import { LoaderService } from '../services/loader.service';
+import { ErrorSnackBarComponent } from '../error-snack-bar/error-snack-bar.component';
 
 export function validDateValidator(): ValidatorFn {
   return (control: AbstractControl): {[key: string]: any} => {
@@ -34,8 +39,12 @@ export class AdditionalInfoComponent {
   studentForm: FormGroup;
 
   constructor(
+    private loaderService: LoaderService,
+    public _memberdata: MemberDataService,
+    private _api: ApiService,
     private _router: Router,
-    public _memberdata: MemberDataService) {
+    private _snackBar: MatSnackBar,
+    public _util: UtilService) {
     this.studentForm = new FormGroup({
       school: this.schoolFormControl,
       graduation: this.graduationFormControl
@@ -43,7 +52,7 @@ export class AdditionalInfoComponent {
   }
 
   now() {
-    return moment().format();
+    return moment().format('M/D/YYYY');
   }
 
   getRequiredStudentErrorMessage(field) {
@@ -60,11 +69,32 @@ export class AdditionalInfoComponent {
   }
 
   handleNext() {
-    this._memberdata.updateFields({additional_info_complete: true});
-    this._memberdata.setAdditionalInfoComplete(true);
+    let fields: any = {};
+    fields = Object.assign({}, fields, this._util.collapseFormGroup(this.studentForm));
+    this.loaderService.display(true);
 
-    // api stuff and fallback
-
-    this._router.navigate(['/payment']);
-  }
+    fields.additional_info_complete = true;
+    delete fields.graduation;
+    this._memberdata.updateFields(fields);
+    return this._api.updateMemberRecord()
+    .then((res: any) => {
+      this.loaderService.display(false);
+      this._memberdata.setAdditionalInfoComplete(true);
+      const hasServerErrorMessage = (res && res.error && res.error.error);
+      if (!hasServerErrorMessage) {
+        this._util.navigateToLogicalNextStep(this._router);
+      } else {
+        this._snackBar.openFromComponent(ErrorSnackBarComponent, {
+          data: hasServerErrorMessage ? res.error.error : `Unexpected Error Status Code ${res.status}`,
+          duration: 2000
+        });
+      }
+    })
+    .catch(error => {
+      this.loaderService.display(false);
+      this._snackBar.openFromComponent(ErrorSnackBarComponent, {
+        data: error && error.message ? error.message : `Unexpected Error Occurred`,
+        duration: 2000
+      });
+    });
 }
