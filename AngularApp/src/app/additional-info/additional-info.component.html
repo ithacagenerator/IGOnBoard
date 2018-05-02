@@ -49,7 +49,7 @@
     <form class="form" name="under18Form" [formGroup]="under18Form">
       <section>          
         <fieldset> 
-          <legend>Under 18 Details</legend>
+          <legend>Responsible Adult</legend>
           <mat-form-field class="full-width">        
             <input matInput placeholder="Legal Guardian" 
               required
@@ -58,7 +58,7 @@
             <mat-error *ngIf="guardianFormControl.invalid">{{getRequiredUnder18ErrorMessage('guardian')}}</mat-error>
           </mat-form-field>          
           <mat-form-field class="full-width">        
-            <input matInput placeholder="Guardian Phone" type="tel" 
+            <input matInput placeholder="Phone" type="tel" 
               required
               [(ngModel)]="_memberdata.guardian_phone"
               (focus)="clearDefaultPhone()"
@@ -69,6 +69,25 @@
       </section>
     </form>
   </ng-container>
+
+  <ng-container>
+      <form class="form" name="interestsForm" [formGroup]="interestsForm">
+        <section>
+          <fieldset>
+            <legend>Interests</legend>
+            <div *ngFor="let entry of interestFormCheckboxes" class="interest-cb">
+              <mat-checkbox                
+                [formControl]="getCbFormControl(entry.key)"
+                [(ngModel)]="entry.value"
+                (change)="_memberdata.changeInterest($event, entry.key)"
+                [align]="'start'">
+                {{ entry.label }}
+              </mat-checkbox>
+            </div>
+          </fieldset>
+        </section>
+      </form>
+    </ng-container>
 
   <form class="form">
     <button mat-raised-button color="primary"        

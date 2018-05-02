@@ -109,6 +109,23 @@ export class MemberDataService {
     return this.memberObj.guardian_phone;
   }
 
+  hasInterest(key) {
+    if (Array.isArray(this.memberObj.interests)) {
+      return this.memberObj.interests.indexOf(key) >= 0;
+    }
+    return false;
+  }
+
+  changeInterest($event, key) {
+    const temp = new Set(this.memberObj.interests || []);
+    if ($event.checked) {
+      temp.add(key);
+    } else {
+      temp.delete(key);
+    }
+    this.memberObj.interests = Array.from(temp);
+  }
+
   getMember(omissions = []) {
     const m = Object.assign({}, {}, this.memberObj);
     omissions.forEach(k => {

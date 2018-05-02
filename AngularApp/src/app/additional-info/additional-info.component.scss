@@ -29,3 +29,20 @@ img {
 .redText {
   color: red;
 }
+
+$checkedColor: #673ab7;
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  background-color: $checkedColor !important;
+}
+
+::ng-deep .mat-ripple-element {
+  background: $checkedColor !important;
+}
+
+::ng-deep .mat-checkbox-layout { 
+  white-space: normal !important; 
+}
+
+.interest-cb { 
+  padding-bottom: 0.4em;
+}

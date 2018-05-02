@@ -56,6 +56,18 @@ export class AdditionalInfoComponent implements OnInit {
   ]);
   under18Form: FormGroup = new FormGroup({});
 
+  interestsForm: FormGroup = new FormGroup({});
+  interestFormCheckboxes: any = [
+    {key: 'threedprinting', label: '3D Printing'},
+    {key: 'ceramics', label: 'Ceramics'},
+    {key: 'electronics', label: 'Electronics'},
+    {key: 'jewelrymaking', label: 'Jewelry Making'},
+    {key: 'lasercutting', label: 'Laser Cutting'},
+    {key: 'metalworking', label: 'Metal Working'},
+    {key: 'software', label: 'Software'},
+    {key: 'woodworking', label: 'Wood Working'}
+  ];
+
   constructor(
     private loaderService: LoaderService,
     public _memberdata: MemberDataService,
@@ -76,6 +88,12 @@ export class AdditionalInfoComponent implements OnInit {
       this.under18Form.addControl('guardian', this.guardianFormControl);
       this.under18Form.addControl('guardian_phone', this.guardianPhoneFormControl);
     }
+
+    this.interestFormCheckboxes.forEach(entry => {
+      this[`${entry.key}FormControl`] = new FormControl('', []);
+      this.interestsForm.addControl(entry.key, this[`${entry.key}FormControl`]);
+      entry.value = this._memberdata.hasInterest(entry.key);
+    });
 
     this._cd.detectChanges();
   }
@@ -149,5 +167,9 @@ export class AdditionalInfoComponent implements OnInit {
         duration: 2000
       });
     });
+  }
+
+  getCbFormControl(key) {
+    return this[`${key}FormControl`];
   }
 }
