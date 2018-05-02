@@ -67,6 +67,7 @@ export class AdditionalInfoComponent implements OnInit {
     {key: 'software', label: 'Software'},
     {key: 'woodworking', label: 'Wood Working'}
   ];
+  otherInterestsControl = new FormControl('interests_other', []);
 
   constructor(
     private loaderService: LoaderService,

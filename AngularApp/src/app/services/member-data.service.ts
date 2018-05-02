@@ -109,6 +109,13 @@ export class MemberDataService {
     return this.memberObj.guardian_phone;
   }
 
+  set interests_other(value) {
+    this.memberObj.interests_other = value;
+  }
+  get interests_other() {
+    return this.memberObj.interests_other || '';
+  }
+
   hasInterest(key) {
     if (Array.isArray(this.memberObj.interests)) {
       return this.memberObj.interests.indexOf(key) >= 0;

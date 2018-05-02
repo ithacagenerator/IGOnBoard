@@ -84,6 +84,11 @@
                 {{ entry.label }}
               </mat-checkbox>
             </div>
+            <mat-form-field class="full-width">        
+              <input matInput placeholder="Other Interests" 
+                [(ngModel)]="_memberdata.interests_other"
+                [formControl]="otherInterestsControl">              
+            </mat-form-field> 
           </fieldset>
         </section>
       </form>
