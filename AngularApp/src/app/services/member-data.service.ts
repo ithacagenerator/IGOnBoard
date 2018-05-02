@@ -95,6 +95,20 @@ export class MemberDataService {
     return this.memberObj.studentid;
   }
 
+  set guardian(value) {
+    this.memberObj.guardian = value;
+  }
+  get guardian() {
+    return this.memberObj.guardian || '';
+  }
+
+  set guardian_phone(value) {
+    this.memberObj.guardian_phone = value;
+  }
+  get guardian_phone() {
+    return this.memberObj.guardian_phone;
+  }
+
   getMember(omissions = []) {
     const m = Object.assign({}, {}, this.memberObj);
     omissions.forEach(k => {

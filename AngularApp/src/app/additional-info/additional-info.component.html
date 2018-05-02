@@ -9,43 +9,72 @@
 </p>
 
 <div class="entry-content">
+  <ng-container *ngIf="_memberdata.student">
     <form class="form" name="studentForm" [formGroup]="studentForm">
-      <ng-container *ngIf="_memberdata.student">
-        <section>          
-          <fieldset> 
-            <legend>Student Details</legend>
-            <mat-form-field class="full-width">        
-              <input matInput placeholder="School Name" 
-                required
-                [(ngModel)]="_memberdata.school"
-                [formControl]="schoolFormControl">
-              <mat-error *ngIf="schoolFormControl.invalid">{{getRequiredStudentErrorMessage('school')}}</mat-error>        
-            </mat-form-field>
-            <mat-form-field class="full-width">
-              <input matInput [matDatepicker]="picker" placeholder="Graduation Date"
-                [formControl]="graduationFormControl"
-                [(ngModel)]="_memberdata.graduation"
-                [min]="now()"
-                required>
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-              <mat-error *ngIf="graduationFormControl.invalid">{{getRequiredStudentErrorMessage('graduation')}}</mat-error>        
-            </mat-form-field>
-            <button
-              type="button"
-              mat-raised-button color="accent"
-              accept="image/*"
-              ngxFilePicker
-              (filePick)="_memberdata.studentid = $event">
-              Upload Student ID
-            </button> <i [class.redText]="!_memberdata.studentid">*required</i>
-            <img *ngIf="_memberdata.studentid" [attr.src]="_memberdata.studentid">
-          </fieldset>
-        </section>
-      </ng-container>
-      <button mat-raised-button color="primary"        
-        class="submit-button"
-        [disabled]="handleNextDisabled()"
-        (click)="handleNext()">Next Step</button>
+      <section>          
+        <fieldset> 
+          <legend>Student Details</legend>
+          <mat-form-field class="full-width">        
+            <input matInput placeholder="School Name" 
+              required
+              [(ngModel)]="_memberdata.school"
+              [formControl]="schoolFormControl">
+            <mat-error *ngIf="schoolFormControl.invalid">{{getRequiredStudentErrorMessage('school')}}</mat-error>        
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput [matDatepicker]="picker" placeholder="Graduation Date"
+              [formControl]="graduationFormControl"
+              [(ngModel)]="_memberdata.graduation"
+              [min]="now()"
+              required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="graduationFormControl.invalid">{{getRequiredStudentErrorMessage('graduation')}}</mat-error>        
+          </mat-form-field>
+          <button
+            type="button"
+            mat-raised-button color="accent"
+            accept="image/*"
+            ngxFilePicker
+            (filePick)="_memberdata.studentid = $event">
+            Upload Student ID
+          </button> <i [class.redText]="!_memberdata.studentid">*required</i>
+          <img *ngIf="_memberdata.studentid" [attr.src]="_memberdata.studentid">
+        </fieldset>
+      </section>
     </form>
+  </ng-container>
+
+  <ng-container *ngIf="_memberdata.over18 === false">
+    <form class="form" name="under18Form" [formGroup]="under18Form">
+      <section>          
+        <fieldset> 
+          <legend>Under 18 Details</legend>
+          <mat-form-field class="full-width">        
+            <input matInput placeholder="Legal Guardian" 
+              required
+              [(ngModel)]="_memberdata.guardian"
+              [formControl]="guardianFormControl">
+            <mat-error *ngIf="guardianFormControl.invalid">{{getRequiredUnder18ErrorMessage('guardian')}}</mat-error>
+          </mat-form-field>          
+          <mat-form-field class="full-width">        
+            <input matInput placeholder="Guardian Phone" type="tel" 
+              required
+              [(ngModel)]="_memberdata.guardian_phone"
+              (focus)="clearDefaultPhone()"
+              [formControl]="guardianPhoneFormControl">
+              <mat-error *ngIf="guardianPhoneFormControl.invalid">{{getPhoneErrorMessage()}}</mat-error>
+          </mat-form-field>                              
+        </fieldset>
+      </section>
+    </form>
+  </ng-container>
+
+  <form class="form">
+    <button mat-raised-button color="primary"        
+      class="submit-button"
+      [disabled]="handleNextDisabled()"
+      (click)="handleNext()">Next Step</button>
+  </form>
+
 </div>

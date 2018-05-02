@@ -49,6 +49,13 @@ export class AdditionalInfoComponent implements OnInit {
   graduationFormControl = new FormControl('', [Validators.required, validDateValidator()]);
   studentForm: FormGroup = new FormGroup({});
 
+  guardianFormControl = new FormControl('', [Validators.required]);
+  guardianPhoneFormControl = new FormControl('', [
+    Validators.required,
+    Validators.pattern(/(\(?[0-9]{3}\)?-?\s?[0-9]{3}-?[0-9]{4})/)
+  ]);
+  under18Form: FormGroup = new FormGroup({});
+
   constructor(
     private loaderService: LoaderService,
     public _memberdata: MemberDataService,
@@ -64,6 +71,12 @@ export class AdditionalInfoComponent implements OnInit {
       this.studentForm.addControl('school', this.schoolFormControl);
       this.studentForm.addControl('graduation', this.graduationFormControl);
     }
+
+    if (!this._memberdata.over18) {
+      this.under18Form.addControl('guardian', this.guardianFormControl);
+      this.under18Form.addControl('guardian_phone', this.guardianPhoneFormControl);
+    }
+
     this._cd.detectChanges();
   }
 
@@ -75,12 +88,35 @@ export class AdditionalInfoComponent implements OnInit {
     return this.studentForm.get(field).hasError('required') ? 'You must enter a value' : 'Invalid date';
   }
 
+  getRequiredUnder18ErrorMessage(field) {
+    return this.under18Form.get(field).hasError('required') ? 'You must enter a value' : 'Invalid date';
+  }
+
+  clearDefaultPhone() {
+    if (this._memberdata.guardian_phone === '(xxx) xxx-xxxx') {
+      this._memberdata.guardian_phone = '';
+      this._cd.detectChanges();
+    }
+  }
+
+  getPhoneErrorMessage() {
+    return this.guardianPhoneFormControl.hasError('required') ? 'You must enter a value' :
+      this.guardianPhoneFormControl.hasError('pattern') ? 'Format must be (xxx) xxx-xxxx' : '';
+  }
+
   handleNextDisabled() {
     if (this._memberdata.student) {
       if (this.studentForm.invalid || !this._memberdata.studentid) {
         return true;
       }
     }
+
+    if (this._memberdata.over18 === false) {
+      if (this.under18Form.invalid) {
+        return true;
+      }
+    }
+
     return false;
   }
 
