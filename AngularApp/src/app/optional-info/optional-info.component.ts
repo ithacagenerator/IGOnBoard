@@ -89,7 +89,7 @@ export class OptionalInfoComponent implements OnInit {
     {member: 'whenBorn', cb: this.whenBornFormCheckboxes},
     {member: 'employmentStatus', cb: this.employmentStatusCheckboxes},
     {member: 'householdIncome', cb: this.householdIncomeCheckboxes},
-    {member: 'stewardship', cb: this.stewardshipCheckboxes}
+    {member: 'stewardships', cb: this.stewardshipCheckboxes, multiple: true}
   ];
 
 
