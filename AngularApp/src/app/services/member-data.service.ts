@@ -204,6 +204,30 @@ export class MemberDataService {
     return this.getOptionalField('householdIncome');
   }
 
+  set stewardships(value) {
+    if (Array.isArray(value)) {
+      this.setOptionalField('stewardships', value);
+    } else {
+      this.setOptionalField('stewardships', null);
+    }
+  }
+  get stewardships() {
+    const stewardship = this.getOptionalField('stewardships');
+    if (Array.isArray(stewardship)) {
+      return stewardship;
+    } else {
+      return [];
+    }
+  }
+
+  set stewardships_other(value) {
+    this.setOptionalField('stewardships_other', value);
+  }
+  get stewardships_other() {
+    return this.getOptionalField('stewardships_other');
+  }
+
+
   hasInterest(key) {
     if (Array.isArray(this.memberObj.interests)) {
       return this.memberObj.interests.indexOf(key) >= 0;

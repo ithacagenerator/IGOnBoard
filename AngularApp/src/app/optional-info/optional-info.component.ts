@@ -70,6 +70,17 @@ export class OptionalInfoComponent implements OnInit {
     {key: 'more_than_200k', label: '$200,000 and up'}
   ];
 
+  stewardshipCheckboxes: any = [
+    {key: 'environmental_sustainability', label: 'Environmental responsibility'},
+    {key: 'social_justice', label: 'Social Justice'},
+    {key: 'citizen_science', label: 'Citizen Science'},
+    {key: 'steam', label: 'STEAM'},
+    {key: 'children_youth', label: 'Children & Youth'},
+    {key: 'education_literacy', label: 'Education & Literacy'},
+    {key: 'senior_citizens', label: 'Seniors'},
+    {key: 'arts_culture', label: 'Arts & Culture'}
+  ];
+
   checkbox_member_map: any = [
     {member: 'gender', cb: this.genderFormCheckboxes},
     {member: 'collegeAffiliations', cb: this.collegeAffiliationCheckboxes, multiple: true},
@@ -77,7 +88,8 @@ export class OptionalInfoComponent implements OnInit {
     {member: 'ownBusiness', cb: this.ownBusinessCheckboxes},
     {member: 'whenBorn', cb: this.whenBornFormCheckboxes},
     {member: 'employmentStatus', cb: this.employmentStatusCheckboxes},
-    {member: 'householdIncome', cb: this.householdIncomeCheckboxes}
+    {member: 'householdIncome', cb: this.householdIncomeCheckboxes},
+    {member: 'stewardship', cb: this.stewardshipCheckboxes}
   ];
 
 

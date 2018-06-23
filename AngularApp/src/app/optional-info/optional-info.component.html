@@ -139,6 +139,28 @@
   </form>
 
   <form class="form">
+    <section>
+      <fieldset>
+        <legend>Do you consider yourself a steward for any of the following causes?</legend>
+        <div *ngFor="let entry of stewardshipCheckboxes" class="form-cb">
+          <mat-checkbox
+            [name]="'stewardships_' + entry.key"                
+            [(ngModel)]="entry.value"
+            (change)="_memberdata.changeOptionalResponse($event, 'stewardships', entry.key, stewardshipCheckboxes, true)"
+            [align]="'start'">
+            {{ entry.label }}
+          </mat-checkbox>
+        </div>
+        <mat-form-field class="full-width">        
+          <input matInput placeholder="Other"
+            name="stewardships_other" 
+            [(ngModel)]="_memberdata.stewardships_other">              
+        </mat-form-field> 
+      </fieldset>
+    </section>
+  </form>
+
+  <form class="form">
     <button mat-raised-button color="primary"        
       class="submit-button"
       [disabled]="handleNextDisabled()"
