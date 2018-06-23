@@ -71,7 +71,7 @@ export class OptionalInfoComponent implements OnInit {
   ];
 
   stewardshipCheckboxes: any = [
-    {key: 'environmental_sustainability', label: 'Environmental responsibility'},
+    {key: 'environmental_responsibility', label: 'Environmental responsibility'},
     {key: 'social_justice', label: 'Social Justice'},
     {key: 'citizen_science', label: 'Citizen Science'},
     {key: 'steam', label: 'STEAM'},
