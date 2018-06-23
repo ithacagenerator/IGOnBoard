@@ -37,6 +37,7 @@ import { AdditionalInfoComponent } from './additional-info/additional-info.compo
 import { BasicInfoComponent } from './basic-info/basic-info.component';
 import { UtilService } from './services/util.service';
 import { OptionalInfoComponent } from './optional-info/optional-info.component';
+import { AuthGuard } from './services/auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { OptionalInfoComponent } from './optional-info/optional-info.component';
     MemberDataService,
     ApiService,
     LoaderService,
-    UtilService
+    UtilService,
+    AuthGuard
   ],
   bootstrap: [AppComponent],
   entryComponents: [

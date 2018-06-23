@@ -11,17 +11,20 @@ import { AdditionalInfoComponent } from './additional-info/additional-info.compo
 import { BasicInfoComponent } from './basic-info/basic-info.component';
 import { OptionalInfoComponent } from './optional-info/optional-info.component';
 
+import { AuthGuard } from './services/auth-guard.service';
+
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
-  { path: 'basic-info', component: BasicInfoComponent },
+  { path: 'basic-info', component: BasicInfoComponent, canActivate: [AuthGuard] },
   { path: 'welcome/:email', component: WelcomeComponent },
   { path: 'welcome', component: WelcomeComponent },
-  { path: 'membership-policies', component: MembershipPoliciesComponent },
-  { path: 'waiver', component: WaiverComponent },
-  { path: 'payment', component: PaymentComponent },
-  { path: 'confirm-email', component: EmailConfirmationComponent },
-  { path: 'additional-info', component: AdditionalInfoComponent },
-  { path: 'optional-info', component: OptionalInfoComponent }
+  { path: 'membership-policies', component: MembershipPoliciesComponent, canActivate: [AuthGuard] },
+  { path: 'waiver', component: WaiverComponent, canActivate: [AuthGuard] },
+  { path: 'payment', component: PaymentComponent, canActivate: [AuthGuard] },
+  { path: 'confirm-email', component: EmailConfirmationComponent, canActivate: [AuthGuard] },
+  { path: 'additional-info', component: AdditionalInfoComponent, canActivate: [AuthGuard] },
+  { path: 'optional-info', component: OptionalInfoComponent, canActivate: [AuthGuard] },
+  { path: '**', redirectTo: '/welcome' }
 ];
 
 @NgModule({
