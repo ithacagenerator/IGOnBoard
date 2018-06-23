@@ -148,13 +148,13 @@ export class MemberDataService {
 
   set collegeAffiliations(value) {
     if (Array.isArray(value)) {
-      this.setOptionalField('collegeAffiliation', value);
+      this.setOptionalField('collegeAffiliations', value);
     } else {
-      this.setOptionalField('collegeAffiliation', null);
+      this.setOptionalField('collegeAffiliations', null);
     }
   }
   get collegeAffiliations() {
-    const affiliation = this.getOptionalField('collegeAffiliation');
+    const affiliation = this.getOptionalField('collegeAffiliations');
     if (Array.isArray(affiliation)) {
       return affiliation;
     } else {
@@ -188,6 +188,13 @@ export class MemberDataService {
   }
   get whenBorn() {
     return this.getOptionalField('whenBorn');
+  }
+
+  set employmentStatus(value) {
+    this.setOptionalField('employmentStatus', value);
+  }
+  get employmentStatus() {
+    return this.getOptionalField('employmentStatus');
   }
 
   hasInterest(key) {

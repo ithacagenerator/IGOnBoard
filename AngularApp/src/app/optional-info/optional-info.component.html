@@ -88,7 +88,7 @@
         <legend>Are you affiliated with any colleges? (student, alumni, staff or professor?)</legend>
         <div *ngFor="let entry of collegeAffiliationCheckboxes" class="form-cb">
           <mat-checkbox
-            [name]="'gender_' + entry.key"                
+            [name]="'collegeAffiliations_' + entry.key"                
             [(ngModel)]="entry.value"
             (change)="_memberdata.changeOptionalResponse($event, 'collegeAffiliations', entry.key, collegeAffiliationCheckboxes, true)"
             [align]="'start'">
@@ -104,6 +104,23 @@
     </section>
   </form>
   
+  <form class="form">
+    <section>
+      <fieldset>
+        <legend>Which of the following categories best describes your employment status?</legend>
+        <div *ngFor="let entry of employmentStatusCheckboxes" class="form-cb">
+          <mat-checkbox
+            [name]="'employmentStatus_' + entry.key"                
+            [(ngModel)]="entry.value"
+            (change)="_memberdata.changeOptionalResponse($event, 'employmentStatus', entry.key, employmentStatusCheckboxes)"
+            [align]="'start'">
+            {{ entry.label }}
+          </mat-checkbox>
+        </div>
+      </fieldset>
+    </section>
+  </form>
+
   <form class="form">
     <button mat-raised-button color="primary"        
       class="submit-button"

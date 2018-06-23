@@ -35,7 +35,7 @@ export class OptionalInfoComponent implements OnInit {
 
   educationLevelCheckboxes: any = [
     {key: 'less_than_high_school', label: 'Less than high school degree'},
-    {key: 'High_school_degree_or_equivalent', label: 'High school degree or equivalent (e.g., GED)'},
+    {key: 'high_school_degree_or_equivalent', label: 'High school degree or equivalent (e.g., GED)'},
     {key: 'some_college_but_no_degree', label: 'Some college but no degree'},
     {key: 'associate_degree', label: 'Associate degree'},
     {key: 'bachelor_degree', label: 'Bachelor degree'},
@@ -46,6 +46,15 @@ export class OptionalInfoComponent implements OnInit {
     {key: 'cornell_university', label: 'Cornell University'},
     {key: 'ithaca_college', label: 'Ithaca College'},
     {key: 'tompkins_county_community_college', label: 'Tompkins County Community College'}
+  ];
+
+  employmentStatusCheckboxes: any = [
+    {key: 'employed_atleast_35_hpw', label: 'Employed, working 35 or more hours per week'},
+    {key: 'employed_under_35_hpw', label: 'Employed, working 1-34 hours per week'},
+    {key: 'not_employed_looking', label: 'Not employed, looking for work'},
+    {key: 'not_employed_not_looking', label: 'Not employed, NOT looking for work'},
+    {key: 'retired', label: 'Retired'},
+    {key: 'unable_to_work', label: 'Unable to work'}
   ];
 
   checkbox_member_map: any = [
