@@ -163,14 +163,16 @@ export class MemberDataService {
     this.memberObj.interests = Array.from(temp);
   }
 
-  changeOptionalResponse($event, field, key, entries) {
+  changeOptionalResponse($event, field, key, entries?) {
     if ($event.checked) {
-      entries.forEach(entry => {
-        entry.value = entry.key === key;
-      });
-      this.gender = key;
+      if (entries){
+        entries.forEach(entry => {
+          entry.value = entry.key === key;
+        });
+      }
+      this[field] = key;
     } else {
-      this.gender = null;
+      this[field] = null;
     }
   }
 
