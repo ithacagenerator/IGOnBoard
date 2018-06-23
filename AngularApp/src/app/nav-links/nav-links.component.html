@@ -27,11 +27,17 @@
           <img class="checkmark" src="assets/img/checkmark.png" *ngIf="_memberdata.liabilityWaverComplete()">
         </li>
         <li class="additional menu-item">
-            <a class="link" [routerLink]="['/additional-info']" [routerLinkActive]="'active'" [class.disabled]="additionalInfoDisabled() ? true : null">
-              Additional Info
-            </a>
-            <img class="checkmark" src="assets/img/checkmark.png" *ngIf="_memberdata.additionalInfoComplete()">
-          </li>        
+          <a class="link" [routerLink]="['/additional-info']" [routerLinkActive]="'active'" [class.disabled]="additionalInfoDisabled() ? true : null">
+            Additional Info
+          </a>
+          <img class="checkmark" src="assets/img/checkmark.png" *ngIf="_memberdata.additionalInfoComplete()">
+        </li> 
+        <li class="optional menu-item">
+          <a class="link" [routerLink]="['/optional-info']" [routerLinkActive]="'active'" [class.disabled]="optionalInfoDisabled() ? true : null">
+            Optional Info
+          </a>
+          <img class="checkmark" src="assets/img/checkmark.png" *ngIf="_memberdata.optionalInfoComplete()">
+        </li>                
         <li class="payment menu-item">
           <a class="link" [routerLink]="['/payment']" [routerLinkActive]="'active'" [class.disabled]="paymentDisabled() ? true : null">
             Payment

@@ -9,6 +9,7 @@ import { PaymentComponent } from './payment/payment.component';
 import { EmailConfirmationComponent } from './email-confirmation/email-confirmation.component';
 import { AdditionalInfoComponent } from './additional-info/additional-info.component';
 import { BasicInfoComponent } from './basic-info/basic-info.component';
+import { OptionalInfoComponent } from './optional-info/optional-info.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
@@ -19,7 +20,8 @@ const routes: Routes = [
   { path: 'waiver', component: WaiverComponent },
   { path: 'payment', component: PaymentComponent },
   { path: 'confirm-email', component: EmailConfirmationComponent },
-  { path: 'additional-info', component: AdditionalInfoComponent }
+  { path: 'additional-info', component: AdditionalInfoComponent },
+  { path: 'optional-info', component: OptionalInfoComponent }
 ];
 
 @NgModule({

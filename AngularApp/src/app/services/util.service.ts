@@ -28,6 +28,8 @@ export class UtilService {
       _router.navigate(['/waiver']);
     } else if (!this._memberdata.additionalInfoComplete()) {
       _router.navigate(['/additional-info']);
+    } else if (!this._memberdata.optionalInfoComplete()) {
+      _router.navigate(['/optional-info']);
     } else {
       _router.navigate(['/payment']);
     }

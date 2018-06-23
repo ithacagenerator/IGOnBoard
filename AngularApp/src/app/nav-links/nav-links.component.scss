@@ -89,3 +89,22 @@ a.disabled {
     }    
   }
 }
+
+.optional {
+  .checkmark {
+    width: 45px;
+    position: absolute;
+    top: 30px;
+    right: 55px;
+    z-index: 1;
+  }  
+  @media only screen and (max-width : 1023px) {
+    .checkmark {
+      width: 30px;
+      position: absolute;
+      top: -10px;
+      right: -45px;
+      z-index: 1;
+    }    
+  }
+}

@@ -36,6 +36,7 @@ import { LoaderService } from './services/loader.service';
 import { AdditionalInfoComponent } from './additional-info/additional-info.component';
 import { BasicInfoComponent } from './basic-info/basic-info.component';
 import { UtilService } from './services/util.service';
+import { OptionalInfoComponent } from './optional-info/optional-info.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { UtilService } from './services/util.service';
     EmailConfirmationComponent,
     ErrorSnackBarComponent,
     AdditionalInfoComponent,
-    BasicInfoComponent
+    BasicInfoComponent,
+    OptionalInfoComponent
   ],
   imports: [
     BrowserModule,

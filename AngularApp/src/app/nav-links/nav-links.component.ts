@@ -38,9 +38,14 @@ export class NavLinksComponent implements OnInit {
       || this.liabilityWaiverDisabled();
   }
 
-  paymentDisabled() {
+  optionalInfoDisabled() {
     return !this._memberdata.additionalInfoComplete()
       || this.additionalInfoDisabled();
+  }
+
+  paymentDisabled() {
+    return !this._memberdata.optionalInfoComplete()
+      || this.optionalInfoDisabled();
   }
 
 }

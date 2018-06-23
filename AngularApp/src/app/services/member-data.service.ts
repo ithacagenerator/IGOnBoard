@@ -8,6 +8,7 @@ export class MemberDataService {
   private _membershipPoliciesComplete = false;
   private _liabilityWaverComplete = false;
   private _additionalInfoComplete = false;
+  private _optionalInfoComplete = false;
 
   constructor() { }
 
@@ -116,6 +117,35 @@ export class MemberDataService {
     return this.memberObj.interests_other || '';
   }
 
+  setOptionalField(key, value) {
+    if (!this.memberObj.optional) {
+      this.memberObj.optional = {};
+    }
+
+    if (!value) {
+      delete this.memberObj.optional[key];
+    } else {
+      this.memberObj.optional[key] = value;
+    }
+  }
+  getOptionalField(key) {
+    return this.memberObj && this.memberObj.optional ? this.memberObj.optional[key] : '';
+  }
+
+  set gender_other(value) {
+    this.setOptionalField('gender_other', value);
+  }
+  get gender_other() {
+    return this.getOptionalField('gender_other');
+  }
+
+  set gender(value) {
+    this.setOptionalField('gender', value);
+  }
+  get gender() {
+    return this.getOptionalField('gender');
+  }
+
   hasInterest(key) {
     if (Array.isArray(this.memberObj.interests)) {
       return this.memberObj.interests.indexOf(key) >= 0;
@@ -131,6 +161,17 @@ export class MemberDataService {
       temp.delete(key);
     }
     this.memberObj.interests = Array.from(temp);
+  }
+
+  changeOptionalResponse($event, field, key, entries) {
+    if ($event.checked) {
+      entries.forEach(entry => {
+        entry.value = entry.key === key;
+      });
+      this.gender = key;
+    } else {
+      this.gender = null;
+    }
   }
 
   getMember(omissions = []) {
@@ -179,5 +220,13 @@ export class MemberDataService {
 
   additionalInfoComplete() {
     return this._additionalInfoComplete;
+  }
+
+  setOptionalInfoComplete(status) {
+    this._optionalInfoComplete = !!status;
+  }
+
+  optionalInfoComplete() {
+    return this._optionalInfoComplete;
   }
 }
