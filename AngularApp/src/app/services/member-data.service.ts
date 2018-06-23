@@ -289,6 +289,7 @@ export class MemberDataService {
     this.setLiabilityWaiverComplete(this.memberObj.waiver_complete);
     this.setMembershipPoliciesComplete(this.memberObj.membership_policies_complete);
     this.setAdditionalInfoComplete(this.memberObj.additional_info_complete);
+    this.setOptionalInfoComplete(this.memberObj.optional_info_complete);
   }
 
   setBasicInformationComplete(status) {
