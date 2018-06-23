@@ -9,13 +9,13 @@
 </p>
 
 <div class="entry-content">
-  <form class="form" name="interestsForm" [formGroup]="optionalGenderForm">
+  <form class="form">
     <section>
       <fieldset>
         <legend>What is your gender?</legend>
         <div *ngFor="let entry of genderFormCheckboxes" class="form-cb">
-          <mat-checkbox                
-            [formControl]="getCbFormControl(entry.key)"
+          <mat-checkbox
+            [name]="'gender_' + entry.key"                
             [(ngModel)]="entry.value"
             (change)="_memberdata.changeOptionalResponse($event, 'gender', entry.key, genderFormCheckboxes)"
             [align]="'start'">
@@ -23,14 +23,87 @@
           </mat-checkbox>
         </div>
         <mat-form-field class="full-width">        
-          <input matInput placeholder="Other Gender Identity" 
-            [(ngModel)]="_memberdata.gender_other"
-            [formControl]="otherGenderControl">              
+          <input matInput placeholder="Other Gender Identity"
+            name="gender_other" 
+            [(ngModel)]="_memberdata.gender_other">              
         </mat-form-field> 
       </fieldset>
     </section>
   </form>
 
+  <form class="form">
+    <section>
+      <fieldset>
+        <legend>When were you born?</legend>
+        <div *ngFor="let entry of whenBornFormCheckboxes" class="form-cb">
+          <mat-checkbox
+            [name]="'whenborn_' + entry.key"                
+            [(ngModel)]="entry.value"
+            (change)="_memberdata.changeOptionalResponse($event, 'whenBorn', entry.key, whenBornFormCheckboxes)"
+            [align]="'start'">
+            {{ entry.label }}
+          </mat-checkbox>
+        </div>
+      </fieldset>
+    </section>
+  </form>
+
+  <form class="form">
+    <section>
+      <fieldset>
+        <legend>Does anyone in your household own a business?</legend>
+        <div *ngFor="let entry of ownBusinessCheckboxes" class="form-cb">
+          <mat-checkbox
+            [name]="'whenborn_' + entry.key"                
+            [(ngModel)]="entry.value"
+            (change)="_memberdata.changeOptionalResponse($event, 'ownBusiness', entry.key, ownBusinessCheckboxes)"
+            [align]="'start'">
+            {{ entry.label }}
+          </mat-checkbox>
+        </div>
+      </fieldset>
+    </section>
+  </form>
+
+  <form class="form">
+    <section>
+      <fieldset>
+        <legend>What is the highest level of school you have completed or the highest degree you have received?</legend>
+        <div *ngFor="let entry of educationLevelCheckboxes" class="form-cb">
+          <mat-checkbox
+            [name]="'educationLevel_' + entry.key"                
+            [(ngModel)]="entry.value"
+            (change)="_memberdata.changeOptionalResponse($event, 'educationLevel', entry.key, educationLevelCheckboxes)"
+            [align]="'start'">
+            {{ entry.label }}
+          </mat-checkbox>
+        </div>
+      </fieldset>
+    </section>
+  </form>
+
+  <form class="form">
+    <section>
+      <fieldset>
+        <legend>Are you affiliated with any colleges? (student, alumni, staff or professor?)</legend>
+        <div *ngFor="let entry of collegeAffiliationCheckboxes" class="form-cb">
+          <mat-checkbox
+            [name]="'gender_' + entry.key"                
+            [(ngModel)]="entry.value"
+            (change)="_memberdata.changeOptionalResponse($event, 'collegeAffiliations', entry.key, collegeAffiliationCheckboxes, true)"
+            [align]="'start'">
+            {{ entry.label }}
+          </mat-checkbox>
+        </div>
+        <mat-form-field class="full-width">        
+          <input matInput placeholder="Other College"
+            name="collegeAffiliation_other" 
+            [(ngModel)]="_memberdata.collegeAffiliation_other">              
+        </mat-form-field> 
+      </fieldset>
+    </section>
+  </form>
+  
   <form class="form">
     <button mat-raised-button color="primary"        
       class="submit-button"

@@ -15,14 +15,46 @@ import { ErrorSnackBarComponent } from '../error-snack-bar/error-snack-bar.compo
 })
 export class OptionalInfoComponent implements OnInit {
 
-  optionalGenderForm: FormGroup = new FormGroup({});
-
   genderFormCheckboxes: any = [
     {key: 'female', label: 'Female'},
     {key: 'male', label: 'Male'}
   ];
-  otherGenderControl = new FormControl('gender_other', []);
 
+  whenBornFormCheckboxes: any = [
+    {key: 'after1995', label: 'After 1995'},
+    {key: '_1980_1995', label: '1980 - 1995'},
+    {key: '_1965_1979', label: '1965 - 1979'},
+    {key: '_1945-1964', label: '1945 - 1964'},
+    {key: 'before1945', label: 'Before 1945'}
+  ];
+
+  ownBusinessCheckboxes: any = [
+    {key: true, label: 'Yes'},
+    {key: false, label: 'No'}
+  ];
+
+  educationLevelCheckboxes: any = [
+    {key: 'less_than_high_school', label: 'Less than high school degree'},
+    {key: 'High_school_degree_or_equivalent', label: 'High school degree or equivalent (e.g., GED)'},
+    {key: 'some_college_but_no_degree', label: 'Some college but no degree'},
+    {key: 'associate_degree', label: 'Associate degree'},
+    {key: 'bachelor_degree', label: 'Bachelor degree'},
+    {key: 'graduate_degree', label: 'Graduate degree'}
+  ];
+
+  collegeAffiliationCheckboxes: any = [
+    {key: 'cornell_university', label: 'Cornell University'},
+    {key: 'ithaca_college', label: 'Ithaca College'},
+    {key: 'tompkins_county_community_college', label: 'Tompkins County Community College'}
+  ];
+
+  checkbox_member_map: any = [
+    {member: 'gender', cb: this.genderFormCheckboxes},
+    {member: 'collegeAffiliations', cb: this.collegeAffiliationCheckboxes, multiple: true},
+    {member: 'educationLevel', cb: this.educationLevelCheckboxes},
+    {member: 'ownBusiness', cb: this.ownBusinessCheckboxes},
+    {member: 'whenBorn', cb: this.whenBornFormCheckboxes}
+  ];
 
   constructor(
     private loaderService: LoaderService,
@@ -36,10 +68,16 @@ export class OptionalInfoComponent implements OnInit {
 
   ngOnInit() {
 
-    this.genderFormCheckboxes.forEach(entry => {
-      this[`${entry.key}FormControl`] = new FormControl('', []);
-      this.optionalGenderForm.addControl(entry.key, this[`${entry.key}FormControl`]);
-      entry.value = this._memberdata.gender === entry.key;
+    this.checkbox_member_map.forEach(mm => {
+      if (mm.multiple) {
+        this.genderFormCheckboxes.forEach(entry => {
+          entry.value = this._memberdata[mm.member].indexOf(entry.key) >= 0;
+        });
+      } else {
+        this.genderFormCheckboxes.forEach(entry => {
+          entry.value = this._memberdata[mm.member] === entry.key;
+        });
+      }
     });
 
     this._cd.detectChanges();

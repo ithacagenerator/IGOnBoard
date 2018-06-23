@@ -146,6 +146,50 @@ export class MemberDataService {
     return this.getOptionalField('gender');
   }
 
+  set collegeAffiliations(value) {
+    if (Array.isArray(value)) {
+      this.setOptionalField('collegeAffiliation', value);
+    } else {
+      this.setOptionalField('collegeAffiliation', null);
+    }
+  }
+  get collegeAffiliations() {
+    const affiliation = this.getOptionalField('collegeAffiliation');
+    if (Array.isArray(affiliation)) {
+      return affiliation;
+    } else {
+      return [];
+    }
+  }
+
+  set collegeAffiliation_other(value) {
+    this.setOptionalField('collegeAffiliation_other', value);
+  }
+  get collegeAffiliation_other() {
+    return this.getOptionalField('collegeAffiliation_other');
+  }
+
+  set educationLevel(value) {
+    this.setOptionalField('educationLevel', value);
+  }
+  get educationLevel() {
+    return this.getOptionalField('educationLevel');
+  }
+
+  set ownBusiness(value) {
+    this.setOptionalField('ownBusiness', value);
+  }
+  get ownBusiness() {
+    return this.getOptionalField('ownBusiness');
+  }
+
+  set whenBorn(value) {
+    this.setOptionalField('whenBorn', value);
+  }
+  get whenBorn() {
+    return this.getOptionalField('whenBorn');
+  }
+
   hasInterest(key) {
     if (Array.isArray(this.memberObj.interests)) {
       return this.memberObj.interests.indexOf(key) >= 0;
@@ -163,16 +207,33 @@ export class MemberDataService {
     this.memberObj.interests = Array.from(temp);
   }
 
-  changeOptionalResponse($event, field, key, entries?) {
-    if ($event.checked) {
-      if (entries){
-        entries.forEach(entry => {
-          entry.value = entry.key === key;
-        });
+  changeOptionalResponse($event, field, key, entries?, allowMultiple?) {
+    if (allowMultiple) {
+      let currentValues = this[field];
+      if (!Array.isArray(currentValues)) {
+        currentValues = [];
       }
-      this[field] = key;
+      currentValues = new Set(currentValues);
+      if ($event.checked) {
+        currentValues.add(key);
+      } else {
+        currentValues.delete(key);
+      }
+      currentValues = Array.from(currentValues);
+      this[field] = currentValues;
     } else {
-      this[field] = null;
+      if ($event.checked) {
+        if (entries) {
+          if (!allowMultiple) {
+            entries.forEach(entry => {
+              entry.value = entry.key === key;
+            });
+          }
+        }
+        this[field] = key;
+      } else {
+        this[field] = null;
+      }
     }
   }
 
