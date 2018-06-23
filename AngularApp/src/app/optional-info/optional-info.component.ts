@@ -57,13 +57,29 @@ export class OptionalInfoComponent implements OnInit {
     {key: 'unable_to_work', label: 'Unable to work'}
   ];
 
+  householdIncomeCheckboxes: any = [
+    {key: 'less_than_10k', label: '$0 to $9,999'},
+    {key: '_10k_to_25k', label: '$10,000 to $24,999'},
+    {key: '_25k_to_50k', label: '$25,000 to $49,999'},
+    {key: '_50k_to_75k', label: '$50,000 to $74,999'},
+    {key: '_75k_to_100k', label: '$75,000 to $99,999'},
+    {key: '_100k_to_125k', label: '$100,000 to $124,999'},
+    {key: '_125k_to_150k', label: '$125,000 to $149,999'},
+    {key: '_150k_to_175k', label: '$150,000 to $174,999'},
+    {key: '_175k_to_200k', label: '$175,000 to $199,999'},
+    {key: 'more_than_200k', label: '$200,000 and up'}
+  ];
+
   checkbox_member_map: any = [
     {member: 'gender', cb: this.genderFormCheckboxes},
     {member: 'collegeAffiliations', cb: this.collegeAffiliationCheckboxes, multiple: true},
     {member: 'educationLevel', cb: this.educationLevelCheckboxes},
     {member: 'ownBusiness', cb: this.ownBusinessCheckboxes},
-    {member: 'whenBorn', cb: this.whenBornFormCheckboxes}
+    {member: 'whenBorn', cb: this.whenBornFormCheckboxes},
+    {member: 'employmentStatus', cb: this.employmentStatusCheckboxes},
+    {member: 'householdIncome', cb: this.householdIncomeCheckboxes}
   ];
+
 
   constructor(
     private loaderService: LoaderService,
@@ -79,11 +95,11 @@ export class OptionalInfoComponent implements OnInit {
 
     this.checkbox_member_map.forEach(mm => {
       if (mm.multiple) {
-        this.genderFormCheckboxes.forEach(entry => {
+        mm.cb.forEach(entry => {
           entry.value = this._memberdata[mm.member].indexOf(entry.key) >= 0;
         });
       } else {
-        this.genderFormCheckboxes.forEach(entry => {
+        mm.cb.forEach(entry => {
           entry.value = this._memberdata[mm.member] === entry.key;
         });
       }

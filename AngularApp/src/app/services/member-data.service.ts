@@ -197,6 +197,13 @@ export class MemberDataService {
     return this.getOptionalField('employmentStatus');
   }
 
+  set householdIncome(value) {
+    this.setOptionalField('householdIncome', value);
+  }
+  get householdIncome() {
+    return this.getOptionalField('householdIncome');
+  }
+
   hasInterest(key) {
     if (Array.isArray(this.memberObj.interests)) {
       return this.memberObj.interests.indexOf(key) >= 0;

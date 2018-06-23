@@ -122,6 +122,23 @@
   </form>
 
   <form class="form">
+    <section>
+      <fieldset>
+        <legend>How much total combined money did all members of your household earn last year?</legend>
+        <div *ngFor="let entry of householdIncomeCheckboxes" class="form-cb">
+          <mat-checkbox
+            [name]="'householdIncome_' + entry.key"                
+            [(ngModel)]="entry.value"
+            (change)="_memberdata.changeOptionalResponse($event, 'householdIncome', entry.key, householdIncomeCheckboxes)"
+            [align]="'start'">
+            {{ entry.label }}
+          </mat-checkbox>
+        </div>
+      </fieldset>
+    </section>
+  </form>
+
+  <form class="form">
     <button mat-raised-button color="primary"        
       class="submit-button"
       [disabled]="handleNextDisabled()"
