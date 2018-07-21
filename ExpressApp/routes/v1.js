@@ -83,7 +83,7 @@ router.post('/test-email', (req, res, next) => {
             delete member.email;        
             const updateObj = buildRegistrationUpdate(member);
             if(members[0].deleted) { // previous member making a comeback?
-              updateObj['registration.validated'] = false;
+              updateObj.validated = false;
               updateObj['registration.registrationComplete'] = false;
             }
             updateObj.validationCode = validationCode;
