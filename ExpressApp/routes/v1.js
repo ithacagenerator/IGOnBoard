@@ -75,6 +75,9 @@ router.post('/test-email', (req, res, next) => {
             return result;
           });
         } else if(members.length === 1) {
+          if(members[0].deleted) {
+            members[0].validated = false;
+          }
           if(!members[0].validated) {
             const email = member.email;
             delete member.email;        
