@@ -75,14 +75,14 @@ router.post('/test-email', (req, res, next) => {
             return result;
           });
         } else if(members.length === 1) {
-          if(members[0].deleted) { // previous member making a comeback?
-            members[0].validated = false;
-            members[0].registrationComplete = false;
-          }
           if(!members[0].validated) {
             const email = member.email;
             delete member.email;        
             const updateObj = buildRegistrationUpdate(member);
+            if(members[0].deleted) { // previous member making a comeback?
+              updateObj['registration.validated'] = false;
+              updateObj['registration.registrationComplete'] = false;
+            }
             updateObj.validationCode = validationCode;
             return db.updateDocument('authbox', 'Members', {email}, updateObj)
             .then(result => {
@@ -187,13 +187,8 @@ router.put('/member-registration', (req, res, next) => {
   delete member.email;
   const updateObj = buildRegistrationUpdate(member);
   db.updateDocument('authbox', 'Members', { 
-    $and: [
-      {email},
-      {$or: [
-        {registrationComplete: {$ne: true}},
-        {deleted: true}
-      ]}
-    ]
+    email,
+    registrationComplete: {$ne: true}
   }, updateObj)
   .then(result => {
     if(!result.matchedCount) {
@@ -213,14 +208,8 @@ router.put('/member-registration', (req, res, next) => {
 // completed registration
 router.get('/member-registration/:email', (req, res, next) => {
   db.findDocuments('authbox', 'Members', {
-    $and: [
-      {email: req.params.email},
-      {registrationComplete: {$ne: true}}
-      // {$or: [
-      //   {registrationComplete: {$ne: true}},
-      //   {deleted: true}
-      // ]}
-    ]
+    email: req.params.email,
+    registrationComplete: {$ne: true}
   }, { 
     projection: {
       deleted: 1,
