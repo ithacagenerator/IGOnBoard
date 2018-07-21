@@ -157,7 +157,7 @@ router.get('/validate-email/:validationCode/:email?', (req, res, next) => {
 
 router.get('/email-validated/:email', (req, res, next) => {
   const email = req.params.email;
-  db.findDocuments('authbox', 'Members', {email})
+  db.findDocuments('authbox', 'Members', {email, "registration.registrationComplete": {$ne: true}})
   .then(members => {
     if(members.length === 1) {
       res.json(members[0].validated ? members[0].registration || {} : false);

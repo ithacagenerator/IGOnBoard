@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 
 import * as promiseDoWhilst from 'promise-do-whilst';
+import { MemberDataService } from '../services/member-data.service';
 
 @Component({
   selector: 'app-email-confirmation',
@@ -14,11 +15,15 @@ export class EmailConfirmationComponent {
 
   constructor(
     private _api: ApiService,
+    private _memberdata: MemberDataService,
     private _router: Router) {
     promiseDoWhilst(() => {
       return this._api.checkValidatedEmail()
-      .then((v: boolean) => {
+      .then((v: any) => {
         this.validated = v;
+        if (this.validated) {
+          this._memberdata.updateFields(v);
+        }
         return new Promise((resolve, reject) => {
           setTimeout(resolve, 1000);
         });
