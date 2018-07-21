@@ -229,6 +229,9 @@ router.get('/member-registration/:email', (req, res, next) => {
   })
   .then(members => {
     if(Array.isArray(members) && members.length === 1) {
+      if(members[0].deleted) {
+        members[0].registration = {email: members[0].registration.email};
+      }
       return members[0].registration;
     } else {
       throw new Error(`Found ${members.length} records with email address`);
