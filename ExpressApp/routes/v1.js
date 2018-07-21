@@ -224,7 +224,6 @@ router.get('/member-registration/:email', (req, res, next) => {
     ]
   }, { 
     projection: {
-      _id: 0,
       deleted: 1,
       registration: 1
     }
@@ -232,7 +231,7 @@ router.get('/member-registration/:email', (req, res, next) => {
   .then(members => {
     if(Array.isArray(members) && members.length === 1) {
       if(members[0].deleted) {
-        members[0].registration = {email: members[0].registration.email};
+        members[0].registration = {};
       }
       return members[0].registration;
     } else {
