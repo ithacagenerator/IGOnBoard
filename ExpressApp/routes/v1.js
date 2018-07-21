@@ -75,6 +75,11 @@ router.post('/test-email', (req, res, next) => {
             return result;
           });
         } else if(members.length === 1) {
+          if(!members[0].deleted) { // previous member making a comeback?
+            members[0].validated = false;
+            members[0].deleted = false;
+            members[0].registrationComplete = false;
+          }
           if(!members[0].validated) {
             const email = member.email;
             delete member.email;        
@@ -176,7 +181,7 @@ router.put('/member-registration', (req, res, next) => {
     member.membershipPoliciesAgreedTo = moment().format();
   }
   if(member.waiverAccepted) {
-    member.waiverAccepted = moment().format();
+    member.waiverAccepted = moment(validated).format();
   }
   
   const email = member.email;
@@ -211,10 +216,11 @@ router.get('/member-registration/:email', (req, res, next) => {
   db.findDocuments('authbox', 'Members', {
     $and: [
       {email: req.params.email},
-      {$or: [
-        {registrationComplete: {$ne: true}},
-        {deleted: true}
-      ]}
+      {registrationComplete: {$ne: true}}
+      // {$or: [
+      //   {registrationComplete: {$ne: true}},
+      //   {deleted: true}
+      // ]}
     ]
   }, { 
     projection: {
