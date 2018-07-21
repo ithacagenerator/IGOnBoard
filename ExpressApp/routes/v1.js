@@ -77,7 +77,6 @@ router.post('/test-email', (req, res, next) => {
         } else if(members.length === 1) {
           if(!members[0].deleted) { // previous member making a comeback?
             members[0].validated = false;
-            members[0].deleted = false;
             members[0].registrationComplete = false;
           }
           if(!members[0].validated) {
@@ -134,7 +133,7 @@ router.get('/validate-email/:validationCode/:email?', (req, res, next) => {
       { validationCode },
       {
         $set: { validated: moment().format() },
-        $unset: { validationCode: '' }
+        $unset: { validationCode: true, deleted: true}
       },
       { updateType: 'complex' }
     )
