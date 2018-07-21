@@ -160,7 +160,7 @@ router.get('/email-validated/:email', (req, res, next) => {
   db.findDocuments('authbox', 'Members', {email})
   .then(members => {
     if(members.length === 1) {
-      res.json(!!members[0].validated);
+      res.json(members[0].validated ? members[0].registration || {} : false);
     } else if(members.length === 0){
       throw new Error(`No records with email address`);
     } else {
