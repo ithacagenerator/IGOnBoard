@@ -75,7 +75,7 @@ router.post('/test-email', (req, res, next) => {
             return result;
           });
         } else if(members.length === 1) {
-          if(!members[0].deleted) { // previous member making a comeback?
+          if(members[0].deleted) { // previous member making a comeback?
             members[0].validated = false;
             members[0].registrationComplete = false;
           }
