@@ -177,13 +177,13 @@ router.get('/email-validated/:email', (req, res, next) => {
 // completed registration
 router.put('/member-registration', (req, res, next) => {
   // attempt to update a document 
-  const member = req.body;
+  const member = req.body || {};
 
-  if(member.membershipPoliciesAgreedTo) {
+  if(member.membershipPoliciesAgreedTo === true) {
     member.membershipPoliciesAgreedTo = moment().format();
   }
-  if(member.waiverAccepted) {
-    member.waiverAccepted = moment(validated).format();
+  if(member.waiverAccepted === true) {
+    member.waiverAccepted = moment().format();
   }
   
   const email = member.email;
