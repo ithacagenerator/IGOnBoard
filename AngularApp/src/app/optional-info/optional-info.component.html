@@ -161,6 +161,28 @@
   </form>
 
   <form class="form">
+    <section>
+      <fieldset>
+        <legend>How did you hear about Ithaca Generator?</legend>
+        <div *ngFor="let entry of heardAboutUsCheckboxes" class="form-cb">
+          <mat-checkbox
+            [name]="'heard_about_via_' + entry.key"                
+            [(ngModel)]="entry.value"
+            (change)="_memberdata.changeOptionalResponse($event, 'heardAboutVia', entry.key, heardAboutUsCheckboxes, true)"
+            [align]="'start'">
+            {{ entry.label }}
+          </mat-checkbox>
+        </div>
+        <mat-form-field class="full-width">        
+          <input matInput placeholder   ="Other"
+            name="heard_about_via_other" 
+            [(ngModel)]="_memberdata.heardAboutVia_other">              
+        </mat-form-field> 
+      </fieldset>
+    </section>
+  </form>
+
+  <form class="form">
     <button mat-raised-button color="primary"        
       class="submit-button"
       [disabled]="handleNextDisabled()"

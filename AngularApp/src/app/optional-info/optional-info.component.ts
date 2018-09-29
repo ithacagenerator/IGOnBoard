@@ -57,6 +57,16 @@ export class OptionalInfoComponent implements OnInit {
     {key: 'unable_to_work', label: 'Unable to work'}
   ];
 
+  heardAboutUsCheckboxes: any = [
+    {key: 'recruted_by_member', label: 'A current member recruited me'},
+    {key: 'walked_in', label: 'I walked in off the street and asked what IG was'},
+    {key: 'active_seeker', label: 'I\'m new to the area and looked for the local makerspace'},
+    {key: 'website_newsletter', label: 'I read about IG on the website or newsletter'},
+    {key: 'print_media', label: 'I read about IG in the newspaper or a magazine'},
+    {key: 'radio', label: 'I heard about it on the radio'},
+    {key: 'television', label: 'I saw something about IG on television'}
+  ];
+
   householdIncomeCheckboxes: any = [
     {key: 'less_than_10k', label: '$0 to $9,999'},
     {key: '_10k_to_25k', label: '$10,000 to $24,999'},
@@ -89,7 +99,8 @@ export class OptionalInfoComponent implements OnInit {
     {member: 'whenBorn', cb: this.whenBornFormCheckboxes},
     {member: 'employmentStatus', cb: this.employmentStatusCheckboxes},
     {member: 'householdIncome', cb: this.householdIncomeCheckboxes},
-    {member: 'stewardships', cb: this.stewardshipCheckboxes, multiple: true}
+    {member: 'stewardships', cb: this.stewardshipCheckboxes, multiple: true},
+    {member: 'heardAboutVia', cb: this.heardAboutUsCheckboxes, multiple: true}
   ];
 
 

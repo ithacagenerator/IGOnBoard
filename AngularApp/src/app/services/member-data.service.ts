@@ -227,6 +227,28 @@ export class MemberDataService {
     return this.getOptionalField('stewardships_other');
   }
 
+  set heardAboutVia(value) {
+    if (Array.isArray(value)) {
+      this.setOptionalField('heard_about_via', value);
+    } else {
+      this.setOptionalField('heard_about_via', null);
+    }
+  }
+  get heardAboutVia() {
+    const heardAbout = this.getOptionalField('heard_about_via');
+    if (Array.isArray(heardAbout)) {
+      return heardAbout;
+    } else {
+      return [];
+    }
+  }
+
+  set heardAboutVia_other(value) {
+    this.setOptionalField('heard_about_via_other', value);
+  }
+  get heardAboutVia_other() {
+    return this.getOptionalField('heard_about_via_other');
+  }
 
   hasInterest(key) {
     if (Array.isArray(this.memberObj.interests)) {
