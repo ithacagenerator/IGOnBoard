@@ -4,4 +4,15 @@
 
 <div class="entry-content">
 
-</div>
+  <ng-container *ngFor="let form of paypal_buttons">
+    <form id="{{form.key}}" action="https://www.paypal.com/cgi-bin/webscr" method="post"
+      target="_top">
+      <input name="cmd" type="hidden" value="_s-xclick">
+      <input name="hosted_button_id" type="hidden" [value]="form.hosted_button_id">
+      <div class="submit-button" (click)="submitPaypalForm(form.key)">
+        Join at {{ form.key.replace('-',' ') | titlecase }} Level
+      </div>
+      <img class="doljplisuonkndkuzivh" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" alt="" width="1" height="1"
+        border="0">
+    </form>
+  </ng-container>
