@@ -76,8 +76,11 @@ export class PaymentComponent implements OnInit {
   }
 
   selectLevel(level) {
-    // TODO: select the student or regular form based on applicant's prior answers
-    // for now just assume regular
-    this.selected_membership_level = level + '-student';
+    if (['basic', 'standard', 'extra'].indexOf(level) >= 0) {
+      if (this._memberdata.student) {
+        level = level + '-student';
+      }
+      this.selected_membership_level = level;
+    }
   }
 }
