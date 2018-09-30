@@ -15,29 +15,36 @@ import { DOCUMENT } from '@angular/common';
 export class PaymentComponent implements OnInit {
 
   public selected_membership_level = 'basic';
+
   public paypal_buttons = [
     {
       key: 'basic',
+      group: 'basic',
       hosted_button_id: 'JLEYTS7HT7YJ6'
     },
     {
       key: 'basic-student',
+      group: 'basic',
       hosted_button_id: '9AP4PRYJ85F3A'
     },
     {
       key: 'standard',
+      group: 'standard',
       hosted_button_id: 'ZT7NW89KKSSZU'
     },
     {
       key: 'standard-student',
+      group: 'standard',
       hosted_button_id: '4V77DZH2QCKCJ'
     },
     {
       key: 'extra',
+      group: 'extra',
       hosted_button_id: 'BQSQHVL65WDLG'
     },
     {
       key: 'extra-student',
+      group: 'extra',
       hosted_button_id: '73BET883EJ8TC'
     },
   ];
@@ -53,6 +60,7 @@ export class PaymentComponent implements OnInit {
     @Inject(DOCUMENT) private document: any) { }
 
   ngOnInit() {
+    this.selectLevel('standard');
   }
 
   submitPaypalForm(formName) {
@@ -61,6 +69,15 @@ export class PaymentComponent implements OnInit {
       this.loaderService.display(true);
       (<any> form).submit();
     }
+  }
 
+  selectedForm() {
+    return this.paypal_buttons.find(v => v.key === this.selected_membership_level);
+  }
+
+  selectLevel(level) {
+    // TODO: select the student or regular form based on applicant's prior answers
+    // for now just assume regular
+    this.selected_membership_level = level + '-student';
   }
 }

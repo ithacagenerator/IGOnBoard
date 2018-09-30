@@ -1,13 +1,47 @@
 .submit-button {
   margin-top: 1em;
-  width: 250px;
   height: 63px;
   background: yellow;
   vertical-align: middle;
-  display: table-cell;
   text-align: center;
   font-weight: bolder;
   font-size: 1.2em;
   cursor: pointer;
-  padding: 10px;
+  display: flex;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 390px;
+  align-items: center;
+  justify-content: center;
+}
+
+h1 {
+  line-height: 0;
+}
+
+.flex-grid-thirds {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  font-weight: bolder;
+  font-size: 1.2em;
+  .col {
+    width: 30%;
+    height: 63px;
+    background-color: yellow;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .col.selected {
+    background-color: #673ab7;
+    color:white;
+  }
+}
+
+.membership-level-description {
+  min-height: 130px;
 }
