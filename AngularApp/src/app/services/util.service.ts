@@ -30,7 +30,7 @@ export class UtilService {
       _router.navigate(['/additional-info']);
     } else if (!this._memberdata.optionalInfoComplete()) {
       _router.navigate(['/optional-info']);
-    } else {
+    } else if (!this._memberdata.registrationComplete()) {
       _router.navigate(['/payment']);
     }
   }

@@ -7,6 +7,7 @@ import { MatSnackBar } from '@angular/material';
 import { UtilService } from '../services/util.service';
 import { DOCUMENT } from '@angular/common';
 import { FormControl, FormGroup } from '@angular/forms';
+import { ErrorSnackBarComponent } from '../error-snack-bar/error-snack-bar.component';
 
 @Component({
   selector: 'app-payment',
@@ -99,8 +100,33 @@ export class PaymentComponent implements OnInit {
 
   submitCompleteRegistration() {
     this.submit_clicked = true;
-    // display the loader and
-    // do a database thing to close out the registration
+    this.handleNext();
+  }
 
+
+  handleNext() {
+    const fields: any = { registrationComplete: true };
+    this.loaderService.display(true);
+    this._memberdata.updateFields(fields);
+    return this._api.updateMemberRecord()
+    .then((res: any) => {
+      this.loaderService.display(false);
+      const hasServerErrorMessage = (res && res.error && res.error.error);
+      if (!hasServerErrorMessage) {
+        this._util.navigateToLogicalNextStep(this._router);
+      } else {
+        this._snackBar.openFromComponent(ErrorSnackBarComponent, {
+          data: hasServerErrorMessage ? res.error.error : `Unexpected Error Status Code ${res.status}`,
+          duration: 2000
+        });
+      }
+    })
+    .catch(error => {
+      this.loaderService.display(false);
+      this._snackBar.openFromComponent(ErrorSnackBarComponent, {
+        data: error && error.message ? error.message : `Unexpected Error Occurred`,
+        duration: 2000
+      });
+    });
   }
 }

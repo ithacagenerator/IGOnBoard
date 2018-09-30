@@ -9,6 +9,7 @@ export class MemberDataService {
   private _liabilityWaverComplete = false;
   private _additionalInfoComplete = false;
   private _optionalInfoComplete = false;
+  private _registrationComplete = false;
 
   constructor() { }
 
@@ -312,6 +313,7 @@ export class MemberDataService {
     this.setMembershipPoliciesComplete(this.memberObj.membership_policies_complete);
     this.setAdditionalInfoComplete(this.memberObj.additional_info_complete);
     this.setOptionalInfoComplete(this.memberObj.optional_info_complete);
+    this.setRegistrationComplete(this.memberObj.registrationComplete);
   }
 
   setBasicInformationComplete(status) {
@@ -353,4 +355,13 @@ export class MemberDataService {
   optionalInfoComplete() {
     return this._optionalInfoComplete;
   }
+
+  setRegistrationComplete(status) {
+    this._registrationComplete = !!status;
+  }
+
+  registrationComplete() {
+    return this._registrationComplete;
+  }
+
 }

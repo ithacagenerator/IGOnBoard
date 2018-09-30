@@ -191,7 +191,7 @@ router.put('/member-registration', (req, res, next) => {
   const updateObj = buildRegistrationUpdate(member);
   db.updateDocument('authbox', 'Members', { 
     email,
-    registrationComplete: {$ne: true}
+    "registration.registrationComplete": {$ne: true}
   }, updateObj)
   .then(result => {
     if(!result.matchedCount) {
@@ -212,7 +212,7 @@ router.put('/member-registration', (req, res, next) => {
 router.get('/member-registration/:email', (req, res, next) => {
   db.findDocuments('authbox', 'Members', {
     email: req.params.email,
-    registrationComplete: {$ne: true}
+    "registration.registrationComplete": {$ne: true}
   }, { 
     projection: {
       deleted: 1,
