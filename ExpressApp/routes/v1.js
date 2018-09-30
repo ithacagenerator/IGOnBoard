@@ -93,6 +93,8 @@ router.post('/test-email', (req, res, next) => {
               member.validationCode = validationCode;
               return result;
             });
+          } else if(members[0].registrationComplete) {
+            throw new Error(`Member registration already complete`);
           } else {
             throw new Error(`Member is already validated`);
           }
