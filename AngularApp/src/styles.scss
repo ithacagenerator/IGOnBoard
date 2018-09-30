@@ -21,6 +21,12 @@ Nicolas Gallagher and Jonathan Neal http://necolas.github.com/normalize.css/
 /*--------------------------------------------------------------
 # Normalize
 --------------------------------------------------------------*/
+.mat-checkbox {
+  font-family: 'Fira Mono', "Lucida Console", Courier, monospace!important;
+  -webkit-text-size-adjust: 100%!important;
+  -ms-text-size-adjust: 100%!important;
+}
+
 html {
   font-family: 'Fira Mono', "Lucida Console", Courier, monospace;
   -webkit-text-size-adjust: 100%;

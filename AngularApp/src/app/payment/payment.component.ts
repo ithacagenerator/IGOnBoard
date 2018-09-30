@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { UtilService } from '../services/util.service';
 import { DOCUMENT } from '@angular/common';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-payment',
@@ -16,6 +17,10 @@ export class PaymentComponent implements OnInit {
 
   public selected_membership_level = 'basic';
   public submit_clicked = false;
+  public existingMember = false;
+  public existingMemberForm: FormGroup = new FormGroup({});
+
+  existingMemberFormControl = new FormControl('', []);
   public paypal_buttons = [
     {
       key: 'basic',
@@ -83,5 +88,19 @@ export class PaymentComponent implements OnInit {
       }
       this.selected_membership_level = level;
     }
+  }
+
+  specialCase() {
+    if (this.existingMember) {
+      return 'existing-member';
+    }
+    return '';
+  }
+
+  submitCompleteRegistration() {
+    this.submit_clicked = true;
+    // display the loader and
+    // do a database thing to close out the registration
+
   }
 }

@@ -1,3 +1,10 @@
+@import "../../variables.scss";
+
+.motivation {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .submit-button {
   margin-top: 1em;
   height: 63px;
@@ -39,10 +46,22 @@ h1 {
 }
 
 .selected {
-  background-color: #673ab7!important;
+  background-color: $checkedColor!important;
   color:white!important;
 }
 
 .membership-level-description {
   min-height: 130px;
+}
+
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  background-color: $checkedColor !important;
+}
+
+::ng-deep .mat-ripple-element {
+  background: $checkedColor !important;
+}
+
+::ng-deep .mat-checkbox-layout { 
+  white-space: normal !important; 
 }
