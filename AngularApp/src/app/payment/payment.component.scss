@@ -36,10 +36,11 @@ h1 {
     cursor: pointer;
   }
 
-  .col.selected {
-    background-color: #673ab7;
-    color:white;
-  }
+}
+
+.selected {
+  background-color: #673ab7!important;
+  color:white!important;
 }
 
 .membership-level-description {

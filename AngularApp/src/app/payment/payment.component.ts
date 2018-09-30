@@ -15,7 +15,7 @@ import { DOCUMENT } from '@angular/common';
 export class PaymentComponent implements OnInit {
 
   public selected_membership_level = 'basic';
-
+  public submit_clicked = false;
   public paypal_buttons = [
     {
       key: 'basic',
@@ -64,6 +64,7 @@ export class PaymentComponent implements OnInit {
   }
 
   submitPaypalForm(formName) {
+    this.submit_clicked = true;
     const form = document.getElementById(formName);
     if (form) {
       this.loaderService.display(true);
