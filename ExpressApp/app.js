@@ -35,7 +35,8 @@ function ipnValidationHandler(err, ipnContent, req) {
       db.updateDocument('authbox', 'Members', { 
         notifyId: req.params.notifyId 
       }, { 
-        paypal: ipnContent 
+        paypal: ipnContent,
+        "registration.registrationComplete": true
       }) // bind the paypal data to the member
       .then((result) => {
         console.log(`IPN modified ${result.modifiedCount} member records.`);
