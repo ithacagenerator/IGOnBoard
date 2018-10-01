@@ -33,7 +33,8 @@ export class UtilService {
     } else if (!this._memberdata.registrationComplete()) {
       _router.navigate(['/payment']);
     } else {
-      _router.navigate([`/thanks/${this._memberdata.correlationId}`]);
+      _router.navigate([this._memberdata.correlationId ?
+        `/thanks/${this._memberdata.correlationId}` : '/thanks']);
     }
   }
 
