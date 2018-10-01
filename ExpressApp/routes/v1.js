@@ -231,6 +231,14 @@ router.get('/member-registration/:email', (req, res, next) => {
       if(members[0].deleted) {
         members[0].registration = {};
       }
+
+      // unconditionally clear the correlationId so it only works once
+      // don't bother waiting for that to complete before responding
+      db.updateDocument('authbox', 'Members', { $or: [
+        {email: req.params.email, "registration.registrationComplete": {$ne: true}},
+        {"registration.correlationId": req.params.email}
+      ]}, {$unset: {"registration.correlationId": 1 }}, {updateType: 'complex'});
+     
       return members[0].registration;
     } else {
       throw new Error(`Found ${members.length} records with email address`);
