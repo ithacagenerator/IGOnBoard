@@ -21,6 +21,9 @@ export class PaymentComponent implements OnInit {
   public submit_clicked = false;
   public existingMember = false;
   public existingMemberForm: FormGroup = new FormGroup({});
+  public notifyUrl;
+  public returnUrl;
+  private baseURL = 'https://ithacagenerator.org/onboard';
 
   existingMemberFormControl = new FormControl('', []);
   public paypal_buttons = [
@@ -77,9 +80,12 @@ export class PaymentComponent implements OnInit {
   }
 
   submitPaypalForm(formName) {
-    const fields: any = {
-      correlationId: uuid.v4()
-    };
+    const correlationId = uuid.v4();
+    const notifyId = uuid.v4();
+    this.notifyUrl = `${this.baseURL}/notify/${notifyId}`;
+    this.returnUrl = `${this.baseURL}/thanks/${correlationId}`;
+    this._cd.detectChanges();
+    const fields: any = { correlationId, notifyId };
     this.loaderService.display(true);
     this._memberdata.updateFields(fields);
     return this._api.updateMemberRecord()

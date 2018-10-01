@@ -64,6 +64,8 @@
           target="_top">
           <input name="cmd" type="hidden" value="_s-xclick">
           <input name="hosted_button_id" type="hidden" [value]="form.hosted_button_id">
+          <input name="notify_url" type="hidden" [value]="notifyUrl">
+          <input name="return" type="hidden" [value]="notifyUrl">
           <div class="submit-button" (click)="submitPaypalForm(form.key)" [class.selected]="submit_clicked">
             Join at {{ form.key.replace('-',' ') | titlecase }} Level<br/>
             {{ form.amount | currency }} / MONTH
