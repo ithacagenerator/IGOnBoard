@@ -8,6 +8,7 @@ var index = require('./routes/index');
 var v1 = require('./routes/v1');
 var app = express();
 var cors = require('cors');
+var ipn = require('express-ipn');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -18,9 +19,19 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false })); // IPN data is sent in the body as x-www-form-urlencoded data
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../AngularApp/dist')));
+
+router.post('/notify/:notifyId', ipn.validator(ipnValidationHandler));
+
+function ipnValidationHandler(err, ipnContent, req) {
+  if (err) {
+      console.error("IPN invalid");              // The IPN was invalid
+  } else {
+      console.log(`Incoming IPN: `, ipnContent, req.params); // The IPN was valid.
+  }
+}
 
 app.use('/', index);
 app.use('/v1', v1);
