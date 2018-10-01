@@ -16,6 +16,7 @@ const emailVerificationEmailTemplate = fs.readFileSync(emailTemplatePath, 'utf8'
 const wildcards = require('disposable-email-domains/wildcard.json');
 const wildcardsRegex = wildcards.map(v => v.replace('.', '\\.'));
 const legitEmailRegex = new RegExp(`^(?!((.*${wildcardsRegex.join(')|(.*')})))`); // tests true for non-blacklisted emails
+const legitUuidRegex = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/;
 
 var transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -63,9 +64,12 @@ function sendEmail(to, subject, html) {
 router.post('/test-email', (req, res, next) => {
   const member = req.body;
   if(member && member.email) { 
-    if(legitEmailRegex.test(member.email)){
+    if(legitEmailRegex.test(member.email) || legitUuidRegex.test(member.correlationId)){
       // see if there's a record for this email address already
-      db.findDocuments('authbox', 'Members', {email: member.email})
+      db.findDocuments('authbox', 'Members', { $or: [
+        { email: member.email },
+        { "registration.correlationId": member.correlationId }
+      ]})
       .then(members => {      
         const validationCode = uuid.v4();
         if(members.length === 0){
@@ -83,6 +87,7 @@ router.post('/test-email', (req, res, next) => {
             delete member.email;
             const updateObj = buildRegistrationUpdate(member);
             if(members[0].deleted) { // previous member making a comeback?
+              // TODO: I don't understand this logic anymore
               updateObj.validated = false;
               updateObj['registration.registrationComplete'] = false;
             }
@@ -212,10 +217,10 @@ router.put('/member-registration', (req, res, next) => {
 // the result comes back 422 if the member already has an active
 // completed registration
 router.get('/member-registration/:email', (req, res, next) => {
-  db.findDocuments('authbox', 'Members', {
-    email: req.params.email,
-    "registration.registrationComplete": {$ne: true}
-  }, { 
+  db.findDocuments('authbox', 'Members', { $or: [
+    {email: req.params.email, "registration.registrationComplete": {$ne: true}},
+    {"registration.correlationId": req.params.email}
+  ]}, {
     projection: {
       deleted: 1,
       registration: 1

@@ -50,8 +50,10 @@ export class ApiService {
   // the result comes back 422 if the member already has an active
   // completed registration
   loadMemberRecord() {
+    const email = this._member.getMember().email ||
+      this._member.getMember().correlationId;
     return this._http
-    .get(`${this.baseUrl}/member-registration/${this._member.getMember().email}`)
+    .get(`${this.baseUrl}/member-registration/${email}`)
     .timeout(5000)
     .toPromise();
   }
