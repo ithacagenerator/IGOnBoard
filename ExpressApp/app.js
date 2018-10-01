@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: false })); // IPN data is sent in the 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../AngularApp/dist')));
 
-app.post('/notify/:notifyId', ipn.validator(ipnValidationHandler));
+app.post('/notify/:notifyId', ipn.validator(ipnValidationHandler, true));
 
 function ipnValidationHandler(err, ipnContent, req) {
   if (err) {
