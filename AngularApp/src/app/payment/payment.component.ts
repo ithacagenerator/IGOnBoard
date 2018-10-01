@@ -132,11 +132,18 @@ export class PaymentComponent implements OnInit {
     if (this.existingMember) {
       return 'existing-member';
     }
+
+    if (this._memberdata.requestFinancialAid) {
+      return 'scholarship-request';
+    }
+
     return '';
   }
 
   submitCompleteRegistration() {
     this.submit_clicked = true;
+    const correlationId = uuid.v4();
+    this._memberdata.updateFields({correlationId});
     this.handleNext();
   }
 

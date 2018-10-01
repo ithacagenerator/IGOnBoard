@@ -15,9 +15,21 @@
 
   <ng-container [ngSwitch]="specialCase()">
 
+    <ng-container *ngSwitchCase="'scholarship-request'">
+      <p>
+        Awesome, you've requested a scholarship. Click the button below to submit this application.
+        The Scholarship Committee will review your application and provide feedback within
+        three business days. If you have questions about the status of your application,
+        please contact <a href="mailto:board@ithacagenerator.org">board@ithacagenerator.org</a>.
+      </p>
+      <div class="submit-button" (click)="submitCompleteRegistration()" [class.selected]="submit_clicked">
+        Complete Registration
+      </div>
+    </ng-container>    
+
     <ng-container *ngSwitchCase="'existing-member'">
       <p>
-        You should only select this option if you already have an active membership subscription.
+        Cool, please note you should only select this option if you already have an active membership subscription.
         If that accurately describes your circumstance, clicking the button below will complete you registration.
       </p>
       <div class="submit-button" (click)="submitCompleteRegistration()" [class.selected]="submit_clicked">
