@@ -29,6 +29,7 @@ export class ThanksComponent implements AfterViewInit {
         this._memberdata.updateFields({correlationId: params['correlationId']});
         this.checkForRegistrationInProgress()
         .then(() => {
+          this._memberdata.updateFields({registrationComplete: true});
           this._cd.detectChanges();
         });
       }
