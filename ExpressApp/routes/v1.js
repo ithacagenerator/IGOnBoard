@@ -66,10 +66,11 @@ router.post('/test-email', (req, res, next) => {
   if(member && member.email) { 
     if(legitEmailRegex.test(member.email) || legitUuidRegex.test(member.correlationId)){
       // see if there's a record for this email address already
-      db.findDocuments('authbox', 'Members', { $or: [
-        { email: member.email },
-        { "registration.correlationId": member.correlationId }
-      ]})
+      const query = {$or: [{ email: member.email }]};
+      if(member.correlationId) {
+        query.$or.push({ "registration.correlationId": member.correlationId });
+      }
+      db.findDocuments('authbox', 'Members', query)
       .then(members => {      
         const validationCode = uuid.v4();
         if(members.length === 0){
@@ -219,7 +220,10 @@ router.put('/member-registration', (req, res, next) => {
 router.get('/member-registration/:email', (req, res, next) => {
   db.findDocuments('authbox', 'Members', { $or: [
     {email: req.params.email, "registration.registrationComplete": {$ne: true}},
-    {"registration.correlationId": req.params.email}
+    {$and: [
+      {"registration.correlationId": {$exists: true}},
+      {"registration.correlationId": req.params.email}
+    ]}
   ]}, {
     projection: {
       deleted: 1,
