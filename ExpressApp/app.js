@@ -10,6 +10,7 @@ var v1 = require('./routes/v1');
 var app = express();
 var cors = require('cors');
 var ipn = require('express-ipn');
+const db = require('./util/db');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -31,6 +32,17 @@ function ipnValidationHandler(err, ipnContent, req) {
       console.error("IPN invalid");              // The IPN was invalid
   } else {
       console.log(`Incoming IPN: `, ipnContent, req.params); // The IPN was valid.
+      db.updateDocument('authbox', 'Members', { 
+        notifyId: req.params.notifyId 
+      }, { 
+        paypal: ipnContent 
+      }) // bind the paypal data to the member
+      .then((result) => {
+        console.log(`IPN modified ${result.modifiedCount} member records.`);
+      })
+      .catch((err) => {
+        console.log(`IPN member record update failed.`, err);
+      });
   }
 }
 
