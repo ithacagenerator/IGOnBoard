@@ -1,3 +1,4 @@
+//jshint esversion: 6
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -53,7 +54,7 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  console.error(err.mesage, err.stack);;
+  console.error(err.mesage, err.stack);
   res.status(err.status || 500);
   res.render('error');
 });
