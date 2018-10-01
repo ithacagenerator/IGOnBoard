@@ -26,32 +26,38 @@ export class PaymentComponent implements OnInit {
     {
       key: 'basic',
       group: 'basic',
-      hosted_button_id: 'JLEYTS7HT7YJ6'
+      hosted_button_id: 'JLEYTS7HT7YJ6',
+      amount: 20
     },
     {
       key: 'basic-student',
       group: 'basic',
-      hosted_button_id: '9AP4PRYJ85F3A'
+      hosted_button_id: '9AP4PRYJ85F3A',
+      amount: 20 * 0.75
     },
     {
       key: 'standard',
       group: 'standard',
-      hosted_button_id: 'ZT7NW89KKSSZU'
+      hosted_button_id: 'ZT7NW89KKSSZU',
+      amount: 35
     },
     {
       key: 'standard-student',
       group: 'standard',
-      hosted_button_id: '4V77DZH2QCKCJ'
+      hosted_button_id: '4V77DZH2QCKCJ',
+      amount: 35 * 0.75
     },
     {
       key: 'extra',
       group: 'extra',
-      hosted_button_id: 'BQSQHVL65WDLG'
+      hosted_button_id: 'BQSQHVL65WDLG',
+      amount: 75
     },
     {
       key: 'extra-student',
       group: 'extra',
-      hosted_button_id: '73BET883EJ8TC'
+      hosted_button_id: '73BET883EJ8TC',
+      amount: 75 * 0.75
     },
   ];
 

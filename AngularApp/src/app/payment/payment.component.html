@@ -65,7 +65,8 @@
           <input name="cmd" type="hidden" value="_s-xclick">
           <input name="hosted_button_id" type="hidden" [value]="form.hosted_button_id">
           <div class="submit-button" (click)="submitPaypalForm(form.key)" [class.selected]="submit_clicked">
-            Join at {{ form.key.replace('-',' ') | titlecase }} Level
+            Join at {{ form.key.replace('-',' ') | titlecase }} Level<br/>
+            {{ form.amount | currency }} / MONTH
           </div>
           <img class="doljplisuonkndkuzivh" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" alt="" width="1" height="1"
             border="0">
