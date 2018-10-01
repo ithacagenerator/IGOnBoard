@@ -9,6 +9,7 @@ import { DOCUMENT } from '@angular/common';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ErrorSnackBarComponent } from '../error-snack-bar/error-snack-bar.component';
 
+import * as uuid from 'uuid';
 @Component({
   selector: 'app-payment',
   templateUrl: './payment.component.html',
@@ -76,12 +77,36 @@ export class PaymentComponent implements OnInit {
   }
 
   submitPaypalForm(formName) {
-    this.submit_clicked = true;
-    const form = document.getElementById(formName);
-    if (form) {
-      this.loaderService.display(true);
-      (<any> form).submit();
-    }
+    const fields: any = {
+      correlationId: uuid.v4()
+    };
+    this.loaderService.display(true);
+    this._memberdata.updateFields(fields);
+    return this._api.updateMemberRecord()
+    .then((res: any) => {
+      this.loaderService.display(false);
+      const hasServerErrorMessage = (res && res.error && res.error.error);
+      if (!hasServerErrorMessage) {
+        this.submit_clicked = true;
+        const form = document.getElementById(formName);
+        if (form) {
+          this.loaderService.display(true);
+          (<any> form).submit();
+        }
+      } else {
+        this._snackBar.openFromComponent(ErrorSnackBarComponent, {
+          data: hasServerErrorMessage ? res.error.error : `Unexpected Error Status Code ${res.status}`,
+          duration: 2000
+        });
+      }
+    })
+    .catch(error => {
+      this.loaderService.display(false);
+      this._snackBar.openFromComponent(ErrorSnackBarComponent, {
+        data: error && error.message ? error.message : `Unexpected Error Occurred`,
+        duration: 2000
+      });
+    });
   }
 
   selectedForm() {
@@ -111,7 +136,9 @@ export class PaymentComponent implements OnInit {
 
 
   handleNext() {
-    const fields: any = { registrationComplete: true };
+    const fields: any = {
+      registrationComplete: true
+    };
     this.loaderService.display(true);
     this._memberdata.updateFields(fields);
     return this._api.updateMemberRecord()

@@ -251,6 +251,10 @@ export class MemberDataService {
     return this.getOptionalField('heard_about_via_other');
   }
 
+  get correlationId() {
+    return this.memberObj.correlationId;
+  }
+
   hasInterest(key) {
     if (Array.isArray(this.memberObj.interests)) {
       return this.memberObj.interests.indexOf(key) >= 0;

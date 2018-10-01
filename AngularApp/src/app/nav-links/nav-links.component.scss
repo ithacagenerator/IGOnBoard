@@ -108,3 +108,22 @@ a.disabled {
     }    
   }
 }
+
+.payment {
+  .checkmark {
+    width: 45px;
+    position: absolute;
+    top: 20px;
+    right: 14px;
+    z-index: 1;
+  }  
+  @media only screen and (max-width : 1023px) {
+    .checkmark {
+      width: 30px;
+      position: absolute;
+      top: -5px;
+      right: -35px;
+      z-index: 1;
+    }    
+  }
+}

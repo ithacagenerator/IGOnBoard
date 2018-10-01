@@ -32,6 +32,8 @@ export class UtilService {
       _router.navigate(['/optional-info']);
     } else if (!this._memberdata.registrationComplete()) {
       _router.navigate(['/payment']);
+    } else {
+      _router.navigate([`/thanks/${this._memberdata.correlationId}`]);
     }
   }
 

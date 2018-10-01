@@ -42,6 +42,7 @@
           <a class="link" [routerLink]="['/payment']" [routerLinkActive]="'active'" [class.disabled]="paymentDisabled() ? true : null">
             Payment
           </a>
+          <img class="checkmark" src="assets/img/checkmark.png" *ngIf="_memberdata.registrationComplete()">
         </li>
       </ul>
     </div>

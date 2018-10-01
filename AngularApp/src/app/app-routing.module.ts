@@ -10,6 +10,7 @@ import { EmailConfirmationComponent } from './email-confirmation/email-confirmat
 import { AdditionalInfoComponent } from './additional-info/additional-info.component';
 import { BasicInfoComponent } from './basic-info/basic-info.component';
 import { OptionalInfoComponent } from './optional-info/optional-info.component';
+import { ThanksComponent } from './thanks/thanks.component';
 
 import { AuthGuard } from './services/auth-guard.service';
 
@@ -24,6 +25,8 @@ const routes: Routes = [
   { path: 'confirm-email', component: EmailConfirmationComponent, canActivate: [AuthGuard] },
   { path: 'additional-info', component: AdditionalInfoComponent, canActivate: [AuthGuard] },
   { path: 'optional-info', component: OptionalInfoComponent, canActivate: [AuthGuard] },
+  { path: 'thanks/:correlationId', component: ThanksComponent },
+  { path: 'thanks', component: ThanksComponent },
   { path: '**', redirectTo: '/welcome' }
 ];
 

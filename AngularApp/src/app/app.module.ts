@@ -38,6 +38,7 @@ import { BasicInfoComponent } from './basic-info/basic-info.component';
 import { UtilService } from './services/util.service';
 import { OptionalInfoComponent } from './optional-info/optional-info.component';
 import { AuthGuard } from './services/auth-guard.service';
+import { ThanksComponent } from './thanks/thanks.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { AuthGuard } from './services/auth-guard.service';
     ErrorSnackBarComponent,
     AdditionalInfoComponent,
     BasicInfoComponent,
-    OptionalInfoComponent
+    OptionalInfoComponent,
+    ThanksComponent
   ],
   imports: [
     BrowserModule,
