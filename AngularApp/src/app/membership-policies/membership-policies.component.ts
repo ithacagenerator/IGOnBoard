@@ -42,11 +42,11 @@ export class MembershipPoliciesComponent implements OnInit {
       this._memberData.setMembershipPoliciesComplete(true);
       this._util.navigateToLogicalNextStep(this._router);
     })
-    .catch(res => {
+    .catch(error => {
       this._memberData.updateFields({membership_policies_complete: true});
       this._loaderService.display(false);
       this._snackBar.openFromComponent(ErrorSnackBarComponent, {
-        data: res && res.error && res.error.error ? res.error.error : `Unexpected Error Status Code ${res.status}`,
+        data: this._util.errorMessage(error),
         duration: 2000
       });
     });

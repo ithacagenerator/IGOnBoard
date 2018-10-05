@@ -41,4 +41,16 @@ export class UtilService {
   isBoolean(v) {
     return v === true || v === false;
   }
+
+  errorMessage(error) {
+    if (error && (error.message || error.error)) {
+      let message = error.error || error.message;
+      if (/duplicate/i.test(message)) {
+        message = 'Duplicate Error - Object already exists';
+      }
+      return message;
+    } else {
+      return `Unexpected Error Occurred - Status Code '${error.status}'`;
+    }
+  }
 }
