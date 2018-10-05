@@ -61,5 +61,6 @@ export class UtilService {
     if (!message) {
       return `Unexpected Error Occurred - Status Code '${error.status}'`;
     }
+    return message;
   }
 }
