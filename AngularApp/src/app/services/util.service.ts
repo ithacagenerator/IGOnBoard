@@ -44,7 +44,7 @@ export class UtilService {
 
   errorMessage(error) {
     if (error && (error.message || error.error)) {
-      let message = error.error || error.message;
+      let message = (error.error ? error.error.error : error.error) || error.message;
       if (/duplicate/i.test(message)) {
         message = 'Duplicate Error - Object already exists';
       }
