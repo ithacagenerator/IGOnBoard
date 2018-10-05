@@ -62,14 +62,14 @@ export class WelcomeComponent implements AfterViewInit {
       this.loaderService.display(false);
       this._router.navigate(['/confirm-email']);
     })
-    .catch(error => {
+    .catch(res => {
       this.loaderService.display(false);
-      const hasServerErrorMessage = (error && error.error);
-      if (hasServerErrorMessage && (error.error === 'Member is already validated')) {
+      const hasServerErrorMessage = (res.error && res.error.error);
+      if (hasServerErrorMessage && (res.error.error === 'Member is already validated')) {
         this._util.navigateToLogicalNextStep(this._router);
       } else {
         this._snackBar.openFromComponent(ErrorSnackBarComponent, {
-          data: this._util.errorMessage(error),
+          data: this._util.errorMessage(res.error),
           duration: 2000
         });
       }
