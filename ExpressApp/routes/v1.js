@@ -86,6 +86,7 @@ router.post('/test-email', (req, res, next) => {
           if(!members[0].validated) {
             const email = member.email;
             delete member.email;
+            delete member.paypal;
             const updateObj = buildRegistrationUpdate(member);
             if(members[0].deleted) { // previous member making a comeback?
               // TODO: I don't understand this logic anymore
@@ -196,6 +197,7 @@ router.put('/member-registration', (req, res, next) => {
   
   const email = member.email;
   delete member.email;
+  delete member.paypal;
   const updateObj = buildRegistrationUpdate(member);
   db.updateDocument('authbox', 'Members', { 
     email,
