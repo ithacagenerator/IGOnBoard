@@ -43,13 +43,22 @@ export class UtilService {
   }
 
   errorMessage(error) {
-    if (error && (error.message || error.error)) {
-      let message = (error.error ? error.error.error : error.error) || error.message;
+    let message;
+    if (error) {
+      if (typeof (error.error) === 'string') {
+        message = error.error;
+      } else if (error.error) {
+        message = error.error.error;
+      } else {
+        message = error.message;
+      }
+
       if (/duplicate/i.test(message)) {
         message = 'Duplicate Error - Object already exists';
       }
-      return message;
-    } else {
+    }
+
+    if (!message) {
       return `Unexpected Error Occurred - Status Code '${error.status}'`;
     }
   }
