@@ -33,7 +33,7 @@ function ipnValidationHandler(err, ipnContent, req) {
   } else {
       console.log(`Incoming IPN: `, ipnContent, req.params); // The IPN was valid.
       db.updateDocument('authbox', 'Members', { 
-        notifyId: req.params.notifyId 
+        "registration.notifyId": req.params.notifyId
       }, { 
         paypal: ipnContent,
         "registration.registrationComplete": true
