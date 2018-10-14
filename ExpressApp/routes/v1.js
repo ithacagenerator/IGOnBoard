@@ -264,4 +264,5 @@ router.sendWelcomeEmail = function(email) {
   return sendEmail(email, 'Welcome to Ithaca Generator', welcomeEmailTemplate);
 };
 
+
 module.exports = router;

@@ -64,6 +64,12 @@ function ipnValidationHandler(err, ipnContent, req) {
   }
 }
 
+app.get('/testnotifyurl/:notifyId', (req, res, next) => {
+  if(req.params.notifyId) {
+    ipnValidationHandler(null, {}, req);
+  }
+});
+
 app.use('/', index);
 app.use('/v1', v1);
 app.get('*', function(req, res, next) { 
