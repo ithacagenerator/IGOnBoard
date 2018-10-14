@@ -45,7 +45,7 @@ function ipnValidationHandler(err, ipnContent, req) {
           return db.findDocuments('authbox', 'Members',{ 'registration.notifyId': req.params.notifyId })
           .then((members) => {
             if (members && members[0] && members[0].email && !members[0].welcomeEmailSent) {
-              return this.v1.sendWelcomeEmail(members[0].email) // send the new member welcome email to this person
+              return v1.sendWelcomeEmail(members[0].email) // send the new member welcome email to this person
               .then(() => {
                 return db.updateDocument('authbox', 'Members', { 'registration.notifyId': req.params.notifyId }, { welcomeEmailSent: true });
               })
