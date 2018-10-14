@@ -40,6 +40,23 @@ function ipnValidationHandler(err, ipnContent, req) {
       }, { updateType: 'complex' }) // bind the paypal data to the member
       .then((result) => {
         console.log(`IPN modified ${result.modifiedCount} member records.`);
+        if(result.modifiedCount === 1) {
+          // find the member's email, and if called for send a welcome email
+          return db.findDocuments('authbox', 'Members',{ 'registration.notifyId': req.params.notifyId })
+          .then((members) => {
+            if (members && members[0] && members[0].email && !members[0].welcomeEmailSent) {
+              return this.v1.sendWelcomeEmail(members[0].email) // send the new member welcome email to this person
+              .then(() => {
+                return db.updateDocument('authbox', 'Members', { 'registration.notifyId': req.params.notifyId }, { welcomeEmailSent: true });
+              })
+              .catch((err) => {
+                console.error(err.message, err.stack);
+              });
+            }
+          });
+        } else {
+          console.error(`Got IPN to '${req.params.notifyId}', which doesn't match any user`);
+        }
       })
       .catch((err) => {
         console.log(`IPN member record update failed.`, err);

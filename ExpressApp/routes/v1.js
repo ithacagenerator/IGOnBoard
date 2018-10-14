@@ -12,7 +12,9 @@ const nodemailer = require('nodemailer');
 const fs = require('fs');
 const path = require('path');
 const emailTemplatePath = path.join(__dirname, '..', 'routes', 'email-validation-template.html');
+const welcomeTemplatePath = path.join(__dirname, '..', 'routes', 'welcome-email-template.html');
 const emailVerificationEmailTemplate = fs.readFileSync(emailTemplatePath, 'utf8');
+const welcomeEmailTemplate = fs.readFileSync(welcomeTemplatePath, 'utf8');
 const wildcards = require('disposable-email-domains/wildcard.json');
 const wildcardsRegex = wildcards.map(v => v.replace('.', '\\.'));
 const legitEmailRegex = new RegExp(`^(?!((.*${wildcardsRegex.join(')|(.*')})))`); // tests true for non-blacklisted emails
@@ -257,5 +259,9 @@ router.get('/member-registration/:email', (req, res, next) => {
     res.status(422).json({error: error.message});
   });
 });
+
+router.sendWelcomeEmail = function(email) {
+  return sendEmail(email, 'Welcome to Ithaca Generator', welcomeEmailTemplate);
+};
 
 module.exports = router;
