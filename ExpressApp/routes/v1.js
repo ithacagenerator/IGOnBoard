@@ -155,16 +155,26 @@ router.get('/validate-email/:validationCode/:email?', (req, res, next) => {
     )
     .then(result => {
       if(result.modifiedCount) {        
-        res.send(`VALIDATION SUCCESSFUL! Close this Window and go back to the registration window, or just click <a href="https://ithacagenerator.org/onboard/welcome/${encodeURIComponent(email)}">here</a> to resume.`);
+        res.send(`
+        <body style="padding: 20px; background-color: yellow;">
+        <h1 style="font-size: 24px">VALIDATION SUCCESSFUL!</h1>
+        <div style="font-size: 18px">Close this Window and go back to the registration window, or just click <a href="https://ithacagenerator.org/onboard/welcome/${encodeURIComponent(email)}">here</a> to resume.</div>
+        </body>`);
       } else {
         throw new Error('No records were modified');
       }
     })
     .catch(error => {
-      res.send(`VALIDATION FAILED - ${ error.message }`);
+      res.send(`
+      <body style="padding: 20px; background-color: yellow;">
+      <h1 style="font-size: 24px">VALIDATION FAILED - ${ error.message }</h1>
+      </body>`);
     });
   } else {
-    res.send(`VALIDATION FAILED`);
+    res.send(`
+    <body style="padding: 20px; background-color: yellow;">
+    <h1 style="font-size: 24px">VALIDATION FAILED</h1>
+    </body>`);
   }
 });
 
