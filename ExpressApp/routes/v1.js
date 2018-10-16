@@ -38,6 +38,8 @@ function buildRegistrationUpdate(member) {
   if( member.firstname && member.lastname ) {
     ret.name = `${member.firstname} ${member.lastname}`;
   }
+  
+  delete ret.validated; // this is actually a top level field governed by other logics, don't duplicate it under registration
 
   return ret;
 }
@@ -248,7 +250,7 @@ router.get('/member-registration/:email', (req, res, next) => {
         {"registration.correlationId": req.params.email}
       ]}, {$unset: {"registration.correlationId": 1 }}, {updateType: 'complex'});
      
-      return members[0].registration;
+      return Object.assign({}, members[0].registration, {validated: members[0].validated });
     } else {
       throw new Error(`Found ${members.length} records with email address`);
     }
