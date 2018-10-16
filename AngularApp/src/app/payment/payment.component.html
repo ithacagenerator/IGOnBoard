@@ -39,8 +39,8 @@
 
     <ng-container *ngSwitchDefault>
 
-      <h1>Choose a Membership Level</h1>
-      <p class="flex-grid-thirds">
+      <h1 class="choose-membership-heading">Choose a Membership Level</h1>
+      <p class="flex-grid-thirds choose-membership">
         <span class="col" [class.selected]="selectedForm().group === 'basic'" (click)="selectLevel('basic')">Basic</span>
         <span class="col" [class.selected]="selectedForm().group === 'standard'" (click)="selectLevel('standard')">Standard</span>
         <span class="col" [class.selected]="selectedForm().group === 'extra'" (click)="selectLevel('extra')">Extra</span>

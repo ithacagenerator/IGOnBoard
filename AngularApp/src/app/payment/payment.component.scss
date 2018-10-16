@@ -66,3 +66,15 @@ h1 {
 ::ng-deep .mat-checkbox-layout { 
   white-space: normal !important; 
 }
+
+@media only screen and (max-width: 34em)  {
+  .choose-membership-heading {
+    line-height: 1em;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .choose-membership .col {
+    font-size: 0.9em;
+    height: 48px;
+  }
+}
