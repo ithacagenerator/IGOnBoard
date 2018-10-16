@@ -9,3 +9,9 @@ b {
   font-size: 20px;
   font-variant: small-caps;
 }
+
+@media only screen and (max-width: 34em)  {
+  ul {
+    left: 30px;
+  }
+}
