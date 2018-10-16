@@ -20,7 +20,7 @@ export class NavLinksComponent implements OnInit {
   }
 
   basicInfoDisabled() {
-    return !this._memberdata.getMember().email;
+    return !this._memberdata.getMember().email || !this._memberdata.getMember().validated;
   }
 
   membershipPoliciesDisabled() {

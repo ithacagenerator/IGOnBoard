@@ -231,6 +231,7 @@ router.get('/member-registration/:email', (req, res, next) => {
   ]}, {
     projection: {
       deleted: 1,
+      validated: 1,
       registration: 1
     }
   })
