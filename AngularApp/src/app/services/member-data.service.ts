@@ -34,6 +34,13 @@ export class MemberDataService {
     return this.memberObj.phone;
   }
 
+  set giftCode(value) {
+    this.memberObj.giftCode = value;
+  }
+  get giftCode() {
+    return this.memberObj.giftCode;
+  }
+
   set email(value) {
     this.memberObj.email = value;
   }

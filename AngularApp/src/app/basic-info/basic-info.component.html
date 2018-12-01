@@ -36,6 +36,11 @@
         [formControl]="phoneFormControl">
       <mat-error *ngIf="phoneFormControl.invalid">{{getPhoneErrorMessage()}}</mat-error>
     </mat-form-field>
+    <mat-form-field class="full-width">        
+      <input matInput placeholder="Gift Code (Optional)" 
+        [(ngModel)]="_memberdata.giftCode"
+        [formControl]="giftCodeFormControl">              
+    </mat-form-field> 
     <!-- <mat-form-field class="full-width">
       <textarea matInput placeholder="Mailing Street Address, City, State, Zipcode" type="text"        
         required

@@ -22,6 +22,7 @@ export class BasicInfoComponent implements OnDestroy {
     Validators.required,
     Validators.pattern(/(\(?[0-9]{3}\)?-?\s?[0-9]{3}-?[0-9]{4})/)
   ]);
+  giftCodeFormControl = new FormControl('', []);
   // addressFormControl = new FormControl('', [Validators.required]);
   over18FormControl = new FormControl('', [Validators.required]);
   requestFinancialAidFormControl = new FormControl('', [Validators.required]);
@@ -49,6 +50,7 @@ export class BasicInfoComponent implements OnDestroy {
       firstname: this.firstnameFormControl,
       lastname: this.lastnameFormControl,
       phone: this.phoneFormControl,
+      giftCode: this.giftCodeFormControl,
       over18: this.over18FormControl,
       requestFinancialAid: this.requestFinancialAidFormControl,
       student: this.studentFormControl
