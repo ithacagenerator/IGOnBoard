@@ -15,13 +15,19 @@
           <img class="checkmark" src="assets/img/checkmark.png" *ngIf="_memberdata.basicInformationComplete()">
         </li>
         <li class="policies menu-item">
-          <a class="link" [routerLink]="['/membership-policies']" [routerLinkActive]="'active'" [class.disabled]="membershipPoliciesDisabled() ? true : null">
+          <a class="link" href="https://ithacagenerator.org/alternate-membership-terms/membership-policies/" *ngIf="membershipPoliciesDisabled()">
+            Policies
+          </a>
+          <a class="link" [routerLink]="['/membership-policies']" [routerLinkActive]="'active'" *ngIf="!membershipPoliciesDisabled()">
             Policies
           </a>
           <img class="checkmark" src="assets/img/checkmark.png" *ngIf="_memberdata.membershipPoliciesComplete()">
         </li>
         <li class="waiver menu-item">
-          <a class="link" [routerLink]="['/waiver']" [routerLinkActive]="'active'" [class.disabled]="liabilityWaiverDisabled() ? true : null">
+          <a class="link" href="https://ithacagenerator.org/waiver-of-liability/" *ngIf="liabilityWaiverDisabled()">
+            Waiver
+          </a>
+          <a class="link" [routerLink]="['/waiver']" [routerLinkActive]="'active'" *ngIf="!liabilityWaiverDisabled()">
             Waiver
           </a>
           <img class="checkmark" src="assets/img/checkmark.png" *ngIf="_memberdata.liabilityWaverComplete()">
@@ -31,13 +37,13 @@
             Additional Info
           </a>
           <img class="checkmark" src="assets/img/checkmark.png" *ngIf="_memberdata.additionalInfoComplete()">
-        </li> 
+        </li>
         <li class="optional menu-item">
           <a class="link" [routerLink]="['/optional-info']" [routerLinkActive]="'active'" [class.disabled]="optionalInfoDisabled() ? true : null">
             Optional Info
           </a>
           <img class="checkmark" src="assets/img/checkmark.png" *ngIf="_memberdata.optionalInfoComplete()">
-        </li>                
+        </li>
         <li class="payment menu-item">
           <a class="link" [routerLink]="['/payment']" [routerLinkActive]="'active'" [class.disabled]="paymentDisabled() ? true : null">
             Payment
