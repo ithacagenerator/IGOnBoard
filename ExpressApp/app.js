@@ -78,28 +78,30 @@ function ipnValidationHandler(err, ipnContent, req) {
         // it is generally the predecessor to recurring_payment_suspended_due_to_max_failed_payment
 
         ipnContent = ipnContent || {};
-        if(['subscr_cancel',
-          'subscr_eot',
-          'recurring_payment_suspended',
-          'recurring_payment_suspended_due_to_max_failed_payment'].indexOf(ipnContent.txn_type) >= 0) {
-          // notify the treasurer and 'delete' the member
-          const obj = {};
-          const now = moment().format();
-          obj.updated = now;
-          obj.deleted = true;
-          obj.welcomeEmailSent = false;
-          obj.access_codes = []; // wipe out the user's access codes
+        if(ipnContent.txn_type) {
+          if(['subscr_cancel',
+            'subscr_eot',
+            'recurring_payment_suspended',
+            'recurring_payment_suspended_due_to_max_failed_payment'].indexOf(ipnContent.txn_type) >= 0) {
+            // notify the treasurer and 'delete' the member
+            const obj = {};
+            const now = moment().format();
+            obj.updated = now;
+            obj.deleted = true;
+            obj.welcomeEmailSent = false;
+            obj.access_codes = []; // wipe out the user's access codes
 
-          return db.updateDocument('Members', { email: memberEmail }, obj)
-            .then(() => {
-              return v1.sendExitEmail(memberEmail);
-            });
-        } else if('subscr_failed' === ipnContent.txn_type) {
-          // notify the treasurer
-          return v1.sendEmail('treasurer@ithacagenerator.org', '[Ithaca Generator] Payment Failed', `PayPal says payment failed for Member ${memberEmail}`);
-        } else if(['subscr_payment', 'subscr_signup'].indexOf(ipnContent.txn_type) < 0) {
-          // TODO: should subscr_modify be in this list ^^^ ?
-          return v1.sendEmail('web@ithacagenerator.org', '[Ithaca Generator] Unexpected IPN', `Got unexpected PayPal IPN "${Content.txn_type}" for Member ${memberEmail}`);
+            return db.updateDocument('Members', { email: memberEmail }, obj)
+              .then(() => {
+                return v1.sendExitEmail(memberEmail);
+              });
+          } else if('subscr_failed' === ipnContent.txn_type) {
+            // notify the treasurer
+            return v1.sendEmail('treasurer@ithacagenerator.org', '[Ithaca Generator] Payment Failed', `PayPal says payment failed for Member ${memberEmail}`);
+          } else if(['subscr_payment', 'subscr_signup'].indexOf(ipnContent.txn_type) < 0) {
+            // TODO: should subscr_modify be in this list ^^^ ?
+            return v1.sendEmail('web@ithacagenerator.org', '[Ithaca Generator] Unexpected IPN', `Got unexpected PayPal IPN "${Content.txn_type}" for Member ${memberEmail}`);
+          }
         }
       })
       .catch((err) => {
