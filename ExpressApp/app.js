@@ -11,6 +11,7 @@ var app = express();
 var cors = require('cors');
 var ipn = require('express-ipn');
 const db = require('./util/db');
+const moment = require('moment');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,9 +33,10 @@ function ipnValidationHandler(err, ipnContent, req) {
       console.error("IPN invalid");              // The IPN was invalid
   } else {
       console.log(`Incoming IPN: `, ipnContent, req.params); // The IPN was valid.
-      db.updateDocument('authbox', 'Members', { 
+      let memberEmail;
+      db.updateDocument('authbox', 'Members', {
         "registration.notifyId": req.params.notifyId
-      }, { 
+      }, {
         $push: { paypal: ipnContent },
         $set: { "registration.registrationComplete": true }
       }, { updateType: 'complex' }) // bind the paypal data to the member
@@ -45,6 +47,7 @@ function ipnValidationHandler(err, ipnContent, req) {
           return db.findDocuments('authbox', 'Members',{ 'registration.notifyId': req.params.notifyId })
           .then((members) => {
             if (members && members[0] && members[0].email && !members[0].welcomeEmailSent) {
+              memberEmail = members[0].email;
               return v1.sendWelcomeEmail(members[0].email) // send the new member welcome email to this person
               .then(() => {
                 return db.updateDocument('authbox', 'Members', { 'registration.notifyId': req.params.notifyId }, { welcomeEmailSent: true });
@@ -56,6 +59,47 @@ function ipnValidationHandler(err, ipnContent, req) {
           });
         } else {
           console.error(`Got IPN to '${req.params.notifyId}', which doesn't match any user`);
+        }
+      })
+      .then(() => {
+        // now consider taking some special action associated with some bad IPN results
+        // empirically we've seen these values come through for membership subscriptions txn_type field
+        // 'subscr_payment'
+        // 'subscr_signup'
+        // 'subscr_cancel' *
+        // 'subscr_eot' *
+        // 'recurring_payment_suspended' *
+        // 'subscr_failed'
+        // 'recurring_payment_suspended_due_to_max_failed_payment' *
+        // 'subscr_modify'
+        //
+        // and the ones with asterisks are associated with member cancellations
+        // someone should probably also be notified if subscr_failed happens as
+        // it is generally the predecessor to recurring_payment_suspended_due_to_max_failed_payment
+
+        ipnContent = ipnContent || {};
+        if(['subscr_cancel',
+          'subscr_eot',
+          'recurring_payment_suspended',
+          'recurring_payment_suspended_due_to_max_failed_payment'].indexOf(ipnContent.txn_type) >= 0) {
+          // notify the treasurer and 'delete' the member
+          const obj = {};
+          const now = moment().format();
+          obj.updated = now;
+          obj.deleted = true;
+          obj.welcomeEmailSent = false;
+          obj.access_codes = []; // wipe out the user's access codes
+
+          return db.updateDocument('Members', { email: memberEmail }, obj)
+            .then(() => {
+              return v1.sendExitEmail(memberEmail);
+            });
+        } else if('subscr_failed' === ipnContent.txn_type) {
+          // notify the treasurer
+          return v1.sendEmail('treasurer@ithacagenerator.org', '[Ithaca Generator] Payment Failed', `PayPal says payment failed for Member ${memberEmail}`);
+        } else if(['subscr_payment', 'subscr_signup'].indexOf(ipnContent.txn_type) < 0) {
+          // TODO: should subscr_modify be in this list ^^^ ?
+          return v1.sendEmail('web@ithacagenerator.org', '[Ithaca Generator] Unexpected IPN', `Got unexpected PayPal IPN "${Content.txn_type}" for Member ${memberEmail}`);
         }
       })
       .catch((err) => {
@@ -72,8 +116,8 @@ function ipnValidationHandler(err, ipnContent, req) {
 
 app.use('/', index);
 app.use('/v1', v1);
-app.get('*', function(req, res, next) { 
-  res.sendFile(path.join(__dirname, '../AngularApp/dist/index.html')); 
+app.get('*', function(req, res, next) {
+  res.sendFile(path.join(__dirname, '../AngularApp/dist/index.html'));
 });
 
 // catch 404 and forward to error handler

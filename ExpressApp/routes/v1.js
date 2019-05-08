@@ -13,8 +13,11 @@ const fs = require('fs');
 const path = require('path');
 const emailTemplatePath = path.join(__dirname, '..', 'routes', 'email-validation-template.html');
 const welcomeTemplatePath = path.join(__dirname, '..', 'routes', 'welcome-email-template.html');
+const exitTemplatePath = path.join(__dirname, '..', 'routes', 'exit-email-template.html');
+
 const emailVerificationEmailTemplate = fs.readFileSync(emailTemplatePath, 'utf8');
 const welcomeEmailTemplate = fs.readFileSync(welcomeTemplatePath, 'utf8');
+const exitEmailTemplate = fs.readFileSync(exitTemplatePath, 'utf8');
 const wildcards = require('disposable-email-domains/wildcard.json');
 const wildcardsRegex = wildcards.map(v => v.replace('.', '\\.'));
 const legitEmailRegex = new RegExp(`^(?!((.*${wildcardsRegex.join(')|(.*')})))`); // tests true for non-blacklisted emails
@@ -38,7 +41,7 @@ function buildRegistrationUpdate(member) {
   if( member.firstname && member.lastname ) {
     ret.name = `${member.firstname} ${member.lastname}`;
   }
-  
+
   delete ret.validated; // this is actually a top level field governed by other logics, don't duplicate it under registration
 
   return ret;
@@ -62,12 +65,12 @@ function sendEmail(to, subject, html) {
         resolve(info);
       }
     });
-  });  
+  });
 }
 
 router.post('/test-email', (req, res, next) => {
   const member = req.body;
-  if(member && member.email) { 
+  if(member && member.email) {
     if(legitEmailRegex.test(member.email) || legitUuidRegex.test(member.correlationId)){
       // see if there's a record for this email address already
       const query = {$or: [{ email: member.email }]};
@@ -75,7 +78,7 @@ router.post('/test-email', (req, res, next) => {
         query.$or.push({ "registration.correlationId": member.correlationId });
       }
       db.findDocuments('authbox', 'Members', query)
-      .then(members => {      
+      .then(members => {
         const validationCode = uuid.v4();
         if(members.length === 0){
           return db.insertDocument('authbox', 'Members', Object.assign({}, member, {validationCode}))
@@ -118,8 +121,8 @@ router.post('/test-email', (req, res, next) => {
         // result should either have an insertedId or modifiedCount
         if(result.insertedId || result.modifiedCount) {
           // send an email to the user with a link to click on
-          return sendEmail(member.email, 
-            'Ithaca Generator Email Validation', 
+          return sendEmail(member.email,
+            'Ithaca Generator Email Validation',
             emailVerificationEmailTemplate.replace(/{{validationCode}}/g,
             `${member.validationCode}/${encodeURIComponent(member.email)}`));
         } else {
@@ -133,7 +136,7 @@ router.post('/test-email', (req, res, next) => {
         res.status(422).json({ error: error.message });
       });
     } else {
-      res.status(422).json({error: 'Email address is not valid'});  
+      res.status(422).json({error: 'Email address is not valid'});
     }
   } else {
     res.status(422).json({error: 'Email field is required'});
@@ -145,7 +148,7 @@ router.get('/validate-email/:validationCode/:email?', (req, res, next) => {
   const email = req.params.email;
   if(validationCode) {
     // attempt to update a document as validated by querying for the validationCode
-    db.updateDocument('authbox', 'Members', 
+    db.updateDocument('authbox', 'Members',
       { validationCode },
       {
         $set: { validated: moment().format() },
@@ -154,7 +157,7 @@ router.get('/validate-email/:validationCode/:email?', (req, res, next) => {
       { updateType: 'complex' }
     )
     .then(result => {
-      if(result.modifiedCount) {        
+      if(result.modifiedCount) {
         res.send(`
         <body style="padding: 20px; background-color: yellow;">
         <h1 style="font-size: 40px">VALIDATION SUCCESSFUL!</h1>
@@ -199,7 +202,7 @@ router.get('/email-validated/:email', (req, res, next) => {
 // the result comes back 422 if the member already has an active
 // completed registration
 router.put('/member-registration', (req, res, next) => {
-  // attempt to update a document 
+  // attempt to update a document
   const member = req.body || {};
 
   if(member.membershipPoliciesAgreedTo === true) {
@@ -208,12 +211,12 @@ router.put('/member-registration', (req, res, next) => {
   if(member.waiverAccepted === true) {
     member.waiverAccepted = moment().format();
   }
-  
+
   const email = member.email;
   delete member.email;
   delete member.paypal;
   const updateObj = buildRegistrationUpdate(member);
-  db.updateDocument('authbox', 'Members', { 
+  db.updateDocument('authbox', 'Members', {
     email,
     "registration.registrationComplete": {$ne: true}
   }, updateObj)
@@ -259,7 +262,7 @@ router.get('/member-registration/:email', (req, res, next) => {
         {email: req.params.email, "registration.registrationComplete": {$ne: true}},
         {"registration.correlationId": req.params.email}
       ]}, {$unset: {"registration.correlationId": 1 }}, {updateType: 'complex'});
-     
+
       return Object.assign({}, members[0].registration, {validated: members[0].validated });
     } else {
       throw new Error(`Found ${members.length} records with email address`);
@@ -277,5 +280,10 @@ router.sendWelcomeEmail = function(email) {
   return sendEmail(email, 'Welcome to Ithaca Generator', welcomeEmailTemplate);
 };
 
+router.sendExitEmail = function(email) {
+  return sendEmail(email, 'Goodbye (for now) from Ithaca Generator', exitEmailTemplate);
+};
+
+router.sendEmail = sendEmail;
 
 module.exports = router;
