@@ -91,7 +91,7 @@ function ipnValidationHandler(err, ipnContent, req) {
             obj.welcomeEmailSent = false;
             obj.access_codes = []; // wipe out the user's access codes
 
-            return db.updateDocument('Members', { email: memberEmail }, obj)
+            return db.updateDocument('authbox', 'Members', { email: memberEmail }, obj)
               .then(() => {
                 return v1.sendExitEmail(memberEmail);
               });
