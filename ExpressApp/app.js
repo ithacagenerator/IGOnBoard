@@ -46,15 +46,17 @@ function ipnValidationHandler(err, ipnContent, req) {
           // find the member's email, and if called for send a welcome email
           return db.findDocuments('authbox', 'Members',{ 'registration.notifyId': req.params.notifyId })
           .then((members) => {
-            if (members && members[0] && members[0].email && !members[0].welcomeEmailSent) {
+            if (members && members[0] && members[0].email) {
               memberEmail = members[0].email;
-              return v1.sendWelcomeEmail(members[0].email) // send the new member welcome email to this person
-              .then(() => {
-                return db.updateDocument('authbox', 'Members', { 'registration.notifyId': req.params.notifyId }, { welcomeEmailSent: true });
-              })
-              .catch((err) => {
-                console.error(err.message, err.stack);
-              });
+              if (!members[0].welcomeEmailSent) {
+                return v1.sendWelcomeEmail(members[0].email) // send the new member welcome email to this person
+                .then(() => {
+                  return db.updateDocument('authbox', 'Members', { 'registration.notifyId': req.params.notifyId }, { welcomeEmailSent: true });
+                })
+                .catch((err) => {
+                  console.error(err.message, err.stack);
+                });
+              }
             }
           });
         } else {
@@ -93,7 +95,11 @@ function ipnValidationHandler(err, ipnContent, req) {
 
             return db.updateDocument('authbox', 'Members', { email: memberEmail }, obj)
               .then(() => {
-                return v1.sendExitEmail(memberEmail);
+                if(memberEmail) {
+                  return v1.sendExitEmail(memberEmail);
+                } else {
+                  console.log('Unable to send Exit email because no memberEmail was set');
+                }
               });
           } else if('subscr_failed' === ipnContent.txn_type) {
             // notify the treasurer
