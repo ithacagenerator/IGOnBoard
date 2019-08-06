@@ -1,4 +1,5 @@
 //jshint esversion: 6
+var compression = require('compression');
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -13,6 +14,7 @@ var ipn = require('express-ipn');
 const db = require('./util/db');
 const moment = require('moment');
 
+app.use(compression());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
