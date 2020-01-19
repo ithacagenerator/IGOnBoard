@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MemberDataService } from './member-data.service';
-
-import 'rxjs/add/operator/toPromise';
-import 'rxjs/add/operator/timeout';
-import 'rxjs/add/operator/do';
+import { timeout, tap } from 'rxjs/operators';
 
 @Injectable()
 export class ApiService {
@@ -21,10 +18,12 @@ export class ApiService {
       .post(`${this.baseUrl}/test-email`,
         this._member.getMember()
       )
-      .timeout(5000)
-      .do(res => {
-        this.sentValidationEmail = true;
-      })
+      .pipe(
+        timeout(5000),
+        tap(res => {
+          this.sentValidationEmail = true;
+        })
+      )
       .toPromise();
     }
     return Promise.resolve();
@@ -42,7 +41,7 @@ export class ApiService {
     .put(`${this.baseUrl}/member-registration`,
       member
     )
-    .timeout(5000)
+    .pipe(timeout(5000))
     .toPromise();
   }
 
@@ -54,7 +53,7 @@ export class ApiService {
       this._member.getMember().correlationId;
     return this._http
     .get(`${this.baseUrl}/member-registration/${email}`)
-    .timeout(5000)
+    .pipe(timeout(5000))
     .toPromise();
   }
 
@@ -62,7 +61,7 @@ export class ApiService {
     if (this.sentValidationEmail) {
       return this._http
       .get(`${this.baseUrl}/email-validated/${this._member.email}`)
-      .timeout(5000)
+      .pipe(timeout(5000))
       .toPromise();
     }
     return Promise.reject(new Error('Validation email not yet sent'));

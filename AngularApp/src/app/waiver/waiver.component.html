@@ -3,8 +3,8 @@
 </header>
 
 <p class="motivation">
-  Please read the following liability waiver. Then check the box indicating that you have done so, 
-  and click 'Next Step' at the bottom. You can download a PDF copy of the waiver 
+  Please read the following liability waiver. Then check the box indicating that you have done so,
+  and click 'Next Step' at the bottom. You can download a PDF copy of the waiver
   <a target="_blank" href="https://ithacagenerator.org/wp-content/uploads/IthacaGeneratorLiabilityForm.pdf">here</a>.
 </p>
 
@@ -24,8 +24,8 @@
   am sober, qualified, in good health, and in proper physical and mental condition to participate in such Activity.
   I further agree and warrant that if at any time I believe conditions to be unsafe, I will immediately discontinue
   further participation in the Activity.
-  </p>  
-  
+  </p>
+
   <p>
   FULLY UNDERSTAND THAT: (a) THESE ACTIVITIES MAY INVOLVE RISKS AND DANGERS OF SERIOUS BODILY
   INJURY, INCLUDING PERMANENT DISABILITY, AND DEATH ("RISKS'); (b) these Risks and dangers may be
@@ -62,13 +62,13 @@
 
 <div class="entry-content">
   <p>
-    <mat-checkbox       
-      class="checkbox-class"   
-      [(ngModel)]="checked"          
-      [align]="'start'">
+    <mat-checkbox
+      class="checkbox-class"
+      [(ngModel)]="checked"
+      [labelPosition]="'after'">
       I have read and accept the terms of the above Waiver of Liability.
-    </mat-checkbox>      
-    <button mat-raised-button color="primary" 
+    </mat-checkbox>
+    <button mat-raised-button color="primary"
       class="submit-button"
       [disabled]="!checked"
       (click)="handleNext()">Next Step</button>

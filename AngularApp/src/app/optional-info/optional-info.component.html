@@ -3,8 +3,8 @@
 </header>
 
 <p class="motivation">
-  Please consider helping us out by providing answers to any of the following <b>optional</b> questions. 
-  Information you provide will help us better understand our membership, 
+  Please consider helping us out by providing answers to any of the following <b>optional</b> questions.
+  Information you provide will help us better understand our membership,
   which will in turn give us opportunities to serve you in the best ways possible.
 </p>
 
@@ -15,18 +15,18 @@
         <legend>What is your gender?</legend>
         <div *ngFor="let entry of genderFormCheckboxes" class="form-cb">
           <mat-checkbox
-            [name]="'gender_' + entry.key"                
+            [name]="'gender_' + entry.key"
             [(ngModel)]="entry.value"
             (change)="_memberdata.changeOptionalResponse($event, 'gender', entry.key, genderFormCheckboxes)"
-            [align]="'start'">
+            [labelPosition]="'after'">
             {{ entry.label }}
           </mat-checkbox>
         </div>
-        <mat-form-field class="full-width">        
+        <mat-form-field class="full-width">
           <input matInput placeholder="Other Gender Identity"
-            name="gender_other" 
-            [(ngModel)]="_memberdata.gender_other">              
-        </mat-form-field> 
+            name="gender_other"
+            [(ngModel)]="_memberdata.gender_other">
+        </mat-form-field>
       </fieldset>
     </section>
   </form>
@@ -37,10 +37,10 @@
         <legend>When were you born?</legend>
         <div *ngFor="let entry of whenBornFormCheckboxes" class="form-cb">
           <mat-checkbox
-            [name]="'whenborn_' + entry.key"                
+            [name]="'whenborn_' + entry.key"
             [(ngModel)]="entry.value"
             (change)="_memberdata.changeOptionalResponse($event, 'whenBorn', entry.key, whenBornFormCheckboxes)"
-            [align]="'start'">
+            [labelPosition]="'after'">
             {{ entry.label }}
           </mat-checkbox>
         </div>
@@ -54,10 +54,10 @@
         <legend>Does anyone in your household own a business?</legend>
         <div *ngFor="let entry of ownBusinessCheckboxes" class="form-cb">
           <mat-checkbox
-            [name]="'whenborn_' + entry.key"                
+            [name]="'whenborn_' + entry.key"
             [(ngModel)]="entry.value"
             (change)="_memberdata.changeOptionalResponse($event, 'ownBusiness', entry.key, ownBusinessCheckboxes)"
-            [align]="'start'">
+            [labelPosition]="'after'">
             {{ entry.label }}
           </mat-checkbox>
         </div>
@@ -71,10 +71,10 @@
         <legend>What is the highest level of school you have completed or the highest degree you have received?</legend>
         <div *ngFor="let entry of educationLevelCheckboxes" class="form-cb">
           <mat-checkbox
-            [name]="'educationLevel_' + entry.key"                
+            [name]="'educationLevel_' + entry.key"
             [(ngModel)]="entry.value"
             (change)="_memberdata.changeOptionalResponse($event, 'educationLevel', entry.key, educationLevelCheckboxes)"
-            [align]="'start'">
+            [labelPosition]="'after'">
             {{ entry.label }}
           </mat-checkbox>
         </div>
@@ -88,32 +88,32 @@
         <legend>Are you affiliated with any colleges? (student, alumni, staff or professor?)</legend>
         <div *ngFor="let entry of collegeAffiliationCheckboxes" class="form-cb">
           <mat-checkbox
-            [name]="'collegeAffiliations_' + entry.key"                
+            [name]="'collegeAffiliations_' + entry.key"
             [(ngModel)]="entry.value"
             (change)="_memberdata.changeOptionalResponse($event, 'collegeAffiliations', entry.key, collegeAffiliationCheckboxes, true)"
-            [align]="'start'">
+            [labelPosition]="'after'">
             {{ entry.label }}
           </mat-checkbox>
         </div>
-        <mat-form-field class="full-width">        
+        <mat-form-field class="full-width">
           <input matInput placeholder="Other College"
-            name="collegeAffiliation_other" 
-            [(ngModel)]="_memberdata.collegeAffiliation_other">              
-        </mat-form-field> 
+            name="collegeAffiliation_other"
+            [(ngModel)]="_memberdata.collegeAffiliation_other">
+        </mat-form-field>
       </fieldset>
     </section>
   </form>
-  
+
   <form class="form">
     <section>
       <fieldset>
         <legend>Which of the following categories best describes your employment status?</legend>
         <div *ngFor="let entry of employmentStatusCheckboxes" class="form-cb">
           <mat-checkbox
-            [name]="'employmentStatus_' + entry.key"                
+            [name]="'employmentStatus_' + entry.key"
             [(ngModel)]="entry.value"
             (change)="_memberdata.changeOptionalResponse($event, 'employmentStatus', entry.key, employmentStatusCheckboxes)"
-            [align]="'start'">
+            [labelPosition]="'after'">
             {{ entry.label }}
           </mat-checkbox>
         </div>
@@ -127,10 +127,10 @@
         <legend>How much total combined money did all members of your household earn last year?</legend>
         <div *ngFor="let entry of householdIncomeCheckboxes" class="form-cb">
           <mat-checkbox
-            [name]="'householdIncome_' + entry.key"                
+            [name]="'householdIncome_' + entry.key"
             [(ngModel)]="entry.value"
             (change)="_memberdata.changeOptionalResponse($event, 'householdIncome', entry.key, householdIncomeCheckboxes)"
-            [align]="'start'">
+            [labelPosition]="'after'">
             {{ entry.label }}
           </mat-checkbox>
         </div>
@@ -144,18 +144,18 @@
         <legend>Do you consider yourself a steward for any of the following causes?</legend>
         <div *ngFor="let entry of stewardshipCheckboxes" class="form-cb">
           <mat-checkbox
-            [name]="'stewardships_' + entry.key"                
+            [name]="'stewardships_' + entry.key"
             [(ngModel)]="entry.value"
             (change)="_memberdata.changeOptionalResponse($event, 'stewardships', entry.key, stewardshipCheckboxes, true)"
-            [align]="'start'">
+            [labelPosition]="'after'">
             {{ entry.label }}
           </mat-checkbox>
         </div>
-        <mat-form-field class="full-width">        
+        <mat-form-field class="full-width">
           <input matInput placeholder   ="Other"
-            name="stewardships_other" 
-            [(ngModel)]="_memberdata.stewardships_other">              
-        </mat-form-field> 
+            name="stewardships_other"
+            [(ngModel)]="_memberdata.stewardships_other">
+        </mat-form-field>
       </fieldset>
     </section>
   </form>
@@ -166,24 +166,24 @@
         <legend>How did you hear about Ithaca Generator?</legend>
         <div *ngFor="let entry of heardAboutUsCheckboxes" class="form-cb">
           <mat-checkbox
-            [name]="'heard_about_via_' + entry.key"                
+            [name]="'heard_about_via_' + entry.key"
             [(ngModel)]="entry.value"
             (change)="_memberdata.changeOptionalResponse($event, 'heardAboutVia', entry.key, heardAboutUsCheckboxes, true)"
-            [align]="'start'">
+            [labelPosition]="'after'">
             {{ entry.label }}
           </mat-checkbox>
         </div>
-        <mat-form-field class="full-width">        
+        <mat-form-field class="full-width">
           <input matInput placeholder   ="Other"
-            name="heard_about_via_other" 
-            [(ngModel)]="_memberdata.heardAboutVia_other">              
-        </mat-form-field> 
+            name="heard_about_via_other"
+            [(ngModel)]="_memberdata.heardAboutVia_other">
+        </mat-form-field>
       </fieldset>
     </section>
   </form>
 
   <form class="form">
-    <button mat-raised-button color="primary"        
+    <button mat-raised-button color="primary"
       class="submit-button"
       [disabled]="handleNextDisabled()"
       (click)="handleNext()">Next Step</button>

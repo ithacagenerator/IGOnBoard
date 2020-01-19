@@ -4,11 +4,11 @@
 
 <div class="entry-content">
   <form class="form" name="existingMemberForm" [formGroup]="existingMemberForm">
-    <mat-checkbox       
+    <mat-checkbox
       class="checkbox-class"
       [formControl]="existingMemberFormControl"
       [(ngModel)]="existingMember"
-      [align]="'start'">
+      [labelPosition]="'after'">
       I am an <b>existing active member</b>
     </mat-checkbox><br/><br/>
   </form>
@@ -25,7 +25,7 @@
       <div class="submit-button" (click)="submitCompleteRegistration()" [class.selected]="submit_clicked">
         Complete Registration
       </div>
-    </ng-container>    
+    </ng-container>
 
     <ng-container *ngSwitchCase="'existing-member'">
       <p>
@@ -45,31 +45,31 @@
         <span class="col" [class.selected]="selectedForm().group === 'standard'" (click)="selectLevel('standard')">Standard</span>
         <span class="col" [class.selected]="selectedForm().group === 'extra'" (click)="selectLevel('extra')">Extra</span>
       </p>
-    
-      <p class="motivation membership-level-description" 
+
+      <p class="motivation membership-level-description"
         *ngIf="selectedForm().group === 'basic'">
-        Beginning at only $20 per month, this is our most affordable option. 
-        You’ll have access to the space during our staffed hours (usually 5pm-10pm) 
-        and are welcome to hang out in the front room. You may use any of the equipment 
+        Beginning at only $20 per month, this is our most affordable option.
+        You’ll have access to the space during our staffed hours (usually 5pm-10pm)
+        and are welcome to hang out in the front room. You may use any of the equipment
         in the front room, as well as tools in the back room that do not require special training.
       </p>
-    
-      <p class="motivation membership-level-description" 
+
+      <p class="motivation membership-level-description"
         *ngIf="selectedForm().group === 'standard'">
-        Starting at $35 per month, this level of membership allows you access to all of our tools. 
-        If you only need workshop access during our staffed hours (generally after 5pm on weekdays, 
-        or on the weekends) this level is what you want. You are also welcome to socialize or work 
+        Starting at $35 per month, this level of membership allows you access to all of our tools.
+        If you only need workshop access during our staffed hours (generally after 5pm on weekdays,
+        or on the weekends) this level is what you want. You are also welcome to socialize or work
         in the front room during staffed hours.
       </p>
-    
-      <p class="motivation membership-level-description" 
+
+      <p class="motivation membership-level-description"
         *ngIf="selectedForm().group === 'extra'">
-        For $75 per month, extra membership provides 24-7 access to the space, and is perfect for members 
-        who want the flexibility to come and go during the day or late at night. You will have access to all 
-        of the tools in the space and are welcome to use the space any time. Some members choose this level 
+        For $75 per month, extra membership provides 24-7 access to the space, and is perfect for members
+        who want the flexibility to come and go during the day or late at night. You will have access to all
+        of the tools in the space and are welcome to use the space any time. Some members choose this level
         purely out of a desire to give more support to the Makerspace.
       </p>
-    
+
       <ng-container *ngFor="let form of paypal_buttons">
         <form *ngIf="selected_membership_level === form.key"
           id="{{form.key}}" action="https://www.paypal.com/cgi-bin/webscr" method="post"
@@ -84,11 +84,10 @@
           </div>
           <img class="doljplisuonkndkuzivh" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" alt="" width="1" height="1"
             border="0">
-        </form>      
+        </form>
       </ng-container>
 
     </ng-container>
 
   </ng-container>
 </div>
-  
