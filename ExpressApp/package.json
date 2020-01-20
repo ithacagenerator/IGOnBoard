@@ -19,7 +19,7 @@
     "jade": "~1.11.0",
     "moment": "^2.22.0",
     "mongodb": "^3.0.6",
-    "morgan": "~1.9.0",
+    "morgan": "~1.9.1",
     "serve-favicon": "~2.4.5",
     "uuid": "^3.2.1"
   }
