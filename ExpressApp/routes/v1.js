@@ -31,6 +31,8 @@ var transporter = nodemailer.createTransport({
   }
 });
 
+const couponCodes = require('./couponCodes');
+
 function buildRegistrationUpdate(member) {
   const ret = {};
   if(member && (typeof member === 'object')){
