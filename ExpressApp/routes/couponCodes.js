@@ -48,7 +48,7 @@ async function insertCouponCode(couponcode, name) {
   const now = moment().format('YYYY-MM-DD HH:mm:ss');
   const now_gmt = moment().utcOffset(0).format('YYYY-MM-DD HH:mm:ss');
 
-  const query1 = `INSERT INTO ${prefix}posts SET post_author=1, post_date=NOW(), post_date=?, post_date_gmt=?, post_content='', post_title=?, post_excerpt='As an IG member ${mysql.escape(name)} can use this coupon to take core classes for free.', post_status='publish', comment_status='closed', ping_status='closed', post_password='', post_name='${couponcode}', to_ping='', pinged='', post_modified=?, post_modified_gmt=?, post_content_filtered='', post_parent=0, guid='https://ithacagenerator.org/?post_type=shop_coupon&#038;p=${uuidv4()}', menu_order=0, post_type='shop_coupon', post_mime_type='', comment_count=0`;
+  const query1 = `INSERT INTO ${prefix}posts SET post_author=1, post_date=NOW(), post_date=?, post_date_gmt=?, post_content='', post_title=?, post_excerpt='As an IG member ${mysql.escape(name)} can use this coupon to take core classes for free.', post_status='publish', comment_status='closed', ping_status='closed', post_password='', post_name='${couponcode}', to_ping='', pinged='', post_modified=?, post_modified_gmt=?, post_content_filtered='', post_parent=0, guid='https://ithacagenerator.org/\?post_type=shop_coupon&#038;p=${uuidv4()}', menu_order=0, post_type='shop_coupon', post_mime_type='', comment_count=0`;
   const params1 = [now, now_gmt, couponcode, now, now_gmt, couponcode];
   const {results1, fields1} = await executeQuery(query1, params1);
   if (!results1.insertId) {
@@ -56,7 +56,7 @@ async function insertCouponCode(couponcode, name) {
   }
   insertId = results1.insertId;
 
-  const query2 = `UPDATE ${prefix}posts SET guid='https://ithacagenerator.org/?post_type=shop_coupon&#038;p=?' WHERE ID=?`;
+  const query2 = `UPDATE ${prefix}posts SET guid='https://ithacagenerator.org/\?post_type=shop_coupon&#038;p=?' WHERE ID=?`;
   const params2 = [insertId, insertId];
 
   await executeQuery(query2, params2);
