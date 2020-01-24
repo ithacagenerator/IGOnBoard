@@ -5,6 +5,8 @@ const wordArray = fs.readFileSync(wordListPath, 'utf8').split('\n');
 const Filter = require('bad-words');
 const filter = new Filter();
 const uuidv4 = require('uuid/v4');
+const moment = require('moment');
+const homedir = require('homedir')();
 
 const mysql = require('mysql');
 const mysql_credentials = require(`${homedir}/mysql-credentials.json`);
