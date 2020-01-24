@@ -77,6 +77,7 @@ async function generateCouponCode() {
   const couponCode = `${word1}-${word2}`;
 
   // now that we have a coupon code, it's time to put it in mysql
+  await insertCouponCode(couponCode);
 
   return couponCode;
 }
