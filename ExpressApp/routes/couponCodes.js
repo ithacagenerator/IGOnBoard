@@ -62,7 +62,7 @@ async function insertCouponCode(couponcode, name='') {
 
   await executeQuery(query2, params2);
 
-  const query3 = `INSERT INTO ${prefix}postmeta (post_id, meta_key, meta_value) VALUES (?, '_edit_lock', '1579822317:5'), (?, '_edit_last', '5'), (?, 'discount_type', 'percent'), (?, 'coupon_amount', '100'), (?, 'individual_use', 'no'), (?, 'usage_limit', '0'), (?, 'usage_limit_per_user', '0'), (?, 'limit_usage_to_x_items '0'), (?, 'usage_count', '0'), (?, 'date_expires', '2147483647'), (?, 'free_shipping', 'no'), (?, 'exclude_sale_items', 'no'), (?, 'product_categories', 'a:1:{i:0;i:140;}')`;
+  const query3 = `INSERT INTO ${prefix}postmeta (post_id, meta_key, meta_value) VALUES (?, '_edit_lock', '1579822317:5'), (?, '_edit_last', '5'), (?, 'discount_type', 'percent'), (?, 'coupon_amount', '100'), (?, 'individual_use', 'no'), (?, 'usage_limit', '0'), (?, 'usage_limit_per_user', '0'), (?, 'limit_usage_to_x_items', '0'), (?, 'usage_count', '0'), (?, 'date_expires', '2147483647'), (?, 'free_shipping', 'no'), (?, 'exclude_sale_items', 'no'), (?, 'product_categories', 'a:1:{i:0;i:140;}')`;
   const params3 = [insertId, insertId, insertId, insertId, insertId, insertId, insertId, insertId, insertId, insertId, insertId, insertId, insertId];
 
   await executeQuery(query3, params3);
