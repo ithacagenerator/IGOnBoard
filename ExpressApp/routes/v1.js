@@ -30,7 +30,6 @@ var transporter = nodemailer.createTransport({
     pass: gmail_credentials.pass
   }
 });
-
 const couponCodes = require('./couponCodes');
 
 function buildRegistrationUpdate(member) {
