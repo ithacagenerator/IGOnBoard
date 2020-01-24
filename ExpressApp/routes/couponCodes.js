@@ -33,6 +33,7 @@ async function executeQuery(query, params=null) {
 
   return await new Promise((r, j) => {
     mysqlConnection.query(...args, function (error, results, fields) {
+      console.log(error, results, fields);
       if (error) {
         j(error);
       } else {
@@ -42,7 +43,7 @@ async function executeQuery(query, params=null) {
   });
 }
 
-async function insertCouponCode(couponcode, name) {
+async function insertCouponCode(couponcode, name='') {
   let insertId = '';
   const prefix = mysql_credentials.prefix;
   const now = moment().format('YYYY-MM-DD HH:mm:ss');
