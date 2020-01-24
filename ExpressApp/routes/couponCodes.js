@@ -43,26 +43,26 @@ async function executeQuery(query, params=null) {
 }
 
 async function insertCouponCode(couponcode, name) {
-  let insertid = '';
+  let insertId = '';
   const prefix = mysql_credentials.prefix;
   const now = moment().format('YYYY-MM-DD HH:mm:ss');
   const now_gmt = moment().utcOffset(0).format('YYYY-MM-DD HH:mm:ss');
 
-  const params1 = {now, now_gmt, couponcode};
-  const query1 = `INSERT INTO ${prefix}posts SET post_author=1, post_date=NOW(), post_date=:now, post_date_gmt=:now_gmt, post_content='', post_title=:couponcode, post_excerpt='As an IG member ${mysql.escape(name)} can use this coupon to take core classes for free.', post_status='publish', comment_status='closed', ping_status='closed', post_password='', post_name='${couponcode}', to_ping='', pinged='', post_modified=:now, post_modified_gmt=:now_gmt, post_content_filtered='', post_parent=0, guid='https://ithacagenerator.org/?post_type=shop_coupon&#038;p=${uuidv4()}', menu_order=0, post_type='shop_coupon', post_mime_type='', comment_count=0`;
+  const query1 = `INSERT INTO ${prefix}posts SET post_author=1, post_date=NOW(), post_date=?, post_date_gmt=?, post_content='', post_title=?, post_excerpt='As an IG member ${mysql.escape(name)} can use this coupon to take core classes for free.', post_status='publish', comment_status='closed', ping_status='closed', post_password='', post_name='${couponcode}', to_ping='', pinged='', post_modified=?, post_modified_gmt=?, post_content_filtered='', post_parent=0, guid='https://ithacagenerator.org/?post_type=shop_coupon&#038;p=${uuidv4()}', menu_order=0, post_type='shop_coupon', post_mime_type='', comment_count=0`;
+  const params1 = [now, now_gmt, coupondode, now, now_gmt, couponcode];
   const {results1, fields1} = await executeQuery(query1, params1);
   if (!results1.insertId) {
     throw {message: 'POST INSERT failed in insertCouponCode, no insertId returned'};
   }
   insertId = results1.insertId;
 
-  const query2 = `UPDATE ${prefix}posts SET guid='https://ithacagenerator.org/?post_type=shop_coupon&#038;p=:insertId' WHERE ID=:insertId`;
-  const params2 = {insertId};
+  const query2 = `UPDATE ${prefix}posts SET guid='https://ithacagenerator.org/?post_type=shop_coupon&#038;p=?' WHERE ID=?`;
+  const params2 = [insertId, insertId];
 
   await executeQuery(query2, params2);
 
-  const query3 = `INSERT INTO ${prefix}postmeta (post_id, meta_key, meta_value) VALUES (:insertId, '_edit_lock', '1579822317:5'), (:insertId, '_edit_last', '5'), (:insertId, 'discount_type', 'percent'), (:insertId, 'coupon_amount', '100'), (:insertId, 'individual_use', 'no'), (:insertId, 'usage_limit', '0'), (:insertId, 'usage_limit_per_user', '0'), (:insertId, 'limit_usage_to_x_items '0'), (:insertId, 'usage_count', '0'), (:insertId, 'date_expires', '2147483647'), (:insertId, 'free_shipping', 'no'), (:insertId, 'exclude_sale_items', 'no'), (:insertId, 'product_categories', 'a:1:{i:0;i:140;}')`;
-  const params3 = {insertId};
+  const query3 = `INSERT INTO ${prefix}postmeta (post_id, meta_key, meta_value) VALUES (?, '_edit_lock', '1579822317:5'), (?, '_edit_last', '5'), (?, 'discount_type', 'percent'), (?, 'coupon_amount', '100'), (?, 'individual_use', 'no'), (?, 'usage_limit', '0'), (?, 'usage_limit_per_user', '0'), (?, 'limit_usage_to_x_items '0'), (?, 'usage_count', '0'), (?, 'date_expires', '2147483647'), (?, 'free_shipping', 'no'), (?, 'exclude_sale_items', 'no'), (?, 'product_categories', 'a:1:{i:0;i:140;}')`;
+  const params3 = [insertId, insertId, insertId, insertId, insertId, insertId, insertId, insertId, insertId, insertId, insertId, insertId, insertId];
 
   await executeQuery(query3, params3);
 
