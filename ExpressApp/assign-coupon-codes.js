@@ -66,7 +66,7 @@ async function run() {
     console.log('Assigning Coupon Code to ', dbMember.name, dbMember.email, paypalEmail, dbMember.coupons);
 
     if (argv.generate) {
-      const coreClassCouponCode = await generateCouponCode();
+      const coreClassCouponCode = await generateCouponCode(dbMember.name);
       await updateDocument('authbox', 'Members', {
         email: dbMember.email
       }, {

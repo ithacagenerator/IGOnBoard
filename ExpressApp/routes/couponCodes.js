@@ -73,14 +73,14 @@ async function insertCouponCode(couponcode, name='') {
 // this should synthesize a coupon code,
 // and insert rows into the appropriate tables in the mysql wordpress database
 // see https://stackoverflow.com/questions/42979138/how-woocommerce-coupons-are-stored-in-database
-async function generateCouponCode() {
+async function generateCouponCode(name = null) {
   wordArray.sort(() => Math.random() - 0.5);
   const word1 = wordArray.find(validWord.bind(null, null));
   const word2 = wordArray.find(validWord.bind(null, word1));
   const couponCode = `${word1}-${word2}`;
 
   // now that we have a coupon code, it's time to put it in mysql
-  await insertCouponCode(couponCode);
+  await insertCouponCode(couponCode, name);
 
   return couponCode;
 }
