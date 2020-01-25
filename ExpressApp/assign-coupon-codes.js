@@ -40,7 +40,7 @@ async function run() {
 
   for (let ii = 0; ii < members.length; ii++) {
     const m = members[ii];
-    const dbMembers = await findDocuments('authbox', 'Members', {
+    let dbMembers = await findDocuments('authbox', 'Members', {
       $or: [
         { email: m.email },
         { 'paypal.payer_email': m.email }
@@ -52,7 +52,10 @@ async function run() {
     }
 
     if (dbMembers.length !== 1) {
-      throw `did not find exactly one member ${m.email} (found ${dbMembers.length})`;
+      dbMembers = dbMembers.filter(v => v.email === m.email);
+      if (dbMembers.length !== 1) {
+        throw `did not find exactly one member ${m.email} (found ${dbMembers.length})`;
+      }
     }
 
     const dbMember = dbMembers[0];
