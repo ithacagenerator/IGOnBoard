@@ -36,9 +36,10 @@ function ipnValidationHandler(err, ipnContent, req) {
   } else {
       console.log(`Incoming IPN: `, ipnContent, req.params); // The IPN was valid.
       let memberEmail;
-      db.updateDocument('authbox', 'Members', {
-        "registration.notifyId": req.params.notifyId
-      }, {
+      db.updateDocument('authbox', 'Members', {$or: [
+        { "registration.notifyId": req.params.notifyId },
+        { "paypal.subscr_id": ipnContent.subscr_id }
+      ]}, {
         $push: { paypal: ipnContent },
         $set: { "registration.registrationComplete": true }
       }, { updateType: 'complex' }) // bind the paypal data to the member

@@ -15,6 +15,7 @@
     "disposable-email-domains": "^1.0.30",
     "express": "~4.15.5",
     "express-ipn": "https://github.com/vicatcu/express-ipn.git",
+    "fast-levenshtein": "^2.0.6",
     "gmail-send": "^1.2.14",
     "homedir": "^0.6.0",
     "jade": "~1.11.0",
