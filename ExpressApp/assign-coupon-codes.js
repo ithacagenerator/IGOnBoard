@@ -59,7 +59,7 @@ async function run() {
     }
 
     const dbMember = dbMembers[0];
-    console.log(dbMember);
+    console.log(dbMember.name, dbMembers.email);
   }
 }
 
