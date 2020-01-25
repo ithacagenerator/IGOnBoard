@@ -39,8 +39,8 @@ async function executeQuery(query, params=null) {
       } else {
         r([results, fields]);
       }
+      mysqlConnection.end();
     });
-    mysqlConnection.end();
   });
 }
 
