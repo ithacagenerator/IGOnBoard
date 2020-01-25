@@ -41,7 +41,10 @@ function ipnValidationHandler(err, ipnContent, req) {
         { "paypal.subscr_id": ipnContent.subscr_id }
       ]}, {
         $push: { paypal: ipnContent },
-        $set: { "registration.registrationComplete": true }
+        $set: {
+          "registration.registrationComplete": true,
+          "registration.notifyId": req.params.notifyId
+        }
       }, { updateType: 'complex' }) // bind the paypal data to the member
       .then((result) => {
         console.log(`IPN modified ${result.modifiedCount} member records.`);
