@@ -59,7 +59,11 @@ async function run() {
     }
 
     const dbMember = dbMembers[0];
-    console.log(dbMember.name, dbMember.email, dbMember.paypal[0].payer_email);
+    const paypalEmail = null;
+    if (dbMember.paypal) {
+      paypalEmail = dbMember.paypal[0].payer_email;
+    }
+    console.log(dbMember.name, dbMember.email, paypalEmail);
   }
 }
 
