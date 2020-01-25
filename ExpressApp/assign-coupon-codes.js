@@ -63,7 +63,18 @@ async function run() {
     if (dbMember.paypal) {
       paypalEmail = dbMember.paypal[0].payer_email;
     }
-    console.log(dbMember.name, dbMember.email, paypalEmail);
+    console.log('Assigning Coupon Code to ', dbMember.name, dbMember.email, paypalEmail, dbMember.coupons);
+
+    if (argv.generate) {
+      const coreClassCouponCode = await generateCouponCode();
+      await updateDocument('authbox', 'Members', {
+        email: dbMember.email
+      }, {
+        $addToSet: { coupons: coreClassCouponCode }
+      }, {
+        updateType: 'complex'
+      });
+    }
   }
 }
 
