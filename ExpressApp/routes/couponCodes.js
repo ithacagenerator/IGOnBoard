@@ -31,7 +31,7 @@ async function executeQuery(query, params=null) {
     args.push(params);
   }
 
-  return await new Promise((r, j) => {
+  return new Promise((r, j) => {
     mysqlConnection.connect();
     mysqlConnection.query(...args, function (error, results, fields) {
       if (error) {
@@ -39,8 +39,8 @@ async function executeQuery(query, params=null) {
       } else {
         r([results, fields]);
       }
-      mysqlConnection.end();
     });
+    mysqlConnection.end();
   });
 }
 
