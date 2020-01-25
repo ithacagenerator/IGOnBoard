@@ -34,4 +34,36 @@ members.forEach(member => {
 });
 
 // ok now we're all good
-console.log(generateCouponCode, updateDocument, findDocuments);
+// console.log(generateCouponCode, updateDocument, findDocuments);
+
+async function run() {
+
+  for (let ii = 0; ii < members.length; ii++) {
+    const m = members[ii];
+    const dbMembers = await findDocuments('authbox', 'Members', {
+      $or: [
+        { email: m.email },
+        { 'paypal.payer_email': m.email }
+      ]
+    });
+
+    if (!Array.isArray(dbMembers)) {
+      throw `database error fetching member ${m.email}`;
+    }
+
+    if (dbMembers.length !== 1) {
+      throw `did not find exactly one member ${m.email} (found ${dbMembers.length})`;
+    }
+
+    const dbMember = dbMembers[0];
+    console.log(dbMember);
+  }
+}
+
+run()
+  .then(() => {
+    console.log('Done.');
+  })
+  .catch((err) => {
+    console.error(err);
+  });
