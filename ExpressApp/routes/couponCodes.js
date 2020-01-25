@@ -48,8 +48,9 @@ async function insertCouponCode(couponcode, name='') {
   const now = moment().format('YYYY-MM-DD HH:mm:ss');
   const now_gmt = moment().utcOffset(0).format('YYYY-MM-DD HH:mm:ss');
   const guid1 = `https://ithacagenerator.org/\?post_type=shop_coupon&#038;p=${uuidv4()}`;
-  const query1 = `INSERT INTO ${prefix}posts SET post_author=1, post_date=?, post_date_gmt=?, post_content='', post_title=?, post_excerpt='As an IG member ${mysql.escape(name)} can use this coupon to take core classes for free.', post_status='publish', comment_status='closed', ping_status='closed', post_password='', post_name='${couponcode}', to_ping='', pinged='', post_modified=?, post_modified_gmt=?, post_content_filtered='', post_parent=0, guid=?, menu_order=0, post_type='shop_coupon', post_mime_type='', comment_count=0`;
-  const params1 = [now, now_gmt, couponcode, now, now_gmt, couponcode, guid1];
+  const description1 = `As an IG member ${name} can use this coupon to take core classes for free.`;
+  const query1 = `INSERT INTO ${prefix}posts SET post_author=1, post_date=?, post_date_gmt=?, post_content='', post_title=?, post_excerpt=?, post_status='publish', comment_status='closed', ping_status='closed', post_password='', post_name='${couponcode}', to_ping='', pinged='', post_modified=?, post_modified_gmt=?, post_content_filtered='', post_parent=0, guid=?, menu_order=0, post_type='shop_coupon', post_mime_type='', comment_count=0`;
+  const params1 = [now, now_gmt, couponcode, description1, now, now_gmt, couponcode, guid1];
   const [results1, fields1] = await executeQuery(query1, params1);
   if (!results1 || !results1.insertId) {
     console.log(results1);
