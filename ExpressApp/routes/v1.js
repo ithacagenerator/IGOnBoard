@@ -289,7 +289,7 @@ router.sendWelcomeEmail = async function(email) {
   try {
     members = await findDocuments('authbox', 'Members', {email});
   } catch(e) {
-    console.error('error in sendWelcomeEmail findDocuments', err);
+    console.error('error in sendWelcomeEmail findDocuments', e);
   }
 
   if (Array.isArray(members) && members.length === 1) {
