@@ -287,7 +287,7 @@ router.get('/member-registration/:email', (req, res, next) => {
 router.sendWelcomeEmail = async function(email) {
   let members = [];
   try {
-    members = await findDocuments('authbox', 'Members', {email});
+    members = await db.findDocuments('authbox', 'Members', {email});
   } catch(e) {
     console.error('error in sendWelcomeEmail findDocuments', e);
   }
