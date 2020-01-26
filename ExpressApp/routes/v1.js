@@ -102,6 +102,11 @@ router.post('/test-email', (req, res, next) => {
             const email = member.email;
             delete member.email;
             delete member.paypal;
+
+            if (member.phone === '(xxx) xxx-xxxx') {
+              delete member.phone;
+            }
+
             const updateObj = buildRegistrationUpdate(member);
             if(members[0].deleted) { // previous member making a comeback?
               // TODO: I don't understand this logic anymore
@@ -287,9 +292,9 @@ router.get('/member-registration/:email', (req, res, next) => {
 router.sendWelcomeEmail = async function(email) {
   let members = [];
   try {
-    members = await findDocuments('authbox', 'Members', {email});
+    members = await db.findDocuments('authbox', 'Members', {email});
   } catch(e) {
-    console.error('error in sendWelcomeEmail findDocuments', err);
+    console.error('error in sendWelcomeEmail findDocuments', e);
   }
 
   if (Array.isArray(members) && members.length === 1) {

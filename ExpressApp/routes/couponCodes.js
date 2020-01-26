@@ -89,6 +89,9 @@ async function generateCouponCode(name = null) {
 async function expireCouponCode(code) {
   const prefix = mysql_credentials.prefix;
   // first get the id of the coupon code in question
+  if (typeof code !== 'string') {
+    code = ';lkadsf;ldsjafldsajfasdljfsdalj';
+  }
   const query1 = `SELECT ID FROM ${prefix}posts WHERE post_title=?`;
   params1 = [code];
   const [results1, fields1] = await executeQuery(query1, params1);

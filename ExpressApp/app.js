@@ -27,13 +27,33 @@ app.use(cors());
 app.use(bodyParser.json({limit: '20mb', extended: true}));
 app.use(bodyParser.urlencoded({ extended: false })); // IPN data is sent in the body as x-www-form-urlencoded data
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '../AngularApp/dist')));
+app.use(express.static(path.join(__dirname, '../AngularApp/dist/igonboard')));
 
-app.post('/notify/:notifyId', ipn.validator(ipnValidationHandler, true));
+app.post('/notify/:notifyId', (req, res, next) => {
+  console.log('IPN INCOMING');
+  console.log('BODY: ', JSON.stringify(req.body, null, 2));
+  console.log('PARAMS: ', JSON.stringify(req.params, null, 2));
+  console.log('QUERY: ', JSON.stringify(req.query, null, 2));
+
+  // inspect the contents of the IPN to determine if it's something we should pass on to woocommerce or not
+  let isMembershipRelated = false;
+
+  // simple policy is if it's related to a subscription, we handle it here
+  if (req.body.subscr_id) {
+    isMembershipRelated = true;
+  }
+
+  if (isMembershipRelated) {
+    ipn.validator(ipnValidationHandler, true)(req, res, next);
+  } else {
+    console.log('FORWARDING to wordpress site');
+    res.redirect('https://ithacagenerator.org');
+  }
+});
 
 async function ipnValidationHandler(err, ipnContent, req) {
   if (err) {
-      console.error("IPN invalid");              // The IPN was invalid
+      console.error("IPN invalid", err);              // The IPN was invalid
   } else {
       console.log(`Incoming IPN: `, ipnContent, req.params); // The IPN was valid.
       let memberEmail;
@@ -62,24 +82,28 @@ async function ipnValidationHandler(err, ipnContent, req) {
         return;
       }
 
-      if (!Array.isArray(existingMembers[0].coupons) || !existingMembers[0].coupons.find(v => v.type === 'core')) {
-        const code = generateCouponCode(existingMembers[0].name);
-        update.$push.coupons = { type: 'core', code };
+      let isSignup = ['subscr_signup'].includes(ipnContent.txn_type);
+
+      if (isSignup) {
+        if (!Array.isArray(existingMembers[0].coupons) || !existingMembers[0].coupons.find(v => v.type === 'core')) {
+          const code = await generateCouponCode(existingMembers[0].name);
+          update.$push.coupons = { type: 'core', code };
+        }
       }
 
       db.updateDocument('authbox', 'Members', query, update, { updateType: 'complex' }) // bind the paypal data to the member
       .then((result) => {
         console.log(`IPN modified ${result.modifiedCount} member records.`);
-        if(result.modifiedCount === 1) {
+        if(result.matchedCount === 1) {
           // find the member's email, and if called for send a welcome email
-          return db.findDocuments('authbox', 'Members',{ 'registration.notifyId': req.params.notifyId })
+          return db.findDocuments('authbox', 'Members', query)
           .then((members) => {
             if (members && members[0] && members[0].email) {
               memberEmail = members[0].email;
-              if (!members[0].welcomeEmailSent) {
+              if (isSignup) {
                 return v1.sendWelcomeEmail(members[0].email) // send the new member welcome email to this person
                 .then(() => {
-                  return db.updateDocument('authbox', 'Members', { 'registration.notifyId': req.params.notifyId }, { welcomeEmailSent: true });
+                  return db.updateDocument('authbox', 'Members', query, { welcomeEmailSent: true });
                 })
                 .catch((err) => {
                   console.error(err.message, err.stack);
@@ -124,7 +148,7 @@ async function ipnValidationHandler(err, ipnContent, req) {
             let member = {};
             // invalidate all their coupon codes by setting the expiry to yesterday
             try {
-              const members = await findDocuments('authbox', 'Members', { email: memberEmail});
+              const members = await db.findDocuments('authbox', 'Members', { email: memberEmail});
               if (!Array.isArray(members)) {
                 console.error(`members is not an array in membership canceled ipn for ${memberEmail}`);
               } else if (members.length !== 1) {
@@ -174,7 +198,7 @@ async function ipnValidationHandler(err, ipnContent, req) {
 app.use('/', index);
 app.use('/v1', v1);
 app.get('*', function(req, res, next) {
-  res.sendFile(path.join(__dirname, '../AngularApp/dist/index.html'));
+  res.sendFile(path.join(__dirname, '../AngularApp/dist/igonboard/index.html'));
 });
 
 // catch 404 and forward to error handler
