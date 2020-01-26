@@ -39,7 +39,7 @@ app.post('/notify/:notifyId', (req, res, next) => {
 
 async function ipnValidationHandler(err, ipnContent, req) {
   if (err) {
-      console.error("IPN invalid");              // The IPN was invalid
+      console.error("IPN invalid", err);              // The IPN was invalid
   } else {
       console.log(`Incoming IPN: `, ipnContent, req.params); // The IPN was valid.
       let memberEmail;
