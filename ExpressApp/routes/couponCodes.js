@@ -102,7 +102,7 @@ async function expireCouponCode(code) {
   const params2 = [moment().subtract(1, 'day').unix().toString(), results1.find(v => v.ID).ID];
   const [results2, fields2] = await executeQuery(query2, params2);
 
-  console.log(JSON.stringify(results2, null, 2));
+  console.log(`Expired coupon ${code}`, results2.message);
 }
 
 module.exports = {
