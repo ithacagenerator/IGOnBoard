@@ -102,10 +102,12 @@ router.post('/test-email', (req, res, next) => {
             const email = member.email;
             delete member.email;
             delete member.paypal;
-            const updateObj = buildRegistrationUpdate({
-              email: member.email,
-              validated: member.validated
-            });
+
+            if (member.phone === '(xxx) xxx-xxxx') {
+              delete member.phone;
+            }
+
+            const updateObj = buildRegistrationUpdate(member);
             if(members[0].deleted) { // previous member making a comeback?
               // TODO: I don't understand this logic anymore
               updateObj.validated = false;
