@@ -34,7 +34,20 @@ app.post('/notify/:notifyId', (req, res, next) => {
   console.log('BODY: ', JSON.stringify(req.body, null, 2));
   console.log('PARAMS: ', JSON.stringify(req.params, null, 2));
   console.log('QUERY: ', JSON.stringify(req.query, null, 2));
-  ipn.validator(ipnValidationHandler, true)(req, res, next);
+
+  // inspect the contents of the IPN to determine if it's something we should pass on to woocommerce or not
+  let isMembershipRelated = false;
+
+  // simple policy is if it's related to a subscription, we handle it here
+  if (req.body.subscr_id) {
+    isMembershipRelated = true;
+  }
+
+  if (isMembershipRelated) {
+    ipn.validator(ipnValidationHandler, true)(req, res, next);
+  } else {
+    res.redirect('https://ithacagenerator.org');
+  }
 });
 
 async function ipnValidationHandler(err, ipnContent, req) {
