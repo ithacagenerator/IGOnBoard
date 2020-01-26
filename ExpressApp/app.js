@@ -121,7 +121,7 @@ async function ipnValidationHandler(err, ipnContent, req) {
             obj.welcomeEmailSent = false;
             obj.access_codes = []; // wipe out the user's access codes
             obj.coupons = [];
-
+            let member = {};
             // invalidate all their coupon codes by setting the expiry to yesterday
             try {
               const members = await findDocuments('authbox', 'Members', { email: memberEmail});
@@ -130,7 +130,7 @@ async function ipnValidationHandler(err, ipnContent, req) {
               } else if (members.length !== 1) {
                 console.error(`members length is not 1 for ${memberEmail} (was ${members.length}) in membership canceled ipn`);
               } else {
-                const member = members[0];
+                member = members[0];
                 if (Array.isArray(member.coupons)) {
                   for (let jj = 0; jj < member.coupons.length; jj++) {
                     const code = member.coupons[jj].code;
@@ -152,10 +152,10 @@ async function ipnValidationHandler(err, ipnContent, req) {
               });
           } else if('subscr_failed' === ipnContent.txn_type) {
             // notify the treasurer
-            return v1.sendEmail('treasurer@ithacagenerator.org', '[Ithaca Generator] Payment Failed', `PayPal says payment failed for Member ${memberEmail}`);
+            return v1.sendEmail('treasurer@ithacagenerator.org', '[Ithaca Generator] Payment Failed', `PayPal says payment failed for Member ${memberEmail} ${member.name}`);
           } else if(['subscr_payment', 'subscr_signup'].indexOf(ipnContent.txn_type) < 0) {
             // TODO: should subscr_modify be in this list ^^^ ?
-            return v1.sendEmail('web@ithacagenerator.org', '[Ithaca Generator] Unexpected IPN', `Got unexpected PayPal IPN "${Content.txn_type}" for Member ${memberEmail}`);
+            return v1.sendEmail('web@ithacagenerator.org', '[Ithaca Generator] Unexpected IPN', `Got unexpected PayPal IPN "${Content.txn_type}" for Member ${memberEmail} ${member.name}`);
           }
         }
       })
