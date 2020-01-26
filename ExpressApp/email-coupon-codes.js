@@ -65,7 +65,7 @@ async function run() {
     if (!coupon) {
       console.log(`member ${dbMember.email} does not have coupon code of type ${type}`);
     } else {
-      await sendEmail(dbMember.email, 'Ithaca Generator Class Coupon', emailTemplate, { coupon });
+      await sendEmail(dbMember.email, 'Ithaca Generator Class Coupon', emailTemplate, { code: coupon.code });
     }
   }
 }
