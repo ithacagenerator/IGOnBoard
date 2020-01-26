@@ -144,7 +144,7 @@ async function ipnValidationHandler(err, ipnContent, req) {
             let member = {};
             // invalidate all their coupon codes by setting the expiry to yesterday
             try {
-              const members = await findDocuments('authbox', 'Members', { email: memberEmail});
+              const members = await db.findDocuments('authbox', 'Members', { email: memberEmail});
               if (!Array.isArray(members)) {
                 console.error(`members is not an array in membership canceled ipn for ${memberEmail}`);
               } else if (members.length !== 1) {
