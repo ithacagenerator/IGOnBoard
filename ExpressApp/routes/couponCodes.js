@@ -91,7 +91,7 @@ async function expireCouponCode(code) {
   // first get the id of the coupon code in question
   const query1 = `SELECT ID FROM ${prefix}posts WHERE post_title=?`;
   params1 = [code];
-  const [results1, fields1] = await executeQuery(query, params);
+  const [results1, fields1] = await executeQuery(query1, params1);
 
   console.log(JSON.stringify(results1, null, 2), JSON.stringify(fields1, null, 2));
 
