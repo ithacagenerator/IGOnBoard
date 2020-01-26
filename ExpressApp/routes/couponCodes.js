@@ -93,13 +93,13 @@ async function expireCouponCode(code) {
   params1 = [code];
   const [results1, fields1] = await executeQuery(query1, params1);
 
-  if (!results1 || !results1.ID) {
+  if (!Array.isArray(results1) || !results1.find(v => v.ID)) {
     throw `could not find coupon code "${code}" in mysql db ${JSON.stringify(results1, null, 2)}`;
   }
 
   // then update the expiry metadata about that id
   const query2 = `UPDATE ${prefix}postmeta SET meta_value=? WHERE post_id=? AND meta_key='date_expires'`;
-  const params2 = [moment().subtract(1, 'day').unix().toString(), results1.ID];
+  const params2 = [moment().subtract(1, 'day').unix().toString(), results1.find(v => v.ID).ID];
   const [results2, fields2] = await executeQuery(query2, params2);
 
   console.log(JSON.stringify(results2, null, 2));
