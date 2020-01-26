@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "bad-words": "^3.0.3",
     "body-parser": "~1.18.2",
     "compression": "^1.7.4",
     "cookie-parser": "~1.4.3",
@@ -14,13 +15,18 @@
     "disposable-email-domains": "^1.0.30",
     "express": "~4.15.5",
     "express-ipn": "https://github.com/vicatcu/express-ipn.git",
+    "fast-levenshtein": "^2.0.6",
     "gmail-send": "^1.2.14",
     "homedir": "^0.6.0",
     "jade": "~1.11.0",
+    "minimist": "^1.2.0",
     "moment": "^2.22.0",
     "mongodb": "^3.0.6",
     "morgan": "~1.9.1",
+    "mustache": "^4.0.0",
+    "mysql": "^2.18.0",
     "serve-favicon": "~2.4.5",
-    "uuid": "^3.2.1"
+    "uuid": "^3.4.0",
+    "word-list": "^3.1.0"
   }
 }
