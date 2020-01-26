@@ -29,7 +29,13 @@ app.use(bodyParser.urlencoded({ extended: false })); // IPN data is sent in the 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../AngularApp/dist')));
 
-app.post('/notify/:notifyId', ipn.validator(ipnValidationHandler, true));
+app.post('/notify/:notifyId', (req, res, next) => {
+  console.log('IPN INCOMING');
+  console.log('BODY: ', JSON.stringify(req.body, null, 2));
+  console.log('PARAMS: ', JSON.stringify(req.params, null, 2));
+  console.log('QUERY: ', JSON.stringify(req.query, null, 2));
+  ipn.validator(ipnValidationHandler, true)(req, res, next);
+});
 
 async function ipnValidationHandler(err, ipnContent, req) {
   if (err) {
