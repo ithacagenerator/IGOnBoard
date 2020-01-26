@@ -46,6 +46,7 @@ app.post('/notify/:notifyId', (req, res, next) => {
   if (isMembershipRelated) {
     ipn.validator(ipnValidationHandler, true)(req, res, next);
   } else {
+    console.log('FORWARDING to wordpress site');
     res.redirect('https://ithacagenerator.org');
   }
 });
