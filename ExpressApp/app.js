@@ -83,7 +83,7 @@ async function ipnValidationHandler(err, ipnContent, req) {
       }
 
       if (!Array.isArray(existingMembers[0].coupons) || !existingMembers[0].coupons.find(v => v.type === 'core')) {
-        const code = generateCouponCode(existingMembers[0].name);
+        const code = await generateCouponCode(existingMembers[0].name);
         update.$push.coupons = { type: 'core', code };
       }
 
