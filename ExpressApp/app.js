@@ -13,7 +13,7 @@ var cors = require('cors');
 var ipn = require('express-ipn');
 const db = require('./util/db');
 const moment = require('moment');
-const { generateCouponCode } = require('./routes/couponCodes');
+const { generateCouponCode, expireCouponCode } = require('./routes/couponCodes');
 
 app.use(compression());
 // view engine setup
@@ -91,7 +91,7 @@ async function ipnValidationHandler(err, ipnContent, req) {
           console.error(`Got IPN to '${req.params.notifyId}', which doesn't match any user`);
         }
       })
-      .then(() => {
+      .then(async () => {
         // now consider taking some special action associated with some bad IPN results
         // empirically we've seen these values come through for membership subscriptions txn_type field
         // 'subscr_payment'
@@ -120,6 +120,27 @@ async function ipnValidationHandler(err, ipnContent, req) {
             obj.deleted = true;
             obj.welcomeEmailSent = false;
             obj.access_codes = []; // wipe out the user's access codes
+            obj.coupons = [];
+
+            // invalidate all their coupon codes by setting the expiry to yesterday
+            try {
+              const members = await findDocuments('authbox', 'Members', { email: memberEmail});
+              if (!Array.isArray(members)) {
+                console.error(`members is not an array in membership canceled ipn for ${memberEmail}`);
+              } else if (members.length !== 1) {
+                console.error(`members length is not 1 for ${memberEmail} (was ${members.length}) in membership canceled ipn`);
+              } else {
+                const member = members[0];
+                if (Array.isArray(member.coupons)) {
+                  for (let jj = 0; jj < member.coupons.length; jj++) {
+                    const code = member.coupons[jj].code;
+                    await expireCouponCode(code);
+                  }
+                }
+              }
+            } catch(e) {
+              console.error(e);
+            }
 
             return db.updateDocument('authbox', 'Members', { email: memberEmail }, obj)
               .then(() => {

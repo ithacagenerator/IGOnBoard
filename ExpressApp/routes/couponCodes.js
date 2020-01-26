@@ -86,8 +86,22 @@ async function generateCouponCode(name = null) {
   return couponCode;
 }
 
+async function expireCouponCode(code) {
+  const prefix = mysql_credentials.prefix;
+  // first get the id of the coupon code in question
+  const query1 = `SELECT ID FROM ${prefix}posts WHERE post_title=?`;
+  params1 = [code];
+  const [results1, fields1] = await executeQuery(query, params);
+
+  console.log(JSON.stringify(results1, null, 2), JSON.stringify(fields1, null, 2));
+
+  // then update the expiry metadata about that id
+
+
+}
+
 module.exports = {
-  generateCouponCode
+  generateCouponCode, expireCouponCode
 };
 
 
