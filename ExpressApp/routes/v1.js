@@ -1,4 +1,4 @@
-//jshint esversion: 6
+//jshint esversion: 8
 const express = require('express');
 const router = express.Router();
 const db = require('../util/db');
@@ -22,6 +22,8 @@ const wildcards = require('disposable-email-domains/wildcard.json');
 const wildcardsRegex = wildcards.map(v => v.replace('.', '\\.'));
 const legitEmailRegex = new RegExp(`^(?!((.*${wildcardsRegex.join(')|(.*')})))`); // tests true for non-blacklisted emails
 const legitUuidRegex = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/;
+
+const Mustache = require('mustache');
 
 var transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -48,7 +50,12 @@ function buildRegistrationUpdate(member) {
   return ret;
 }
 
-function sendEmail(to, subject, html) {
+function sendEmail(to, subject, html, substitutions) {
+
+  if (substitutions) {
+    html = Mustache.render(html, substitutions);
+  }
+
   return new Promise((resolve, reject) => {
     const mailOptions = {
       from: gmail_credentials.user,
@@ -277,8 +284,29 @@ router.get('/member-registration/:email', (req, res, next) => {
   });
 });
 
-router.sendWelcomeEmail = function(email) {
-  return sendEmail(email, 'Welcome to Ithaca Generator', welcomeEmailTemplate);
+router.sendWelcomeEmail = async function(email) {
+  let members = [];
+  try {
+    members = await findDocuments('authbox', 'Members', {email});
+  } catch(e) {
+    console.error('error in sendWelcomeEmail findDocuments', err);
+  }
+
+  if (Array.isArray(members) && members.length === 1) {
+    const member = members[0];
+    let substitutions = null;
+    if (!Array.isArray(member.coupons)) {
+      console.log(`Member "${email}" has no coupons in sendWelcomeEmail`);
+    } else if (!member.coupons.find(v => v.type === 'core')) {
+      console.log(`Member "${email}" has no coupons core coupon`);
+    } else {
+      substitutions = { code: member.coupons.find(v => v.type === 'core').code };
+    }
+
+    return sendEmail(email, 'Welcome to Ithaca Generator', welcomeEmailTemplate, substitutions);
+  } else {
+    console.error(`Failed to find member with email "${email}" in sendWelcomeEmail`);
+  }
 };
 
 router.sendExitEmail = function(email) {

@@ -23,6 +23,7 @@
     "moment": "^2.22.0",
     "mongodb": "^3.0.6",
     "morgan": "~1.9.1",
+    "mustache": "^4.0.0",
     "mysql": "^2.18.0",
     "serve-favicon": "~2.4.5",
     "uuid": "^3.4.0",
