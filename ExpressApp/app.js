@@ -27,7 +27,7 @@ app.use(cors());
 app.use(bodyParser.json({limit: '20mb', extended: true}));
 app.use(bodyParser.urlencoded({ extended: false })); // IPN data is sent in the body as x-www-form-urlencoded data
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '../AngularApp/dist')));
+app.use(express.static(path.join(__dirname, '../AngularApp/dist/igonboard')));
 
 app.post('/notify/:notifyId', (req, res, next) => {
   console.log('IPN INCOMING');
