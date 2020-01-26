@@ -82,24 +82,28 @@ async function ipnValidationHandler(err, ipnContent, req) {
         return;
       }
 
-      if (!Array.isArray(existingMembers[0].coupons) || !existingMembers[0].coupons.find(v => v.type === 'core')) {
-        const code = await generateCouponCode(existingMembers[0].name);
-        update.$push.coupons = { type: 'core', code };
+      let isSignup = ['subscr_signup'].includes(ipnContent.txn_type);
+
+      if (isSignup) {
+        if (!Array.isArray(existingMembers[0].coupons) || !existingMembers[0].coupons.find(v => v.type === 'core')) {
+          const code = await generateCouponCode(existingMembers[0].name);
+          update.$push.coupons = { type: 'core', code };
+        }
       }
 
       db.updateDocument('authbox', 'Members', query, update, { updateType: 'complex' }) // bind the paypal data to the member
       .then((result) => {
         console.log(`IPN modified ${result.modifiedCount} member records.`);
-        if(result.modifiedCount === 1) {
+        if(result.matchedCount === 1) {
           // find the member's email, and if called for send a welcome email
-          return db.findDocuments('authbox', 'Members',{ 'registration.notifyId': req.params.notifyId })
+          return db.findDocuments('authbox', 'Members', query)
           .then((members) => {
             if (members && members[0] && members[0].email) {
               memberEmail = members[0].email;
-              if (!members[0].welcomeEmailSent) {
+              if (isSignup) {
                 return v1.sendWelcomeEmail(members[0].email) // send the new member welcome email to this person
                 .then(() => {
-                  return db.updateDocument('authbox', 'Members', { 'registration.notifyId': req.params.notifyId }, { welcomeEmailSent: true });
+                  return db.updateDocument('authbox', 'Members', query, { welcomeEmailSent: true });
                 })
                 .catch((err) => {
                   console.error(err.message, err.stack);
