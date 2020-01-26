@@ -194,7 +194,7 @@ async function ipnValidationHandler(err, ipnContent, req) {
 app.use('/', index);
 app.use('/v1', v1);
 app.get('*', function(req, res, next) {
-  res.sendFile(path.join(__dirname, '../AngularApp/dist/index.html'));
+  res.sendFile(path.join(__dirname, '../AngularApp/dist/igonboard/index.html'));
 });
 
 // catch 404 and forward to error handler
