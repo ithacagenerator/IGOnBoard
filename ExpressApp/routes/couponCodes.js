@@ -94,7 +94,7 @@ async function expireCouponCode(code) {
   const [results1, fields1] = await executeQuery(query1, params1);
 
   if (!results1 || !results1.ID) {
-    throw `could not find coupon code "${code}" in mysql db`;
+    throw `could not find coupon code "${code}" in mysql db ${JSON.stringify(results1, null, 2)}`;
   }
 
   // then update the expiry metadata about that id
