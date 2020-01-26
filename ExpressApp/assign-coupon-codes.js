@@ -70,7 +70,12 @@ async function run() {
       await updateDocument('authbox', 'Members', {
         email: dbMember.email
       }, {
-        $addToSet: { coupons: coreClassCouponCode }
+        $push: {
+          coupons: {
+            type: argv.type || 'core',
+            code: coreClassCouponCode
+          }
+        }
       }, {
         updateType: 'complex'
       });

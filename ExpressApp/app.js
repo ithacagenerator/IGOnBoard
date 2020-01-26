@@ -1,4 +1,4 @@
-//jshint esversion: 6
+//jshint esversion: 8
 var compression = require('compression');
 var express = require('express');
 var path = require('path');
@@ -13,6 +13,7 @@ var cors = require('cors');
 var ipn = require('express-ipn');
 const db = require('./util/db');
 const moment = require('moment');
+const { generateCouponCode } = require('./routes/couponCodes');
 
 app.use(compression());
 // view engine setup
@@ -30,22 +31,43 @@ app.use(express.static(path.join(__dirname, '../AngularApp/dist')));
 
 app.post('/notify/:notifyId', ipn.validator(ipnValidationHandler, true));
 
-function ipnValidationHandler(err, ipnContent, req) {
+async function ipnValidationHandler(err, ipnContent, req) {
   if (err) {
       console.error("IPN invalid");              // The IPN was invalid
   } else {
       console.log(`Incoming IPN: `, ipnContent, req.params); // The IPN was valid.
       let memberEmail;
-      db.updateDocument('authbox', 'Members', {$or: [
+      const query = {$or: [
         { "registration.notifyId": req.params.notifyId },
         { "paypal.subscr_id": ipnContent.subscr_id }
-      ]}, {
+      ]};
+
+      const update = {
         $push: { paypal: ipnContent },
         $set: {
           "registration.registrationComplete": true,
           "registration.notifyId": req.params.notifyId
         }
-      }, { updateType: 'complex' }) // bind the paypal data to the member
+      };
+
+      const existingMembers = await db.findDocuments('authbox', 'Members', query);
+
+      if (!Array.isArray(existingMembers)) {
+        console.error('Failed to get an array back from ', JSON.stringify(query, null, 2));
+        return;
+      }
+
+      if (existingMembers.length !== 1) {
+        console.error(`Failed to get exactly 1 result (got ${existingMembers.length}) back from `, JSON.stringify(query, null, 2));
+        return;
+      }
+
+      if (!Array.isArray(existingMembers[0].coupons) || !existingMembers[0].coupons.find(v => v.type === 'core')) {
+        const code = generateCouponCode(existingMembers[0].name);
+        update.$push.coupons = { type: 'core', code };
+      }
+
+      db.updateDocument('authbox', 'Members', query, update, { updateType: 'complex' }) // bind the paypal data to the member
       .then((result) => {
         console.log(`IPN modified ${result.modifiedCount} member records.`);
         if(result.modifiedCount === 1) {
