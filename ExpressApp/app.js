@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended: false })); // IPN data is sent in the 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../AngularApp/dist/igonboard')));
 
-app.post('/notify/:notifyId', (req, res, next) => {
+app.post('/notify/:notifyId?', (req, res, next) => {
   console.log('IPN INCOMING');
   console.log('BODY: ', JSON.stringify(req.body, null, 2));
   console.log('PARAMS: ', JSON.stringify(req.params, null, 2));
