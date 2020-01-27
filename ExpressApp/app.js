@@ -58,17 +58,20 @@ async function ipnValidationHandler(err, ipnContent, req) {
       console.log(`Incoming IPN: `, ipnContent, req.params); // The IPN was valid.
       let memberEmail;
       const query = {$or: [
-        { "registration.notifyId": req.params.notifyId },
         { "paypal.subscr_id": ipnContent.subscr_id }
       ]};
 
       const update = {
         $push: { paypal: ipnContent },
         $set: {
-          "registration.registrationComplete": true,
-          "registration.notifyId": req.params.notifyId
+          "registration.registrationComplete": true
         }
       };
+
+      if (req.params.notifyId) {
+        query.$or.push({ "registration.notifyId": req.params.notifyId });
+        update.$set["registration.notifyId"] = req.params.notifyId;
+      }
 
       const existingMembers = await db.findDocuments('authbox', 'Members', query);
 
