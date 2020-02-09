@@ -169,6 +169,26 @@ async function ipnValidationHandler(err, ipnContent, req) {
               console.error(e);
             }
 
+            // members who upgrade or downgrade their membership generally do so by
+            // (1) Canceling their existing subscription (generating a subscr_cancel)
+            // (2) Then re-joining  under a new subscription (generating a subscr_signup / subscr_payment)
+            // ... but then sometime later, when their original subscription term ends based on its term (which at this time is 1 month)
+            //     (3) Paypal sends a subscr_eot... so history needs to be considered when deciding
+            //         whether or not a subscr_eot is genuinely a termination of membership
+            //         By my reasoning, if the previous thing to have happened prior to a subscr_eot
+            //         was a subscr_payment, the eot can reasonably be ignored (as the lapse of a replaced subscription)
+            //
+            //         ... if we supported fixed-term subscriptions, this might be ambiguous
+            //             one other way of looking at this is that we should _only_ terminate
+            //             a membership based on subscr_eot
+            if (ipnContent.txn_type === 'subscr_eot') {
+              // consider the most recent paypal transaction from the member before now
+              const mostRecentPaypalTxn = (member.paypal || [{}]).slice (-1)[0];
+              if (mostRecentPaypalTxn.txn_type === 'subscr_payment') {
+                return; // don't go through with terminating the member
+              }
+            }
+
             return db.updateDocument('authbox', 'Members', { email: memberEmail }, obj)
               .then(() => {
                 if(memberEmail) {
