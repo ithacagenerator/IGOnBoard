@@ -136,7 +136,7 @@ async function ipnValidationHandler(err, ipnContent, req) {
 
         ipnContent = ipnContent || {};
         if(ipnContent.txn_type) {
-          if(['subscr_cancel',
+          if([ // 'subscr_cancel'
             'subscr_eot',
             'recurring_payment_suspended',
             'recurring_payment_suspended_due_to_max_failed_payment'].indexOf(ipnContent.txn_type) >= 0) {
