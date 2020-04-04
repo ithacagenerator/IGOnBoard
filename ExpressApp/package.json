@@ -19,7 +19,7 @@
     "gmail-send": "^1.2.14",
     "homedir": "^0.6.0",
     "jade": "~1.11.0",
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.3",
     "moment": "^2.22.0",
     "mongodb": "^3.0.6",
     "morgan": "~1.9.1",
