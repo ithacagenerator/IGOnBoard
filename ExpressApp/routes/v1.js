@@ -95,6 +95,13 @@ router.post('/test-email', (req, res, next) => {
             return result;
           });
         } else if(members.length === 1) {
+          // so if the last paypal record associated with this user is a subscr_cancel treat that as "good enough"
+          // premise for sending a test email
+          const lastPaypalTransaction = (members[0].paypal || []).slice(-1)[0] || {};
+          if (lastPaypalTransaction.txn_type === 'subscr_cancel') {
+            members[0].deleted = true; // pretend they are deleted because they are probably trying to re-enroll
+          }
+
           if(members[0].deleted) {
             members[0].validated = false;
           }
@@ -109,7 +116,6 @@ router.post('/test-email', (req, res, next) => {
 
             const updateObj = buildRegistrationUpdate(member);
             if(members[0].deleted) { // previous member making a comeback?
-              // TODO: I don't understand this logic anymore
               updateObj.validated = false;
               updateObj['registration.registrationComplete'] = false;
             }
