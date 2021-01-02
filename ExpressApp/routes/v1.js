@@ -13,15 +13,18 @@ const fs = require('fs');
 const path = require('path');
 const emailTemplatePath = path.join(__dirname, '..', 'routes', 'email-validation-template.html');
 const welcomeTemplatePath = path.join(__dirname, '..', 'routes', 'welcome-email-template.html');
+const scholarshipRequestTemplatePath = path.join(__dirname, '..', 'routes', 'scholarship-request-email-template.html');
 const exitTemplatePath = path.join(__dirname, '..', 'routes', 'exit-email-template.html');
 
 const emailVerificationEmailTemplate = fs.readFileSync(emailTemplatePath, 'utf8');
 const welcomeEmailTemplate = fs.readFileSync(welcomeTemplatePath, 'utf8');
+const scholarshipRequestEmailTemplate = fs.readFileSync(scholarshipRequestTemplatePath, 'utf8');
 const exitEmailTemplate = fs.readFileSync(exitTemplatePath, 'utf8');
 const wildcards = require('disposable-email-domains/wildcard.json');
 const wildcardsRegex = wildcards.map(v => v.replace('.', '\\.'));
 const legitEmailRegex = new RegExp(`^(?!((.*${wildcardsRegex.join(')|(.*')})))`); // tests true for non-blacklisted emails
 const legitUuidRegex = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/;
+
 
 const Mustache = require('mustache');
 
@@ -33,6 +36,7 @@ var transporter = nodemailer.createTransport({
   }
 });
 const couponCodes = require('./couponCodes');
+const { updateDocument } = require('../util/db');
 
 function buildRegistrationUpdate(member) {
   const ret = {};
@@ -246,6 +250,10 @@ router.put('/member-registration', (req, res, next) => {
   })
   .then(() => {
     res.json({status: 'ok'});
+
+    // if this is the end of a registration, and this person has requested financial aid
+    // then send the welcome email now?
+
   })
   .catch(error => {
     res.status(422).json({error: error.message});
@@ -306,6 +314,7 @@ router.sendWelcomeEmail = async function(email) {
   if (Array.isArray(members) && members.length === 1) {
     const member = members[0];
     let substitutions = null;
+
     if (!Array.isArray(member.coupons)) {
       console.log(`Member "${email}" has no coupons in sendWelcomeEmail`);
     } else if (!member.coupons.find(v => v.type === 'core')) {
@@ -314,7 +323,26 @@ router.sendWelcomeEmail = async function(email) {
       substitutions = { code: member.coupons.find(v => v.type === 'core').code };
     }
 
-    return sendEmail(email, 'Welcome to Ithaca Generator', welcomeEmailTemplate, substitutions);
+    if (!substitutions) {
+      if (member.registration.requestFinancialAid) {
+        const code = await couponCodes.generateCouponCode(member.name);
+        await updateDocument('authbox', 'Members',
+          {email: member.email},
+          {$push: {coupons: { type: 'core', code }}},
+          {updateType: 'complex'});
+
+        substitutions = { code };
+      }
+    }
+
+    await sendEmail(email, 'Welcome to Ithaca Generator', welcomeEmailTemplate, substitutions);
+
+    if (member.registration.requestFinancialAid) {
+      await sendEmail(['info@ithacagenerator.org', member.email], 'Scholarship Request', scholarshipRequestEmailTemplate, {
+        name: member.name, email: member.email
+      });
+    }
+
   } else {
     console.error(`Failed to find member with email "${email}" in sendWelcomeEmail`);
   }
