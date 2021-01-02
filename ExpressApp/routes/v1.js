@@ -251,7 +251,7 @@ router.put('/member-registration', (req, res, next) => {
   .then(async () => {
     // if this is the end of a registration, and this person has requested financial aid
     // then send the welcome email now?
-    const [dbMember] = await db.findDocuments('authbox', 'Members', {emai});
+    const [dbMember] = await db.findDocuments('authbox', 'Members', {email});
     if (dbMember && dbMember.registration) {
       const reg = dbMember.registration;
       if (reg.registrationComplete && reg.requestFinancialAid) {
