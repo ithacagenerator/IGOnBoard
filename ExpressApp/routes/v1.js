@@ -248,11 +248,18 @@ router.put('/member-registration', (req, res, next) => {
       throw new Error('No eligible records were matched');
     }
   })
-  .then(() => {
+  .then(async () => {
     res.json({status: 'ok'});
 
     // if this is the end of a registration, and this person has requested financial aid
     // then send the welcome email now?
+    const [dbMember] = await db.findDocuments('authbox', 'Members', {emai});
+    if (dbMember && dbMember.registration) {
+      const reg = dbMember.registration;
+      if (reg.registrationComplete && reg.requestFinancialAid) {
+        router.sendWelcomeEmail(email, dbMember);
+      }
+    }
 
   })
   .catch(error => {
@@ -303,10 +310,14 @@ router.get('/member-registration/:email', (req, res, next) => {
   });
 });
 
-router.sendWelcomeEmail = async function(email) {
+router.sendWelcomeEmail = async function(email, dbMember) {
   let members = [];
   try {
-    members = await db.findDocuments('authbox', 'Members', {email});
+    if (dbMember) {
+      members = [dbMember];
+    } else {
+      members = await db.findDocuments('authbox', 'Members', {email});
+    }
   } catch(e) {
     console.error('error in sendWelcomeEmail findDocuments', e);
   }
