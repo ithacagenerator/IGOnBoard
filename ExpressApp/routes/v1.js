@@ -249,8 +249,6 @@ router.put('/member-registration', (req, res, next) => {
     }
   })
   .then(async () => {
-    res.json({status: 'ok'});
-
     // if this is the end of a registration, and this person has requested financial aid
     // then send the welcome email now?
     const [dbMember] = await db.findDocuments('authbox', 'Members', {emai});
@@ -261,8 +259,10 @@ router.put('/member-registration', (req, res, next) => {
       }
     }
 
+    res.json({status: 'ok'});
   })
   .catch(error => {
+    console.error(error);
     res.status(422).json({error: error.message});
   });
 });
