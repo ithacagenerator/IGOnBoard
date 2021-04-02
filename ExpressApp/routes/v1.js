@@ -346,6 +346,16 @@ router.sendWelcomeEmail = async function(email, dbMember) {
       }
     }
 
+    if (!substitutions) {
+      substitutions = {};
+    }
+
+    if (!member) {
+      member = {};
+    }
+
+    substitutions.name = (member.name || 'Maker').split(' ')[0];
+
     await sendEmail(email, 'Welcome to Ithaca Generator', welcomeEmailTemplate, substitutions);
 
     if (member.registration.requestFinancialAid) {
@@ -359,8 +369,10 @@ router.sendWelcomeEmail = async function(email, dbMember) {
   }
 };
 
-router.sendExitEmail = function(email) {
-  return sendEmail(email, 'Goodbye (for now) from Ithaca Generator', exitEmailTemplate);
+router.sendExitEmail = function(member) {
+  return sendEmail(member.email, 'Goodbye (for now) from Ithaca Generator', exitEmailTemplate, {
+    name: (member.name || 'Maker').split(' ')[0]
+  });
 };
 
 router.sendEmail = sendEmail;

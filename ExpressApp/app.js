@@ -189,10 +189,12 @@ async function ipnValidationHandler(err, ipnContent, req) {
               }
             }
 
+            const [member] = db.findDocuments('authbox', 'Members', { email: memberEmail });
+
             return db.updateDocument('authbox', 'Members', { email: memberEmail }, obj)
               .then(() => {
                 if(memberEmail) {
-                  return v1.sendExitEmail(memberEmail);
+                  return v1.sendExitEmail(member);
                 } else {
                   console.log('Unable to send Exit email because no memberEmail was set');
                 }
