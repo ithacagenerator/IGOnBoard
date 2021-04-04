@@ -198,7 +198,7 @@ async function ipnValidationHandler(err, ipnContent, req) {
               }
             }
 
-            const [_member] = db.findDocuments('authbox', 'Members', { email: memberEmail });
+            const [_member] = await db.findDocuments('authbox', 'Members', { email: memberEmail });
 
             return db.updateDocument('authbox', 'Members', { email: memberEmail }, obj)
               .then(() => {
