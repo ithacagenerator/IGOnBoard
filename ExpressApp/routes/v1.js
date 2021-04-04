@@ -87,77 +87,77 @@ router.post('/test-email', (req, res, next) => {
       // see if there's a record for this email address already
       const query = {$or: [{ email: member.email }]};
       if(member.correlationId) {
-        query.$or.push({ "registration.correlationId": member.correlationId });
+        query.$or.push({ 'registration.correlationId': member.correlationId });
       }
       db.findDocuments('authbox', 'Members', query)
-      .then(members => {
-        const validationCode = uuid.v4();
-        if(members.length === 0){
-          return db.insertDocument('authbox', 'Members', Object.assign({}, member, {validationCode}))
-          .then(result => {
-            member.validationCode = validationCode;
-            return result;
-          });
-        } else if(members.length === 1) {
+        .then(members => {
+          const validationCode = uuid.v4();
+          if(members.length === 0){
+            return db.insertDocument('authbox', 'Members', Object.assign({}, member, {validationCode}))
+              .then(result => {
+                member.validationCode = validationCode;
+                return result;
+              });
+          } else if(members.length === 1) {
           // so if the last paypal record associated with this user is a subscr_cancel treat that as "good enough"
           // premise for sending a test email
-          const lastPaypalTransaction = (members[0].paypal || []).slice(-1)[0] || {};
-          if (lastPaypalTransaction.txn_type === 'subscr_cancel') {
-            members[0].deleted = true; // pretend they are deleted because they are probably trying to re-enroll
-          }
-
-          if(members[0].deleted) {
-            members[0].validated = false;
-          }
-          if(!members[0].validated) {
-            const email = member.email;
-            delete member.email;
-            delete member.paypal;
-
-            if (member.phone === '(xxx) xxx-xxxx') {
-              delete member.phone;
+            const lastPaypalTransaction = (members[0].paypal || []).slice(-1)[0] || {};
+            if (lastPaypalTransaction.txn_type === 'subscr_cancel') {
+              members[0].deleted = true; // pretend they are deleted because they are probably trying to re-enroll
             }
 
-            const updateObj = buildRegistrationUpdate(member);
-            if(members[0].deleted) { // previous member making a comeback?
-              updateObj.validated = false;
-              updateObj['registration.registrationComplete'] = false;
+            if(members[0].deleted) {
+              members[0].validated = false;
             }
-            updateObj.validationCode = validationCode;
-            return db.updateDocument('authbox', 'Members', {email}, updateObj)
-            .then(result => {
-              member.email = email;
-              member.validationCode = validationCode;
-              return result;
-            });
-          } else if(members[0].registration && members[0].registration.registrationComplete) {
-            throw new Error(`Member registration already complete`);
+            if(!members[0].validated) {
+              const email = member.email;
+              delete member.email;
+              delete member.paypal;
+
+              if (member.phone === '(xxx) xxx-xxxx') {
+                delete member.phone;
+              }
+
+              const updateObj = buildRegistrationUpdate(member);
+              if(members[0].deleted) { // previous member making a comeback?
+                updateObj.validated = false;
+                updateObj['registration.registrationComplete'] = false;
+              }
+              updateObj.validationCode = validationCode;
+              return db.updateDocument('authbox', 'Members', {email}, updateObj)
+                .then(result => {
+                  member.email = email;
+                  member.validationCode = validationCode;
+                  return result;
+                });
+            } else if(members[0].registration && members[0].registration.registrationComplete) {
+              throw new Error('Member registration already complete');
+            } else {
+              throw new Error('Member is already validated');
+            }
           } else {
-            throw new Error(`Member is already validated`);
+            throw new Error(`Found ${members.length} records with email address`);
           }
-        } else {
-          throw new Error(`Found ${members.length} records with email address`);
-        }
-      })
-      .then(result => {
+        })
+        .then(result => {
         // either a member was inserted or a member was updated with a validation code
         // result should either have an insertedId or modifiedCount
-        if(result.insertedId || result.modifiedCount) {
+          if(result.insertedId || result.modifiedCount) {
           // send an email to the user with a link to click on
-          return sendEmail(member.email,
-            'Ithaca Generator Email Validation',
-            emailVerificationEmailTemplate.replace(/{{validationCode}}/g,
-            `${member.validationCode}/${encodeURIComponent(member.email)}`));
-        } else {
-          throw new Error('Database operation failed');
-        }
-      })
-      .then(result => {
-        res.json({status: 'ok'});
-      })
-      .catch(error => {
-        res.status(422).json({ error: error.message });
-      });
+            return sendEmail(member.email,
+              'Ithaca Generator Email Validation',
+              emailVerificationEmailTemplate.replace(/{{validationCode}}/g,
+                `${member.validationCode}/${encodeURIComponent(member.email)}`));
+          } else {
+            throw new Error('Database operation failed');
+          }
+        })
+        .then(result => {
+          res.json({status: 'ok'});
+        })
+        .catch(error => {
+          res.status(422).json({ error: error.message });
+        });
     } else {
       res.status(422).json({error: 'Email address is not valid'});
     }
@@ -179,23 +179,23 @@ router.get('/validate-email/:validationCode/:email?', (req, res, next) => {
       },
       { updateType: 'complex' }
     )
-    .then(result => {
-      if(result.modifiedCount) {
-        res.send(`
+      .then(result => {
+        if(result.modifiedCount) {
+          res.send(`
         <body style="padding: 20px; background-color: yellow;">
         <h1 style="font-size: 40px">VALIDATION SUCCESSFUL!</h1>
         <div style="font-size: 28px">Close this Window and go back to the registration window, or just click <a href="https://ithacagenerator.org/onboard/welcome/${encodeURIComponent(email)}">here</a> to resume.</div>
         </body>`);
-      } else {
-        throw new Error('No records were modified');
-      }
-    })
-    .catch(error => {
-      res.send(`
+        } else {
+          throw new Error('No records were modified');
+        }
+      })
+      .catch(error => {
+        res.send(`
       <body style="padding: 20px; background-color: yellow;">
       <h1 style="font-size: 40px">VALIDATION FAILED - ${ error.message }</h1>
       </body>`);
-    });
+      });
   } else {
     res.send(`
     <body style="padding: 20px; background-color: yellow;">
@@ -206,19 +206,19 @@ router.get('/validate-email/:validationCode/:email?', (req, res, next) => {
 
 router.get('/email-validated/:email', (req, res, next) => {
   const email = req.params.email;
-  db.findDocuments('authbox', 'Members', {email, "registration.registrationComplete": {$ne: true}})
-  .then(members => {
-    if(members.length === 1) {
-      res.json(members[0].validated ? Object.assign({}, members[0].registration, {validated: members[0].validated}) || {} : false);
-    } else if(members.length === 0){
-      throw new Error(`No records with email address`);
-    } else {
-      throw new Error(`Found ${members.length} records with email address`);
-    }
-  })
-  .catch(error => {
-    res.status(422).json({error});
-  });
+  db.findDocuments('authbox', 'Members', {email, 'registration.registrationComplete': {$ne: true}})
+    .then(members => {
+      if(members.length === 1) {
+        res.json(members[0].validated ? Object.assign({}, members[0].registration, {validated: members[0].validated}) || {} : false);
+      } else if(members.length === 0){
+        throw new Error('No records with email address');
+      } else {
+        throw new Error(`Found ${members.length} records with email address`);
+      }
+    })
+    .catch(error => {
+      res.status(422).json({error});
+    });
 });
 
 // updates the member record by email address
@@ -241,30 +241,30 @@ router.put('/member-registration', (req, res, next) => {
   const updateObj = buildRegistrationUpdate(member);
   db.updateDocument('authbox', 'Members', {
     email,
-    "registration.registrationComplete": {$ne: true}
+    'registration.registrationComplete': {$ne: true}
   }, updateObj)
-  .then(result => {
-    if(!result.matchedCount) {
-      throw new Error('No eligible records were matched');
-    }
-  })
-  .then(async () => {
+    .then(result => {
+      if(!result.matchedCount) {
+        throw new Error('No eligible records were matched');
+      }
+    })
+    .then(async () => {
     // if this is the end of a registration, and this person has requested financial aid
     // then send the welcome email now?
-    const [dbMember] = await db.findDocuments('authbox', 'Members', {email});
-    if (dbMember && dbMember.registration) {
-      const reg = dbMember.registration;
-      if (reg.registrationComplete && reg.requestFinancialAid) {
-        router.sendWelcomeEmail(email, dbMember);
+      const [dbMember] = await db.findDocuments('authbox', 'Members', {email});
+      if (dbMember && dbMember.registration) {
+        const reg = dbMember.registration;
+        if (reg.registrationComplete && reg.requestFinancialAid) {
+          router.sendWelcomeEmail(email, dbMember);
+        }
       }
-    }
 
-    res.json({status: 'ok'});
-  })
-  .catch(error => {
-    console.error(error);
-    res.status(422).json({error: error.message});
-  });
+      res.json({status: 'ok'});
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(422).json({error: error.message});
+    });
 });
 
 // fetches the member associated with the email from the database
@@ -272,10 +272,10 @@ router.put('/member-registration', (req, res, next) => {
 // completed registration
 router.get('/member-registration/:email', (req, res, next) => {
   db.findDocuments('authbox', 'Members', { $or: [
-    {email: req.params.email, "registration.registrationComplete": {$ne: true}},
+    {email: req.params.email, 'registration.registrationComplete': {$ne: true}},
     {$and: [
-      {"registration.correlationId": {$exists: true}},
-      {"registration.correlationId": req.params.email}
+      {'registration.correlationId': {$exists: true}},
+      {'registration.correlationId': req.params.email}
     ]}
   ]}, {
     projection: {
@@ -284,30 +284,30 @@ router.get('/member-registration/:email', (req, res, next) => {
       registration: 1
     }
   })
-  .then(members => {
-    if(Array.isArray(members) && members.length === 1) {
-      if(members[0].deleted) {
-        members[0].registration = {};
+    .then(members => {
+      if(Array.isArray(members) && members.length === 1) {
+        if(members[0].deleted) {
+          members[0].registration = {};
+        }
+
+        // unconditionally clear the correlationId so it only works once
+        // don't bother waiting for that to complete before responding
+        db.updateDocument('authbox', 'Members', { $or: [
+          {email: req.params.email, 'registration.registrationComplete': {$ne: true}},
+          {'registration.correlationId': req.params.email}
+        ]}, {$unset: {'registration.correlationId': 1 }}, {updateType: 'complex'});
+
+        return Object.assign({}, members[0].registration, {validated: members[0].validated });
+      } else {
+        throw new Error(`Found ${members.length} records with email address`);
       }
-
-      // unconditionally clear the correlationId so it only works once
-      // don't bother waiting for that to complete before responding
-      db.updateDocument('authbox', 'Members', { $or: [
-        {email: req.params.email, "registration.registrationComplete": {$ne: true}},
-        {"registration.correlationId": req.params.email}
-      ]}, {$unset: {"registration.correlationId": 1 }}, {updateType: 'complex'});
-
-      return Object.assign({}, members[0].registration, {validated: members[0].validated });
-    } else {
-      throw new Error(`Found ${members.length} records with email address`);
-    }
-  })
-  .then(member => {
-    res.json(member);
-  })
-  .catch(error => {
-    res.status(422).json({error: error.message});
-  });
+    })
+    .then(member => {
+      res.json(member);
+    })
+    .catch(error => {
+      res.status(422).json({error: error.message});
+    });
 });
 
 router.sendWelcomeEmail = async function(email, dbMember) {
@@ -323,7 +323,7 @@ router.sendWelcomeEmail = async function(email, dbMember) {
   }
 
   if (Array.isArray(members) && members.length === 1) {
-    const member = members[0];
+    let member = members[0];
     let substitutions = null;
 
     if (!Array.isArray(member.coupons)) {

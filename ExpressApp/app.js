@@ -53,67 +53,67 @@ app.post('/notify/:notifyId?', (req, res, next) => {
 
 async function ipnValidationHandler(err, ipnContent, req) {
   if (err) {
-      console.error("IPN invalid", err);              // The IPN was invalid
+    console.error('IPN invalid', err);              // The IPN was invalid
   } else {
-      console.log(`Incoming IPN: `, ipnContent, req.params); // The IPN was valid.
-      let memberEmail;
-      const query = {$or: [
-        { "paypal.subscr_id": ipnContent.subscr_id }
-      ]};
+    console.log('Incoming IPN: ', ipnContent, req.params); // The IPN was valid.
+    let memberEmail;
+    const query = {$or: [
+      { 'paypal.subscr_id': ipnContent.subscr_id }
+    ]};
 
-      const update = {
-        $push: { paypal: ipnContent },
-        $set: {
-          "registration.registrationComplete": true
-        }
-      };
-
-      if (req.params.notifyId) {
-        query.$or.push({ "registration.notifyId": req.params.notifyId });
-        update.$set["registration.notifyId"] = req.params.notifyId;
+    const update = {
+      $push: { paypal: ipnContent },
+      $set: {
+        'registration.registrationComplete': true
       }
+    };
 
-      const existingMembers = await db.findDocuments('authbox', 'Members', query);
+    if (req.params.notifyId) {
+      query.$or.push({ 'registration.notifyId': req.params.notifyId });
+      update.$set['registration.notifyId'] = req.params.notifyId;
+    }
 
-      if (!Array.isArray(existingMembers)) {
-        console.error('Failed to get an array back from ', JSON.stringify(query, null, 2));
-        return;
+    const existingMembers = await db.findDocuments('authbox', 'Members', query);
+
+    if (!Array.isArray(existingMembers)) {
+      console.error('Failed to get an array back from ', JSON.stringify(query, null, 2));
+      return;
+    }
+
+    if (existingMembers.length !== 1) {
+      console.error(`Failed to get exactly 1 result (got ${existingMembers.length}) back from `, JSON.stringify(query, null, 2));
+      return;
+    }
+
+    let isSignup = ['subscr_signup'].includes(ipnContent.txn_type);
+
+    if (isSignup) {
+      if (!Array.isArray(existingMembers[0].coupons) || !existingMembers[0].coupons.find(v => v.type === 'core')) {
+        const code = await generateCouponCode(existingMembers[0].name);
+        update.$push.coupons = { type: 'core', code };
       }
+    }
 
-      if (existingMembers.length !== 1) {
-        console.error(`Failed to get exactly 1 result (got ${existingMembers.length}) back from `, JSON.stringify(query, null, 2));
-        return;
-      }
-
-      let isSignup = ['subscr_signup'].includes(ipnContent.txn_type);
-
-      if (isSignup) {
-        if (!Array.isArray(existingMembers[0].coupons) || !existingMembers[0].coupons.find(v => v.type === 'core')) {
-          const code = await generateCouponCode(existingMembers[0].name);
-          update.$push.coupons = { type: 'core', code };
-        }
-      }
-
-      db.updateDocument('authbox', 'Members', query, update, { updateType: 'complex' }) // bind the paypal data to the member
+    db.updateDocument('authbox', 'Members', query, update, { updateType: 'complex' }) // bind the paypal data to the member
       .then((result) => {
         console.log(`IPN modified ${result.modifiedCount} member records.`);
         if(result.matchedCount === 1) {
           // find the member's email, and if called for send a welcome email
           return db.findDocuments('authbox', 'Members', query)
-          .then((members) => {
-            if (members && members[0] && members[0].email) {
-              memberEmail = members[0].email;
-              if (isSignup) {
-                return v1.sendWelcomeEmail(members[0].email) // send the new member welcome email to this person
-                .then(() => {
-                  return db.updateDocument('authbox', 'Members', query, { welcomeEmailSent: true });
-                })
-                .catch((err) => {
-                  console.error(err.message, err.stack);
-                });
+            .then((members) => {
+              if (members && members[0] && members[0].email) {
+                memberEmail = members[0].email;
+                if (isSignup) {
+                  return v1.sendWelcomeEmail(members[0].email, members[0]) // send the new member welcome email to this person
+                    .then(() => {
+                      return db.updateDocument('authbox', 'Members', query, { welcomeEmailSent: true });
+                    })
+                    .catch((err) => {
+                      console.error(err.message, err.stack);
+                    });
+                }
               }
-            }
-          });
+            });
         } else {
           console.error(`Got IPN to '${req.params.notifyId}', which doesn't match any user`);
         }
@@ -135,6 +135,27 @@ async function ipnValidationHandler(err, ipnContent, req) {
         // it is generally the predecessor to recurring_payment_suspended_due_to_max_failed_payment
 
         ipnContent = ipnContent || {};
+        let member = {};
+        // invalidate all their coupon codes by setting the expiry to yesterday
+        try {
+          const members = await db.findDocuments('authbox', 'Members', { email: memberEmail});
+          if (!Array.isArray(members)) {
+            console.error(`members is not an array in membership canceled ipn for ${memberEmail}`);
+          } else if (members.length !== 1) {
+            console.error(`members length is not 1 for ${memberEmail} (was ${members.length}) in membership canceled ipn`);
+          } else {
+            member = members[0];
+            if (Array.isArray(member.coupons)) {
+              for (let jj = 0; jj < member.coupons.length; jj++) {
+                const code = member.coupons[jj].code;
+                await expireCouponCode(code);
+              }
+            }
+          }
+        } catch(e) {
+          console.error(e);
+        }
+
         if(ipnContent.txn_type) {
           if([ // 'subscr_cancel'
             'subscr_eot',
@@ -151,13 +172,7 @@ async function ipnValidationHandler(err, ipnContent, req) {
             let member = {};
             // invalidate all their coupon codes by setting the expiry to yesterday
             try {
-              const members = await db.findDocuments('authbox', 'Members', { email: memberEmail});
-              if (!Array.isArray(members)) {
-                console.error(`members is not an array in membership canceled ipn for ${memberEmail}`);
-              } else if (members.length !== 1) {
-                console.error(`members length is not 1 for ${memberEmail} (was ${members.length}) in membership canceled ipn`);
-              } else {
-                member = members[0];
+              if(member) {
                 if (Array.isArray(member.coupons)) {
                   for (let jj = 0; jj < member.coupons.length; jj++) {
                     const code = member.coupons[jj].code;
@@ -189,12 +204,12 @@ async function ipnValidationHandler(err, ipnContent, req) {
               }
             }
 
-            const [member] = db.findDocuments('authbox', 'Members', { email: memberEmail });
+            const [_member] = db.findDocuments('authbox', 'Members', { email: memberEmail });
 
             return db.updateDocument('authbox', 'Members', { email: memberEmail }, obj)
               .then(() => {
                 if(memberEmail) {
-                  return v1.sendExitEmail(member);
+                  return v1.sendExitEmail(_member);
                 } else {
                   console.log('Unable to send Exit email because no memberEmail was set');
                 }
@@ -204,12 +219,12 @@ async function ipnValidationHandler(err, ipnContent, req) {
             return v1.sendEmail('treasurer@ithacagenerator.org', '[Ithaca Generator] Payment Failed', `PayPal says payment failed for Member ${memberEmail} ${member.name}`);
           } else if(['subscr_payment', 'subscr_signup'].indexOf(ipnContent.txn_type) < 0) {
             // TODO: should subscr_modify be in this list ^^^ ?
-            return v1.sendEmail('web@ithacagenerator.org', '[Ithaca Generator] Unexpected IPN', `Got unexpected PayPal IPN "${Content.txn_type}" for Member ${memberEmail} ${member.name}`);
+            return v1.sendEmail('web@ithacagenerator.org', '[Ithaca Generator] Unexpected IPN', `Got unexpected PayPal IPN "${ipnContent.txn_type}" for Member ${memberEmail} ${member.name}`);
           }
         }
       })
       .catch((err) => {
-        console.log(`IPN member record update failed.`, err);
+        console.log('IPN member record update failed.', err);
       });
   }
 }
