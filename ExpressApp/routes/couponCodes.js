@@ -93,7 +93,7 @@ async function expireCouponCode(code) {
     code = ';lkadsf;ldsjafldsajfasdljfsdalj';
   }
   const query1 = `SELECT ID FROM ${prefix}posts WHERE post_title=?`;
-  params1 = [code];
+  const params1 = [code];
   const [results1, fields1] = await executeQuery(query1, params1);
 
   if (!Array.isArray(results1) || !results1.find(v => v.ID)) {

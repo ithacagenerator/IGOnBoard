@@ -145,12 +145,6 @@ async function ipnValidationHandler(err, ipnContent, req) {
             console.error(`members length is not 1 for ${memberEmail} (was ${members.length}) in membership canceled ipn`);
           } else {
             member = members[0];
-            if (Array.isArray(member.coupons)) {
-              for (let jj = 0; jj < member.coupons.length; jj++) {
-                const code = member.coupons[jj].code;
-                await expireCouponCode(code);
-              }
-            }
           }
         } catch(e) {
           console.error(e);
