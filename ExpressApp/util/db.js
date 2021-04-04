@@ -46,9 +46,9 @@ module.exports = (function () {
       MongoClient.connect(url, function (err, client) {
         if (err) {
           reject(err);
-        } else {          
+        } else {
           const db = client.db(dbName);
-          const collection = db.collection(colxn);          
+          const collection = db.collection(colxn);
           collection.insertMany(documents, opts, function (err, result) {
             if (err) {
               reject(err);
@@ -56,7 +56,7 @@ module.exports = (function () {
               resolve(result);
             }
             client.close();
-          });        
+          });
         }
       });
     });
@@ -70,9 +70,9 @@ module.exports = (function () {
       MongoClient.connect(url, function (err, client) {
         if (err) {
           reject(err);
-        } else {          
+        } else {
           const db = client.db(dbName);
-          const collection = db.collection(colxn);          
+          const collection = db.collection(colxn);
           collection.insertOne(document, opts, function (err, result) {
             if (err) {
               reject(err);
@@ -80,17 +80,17 @@ module.exports = (function () {
               resolve(result);
             }
             client.close();
-          });        
+          });
         }
       });
     });
-  };  
+  };
 
   const updateDocument = function (dbName, colxn, condition, update, options = {}) {
 
     const opts = Object.assign({}, {upsert: false}, options);
     let updateOperation = { $set: update }; // simple default use case
-    if (opts.updateType === "complex") { // this represents intentionality
+    if (opts.updateType === 'complex') { // this represents intentionality
       delete opts.updateType;
       // if updateType is marked complex defer to caller for a complete
       // update operator specification, rather than a simple $set operation
