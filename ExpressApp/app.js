@@ -217,7 +217,8 @@ async function ipnValidationHandler(err, ipnContent, req) {
           } else if('subscr_failed' === ipnContent.txn_type) {
             // notify the treasurer
             return v1.sendEmail('treasurer@ithacagenerator.org', '[Ithaca Generator] Payment Failed', `PayPal says payment failed for Member ${memberEmail} ${member.name}`);
-          } else if(['subscr_payment', 'subscr_signup'].indexOf(ipnContent.txn_type) < 0) {
+          } else if(['subscr_payment', 'subscr_signup', 'subscr_cancel'].indexOf(ipnContent.txn_type) < 0) {
+            // Note: VAA - I added subscr_cancel to this list because it's expected but shouldn't cause an immediate effect, deferring to eventual subscr_eot to take care of it
             // TODO: should subscr_modify be in this list ^^^ ?
             return v1.sendEmail('web@ithacagenerator.org', '[Ithaca Generator] Unexpected IPN', `Got unexpected PayPal IPN "${ipnContent.txn_type}" for Member ${memberEmail} ${member.name}`);
           }
