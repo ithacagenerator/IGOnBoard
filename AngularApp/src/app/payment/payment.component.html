@@ -41,18 +41,18 @@
 
       <h1 class="choose-membership-heading">Choose a Membership Level</h1>
       <p class="flex-grid-thirds choose-membership">
-        <span class="col" [class.selected]="selectedForm().group === 'basic'" (click)="selectLevel('basic')">Basic</span>
+        <!-- <span class="col" [class.selected]="selectedForm().group === 'basic'" (click)="selectLevel('basic')">Basic</span> -->
         <span class="col" [class.selected]="selectedForm().group === 'standard'" (click)="selectLevel('standard')">Standard</span>
         <span class="col" [class.selected]="selectedForm().group === 'extra'" (click)="selectLevel('extra')">Extra</span>
       </p>
 
-      <p class="motivation membership-level-description"
+      <!-- <p class="motivation membership-level-description"
         *ngIf="selectedForm().group === 'basic'">
         Beginning at only $20 per month, this is our most affordable option.
         You’ll have access to the space during our staffed hours (usually 5pm-10pm)
         and are welcome to hang out in the front room. You may use any of the equipment
         in the front room, as well as tools in the back room that do not require special training.
-      </p>
+      </p> -->
 
       <p class="motivation membership-level-description"
         *ngIf="selectedForm().group === 'standard'">
