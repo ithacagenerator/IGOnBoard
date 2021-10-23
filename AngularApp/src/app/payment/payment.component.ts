@@ -97,7 +97,7 @@ export class PaymentComponent implements OnInit {
         const form = document.getElementById(formName);
         if (form) {
           this.loaderService.display(true);
-          (<any> form).submit();
+          (form as any).submit();
         }
       } else {
         this._snackBar.openFromComponent(ErrorSnackBarComponent, {
