@@ -20,7 +20,7 @@
     "homedir": "^0.6.0",
     "jade": "~1.11.0",
     "minimist": "^1.2.0",
-    "moment": "^2.22.0",
+    "moment": "^2.29.2",
     "mongodb": "^3.0.6",
     "morgan": "~1.9.1",
     "mustache": "^4.0.0",
