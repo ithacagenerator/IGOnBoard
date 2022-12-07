@@ -13,7 +13,7 @@
     "cors": "^2.8.4",
     "debug": "~2.6.9",
     "disposable-email-domains": "^1.0.30",
-    "express": "~4.15.5",
+    "express": "~4.17.3",
     "express-ipn": "https://github.com/vicatcu/express-ipn.git",
     "fast-levenshtein": "^2.0.6",
     "gmail-send": "^1.2.14",
